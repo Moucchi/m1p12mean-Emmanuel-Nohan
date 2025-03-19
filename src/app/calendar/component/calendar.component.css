@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+.today{
+  @apply border border-gray-500 p-2 bg-emerald-300
+}
+
+.day{
+  @apply border border-gray-500 p-2
+}
