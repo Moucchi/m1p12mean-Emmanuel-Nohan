@@ -7,6 +7,7 @@ export const routes: Routes = [
   },
   {
     path: "",
-    loadComponent: () => import('./shared/components/calendar/calendar.component').then(c => c.CalendarComponent)
+    // loadComponent: () => import('./shared/components/calendar/calendar.component').then(c => c.CalendarComponent)
+    loadChildren: () => import('./garage/garage.routes').then(c => c.garageRoutes)
   }
 ];
