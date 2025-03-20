@@ -1,4 +1,5 @@
-import {Routes} from '@angular/router';
+import { Routes} from '@angular/router';
+import { clientRoutes } from './client/client.routes';
 
 export const routes: Routes = [
   {
@@ -8,5 +9,9 @@ export const routes: Routes = [
   {
     path: "",
     loadComponent: () => import('./shared/components/calendar/calendar.component').then(c => c.CalendarComponent)
+  },
+  {
+    path: "client",
+    children: clientRoutes
   }
 ];

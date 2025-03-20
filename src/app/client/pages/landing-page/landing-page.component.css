@@ -1,0 +1,44 @@
+.container{
+    background-color: #f7f7f7;
+    min-height: 100vh;
+    max-width: 100vw; 
+    overflow-x: hidden;
+}
+
+.logo{
+    padding: 24px;
+}
+
+.logo img{
+    margin: auto;
+}
+
+.first-section{
+    min-height: 90vh;
+    width: 100%;
+    background-image: url('/img/landing_page_background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.second-section{
+    min-height: 100vh;
+    width: 100%;
+    padding: 20px;
+}
+
+mat-icon{
+    color: rgb(202, 31, 31);
+    transform: scale(2);
+}
+
+.service-card{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 50px;
+    border-radius: 6px;
+    align-items: center;
+    max-width: 400px;
+}
