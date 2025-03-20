@@ -5,7 +5,7 @@ import {MatDivider} from '@angular/material/divider';
 import {MatFormField, MatFormFieldModule, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {FormService} from '../../../shared/services/form/form.service';
+import {FormService} from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-register',
