@@ -17,8 +17,7 @@ import {MatIcon} from '@angular/material/icon';
     MatLabel,
     MatInput,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatIcon
+    MatFormFieldModule
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
