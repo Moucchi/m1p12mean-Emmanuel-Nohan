@@ -2,7 +2,7 @@
 
   <div class="calendar-headline grid grid-cols-12 mb-4">
     <div class="calendar-headline-previous-month col-start-1 col-end-4 text-start grid grid-cols-12 items-center"
-         (click)="previousMonth()">
+         (click)="calendarService.previousMonth(firstDayOfActiveMonth)">
       <mat-icon class="w-fit col-start-1">arrow_back</mat-icon>
       <span class="col-start-2">{{ firstDayOfActiveMonth().minus({month: 1}).monthLong }}</span>
     </div>
@@ -14,14 +14,14 @@
       </div>
       @if (today().month !== firstDayOfActiveMonth().month) {
         <div class="calendar-headline-control calendar-headline-control-today w-fit justify-self-center"
-             (click)="goToPresent()">
+             (click)="calendarService.goToPresent(firstDayOfActiveMonth)">
           aller au mois actuel
         </div>
       }
 
     </div>
     <div class="calendar-headline-next-month col-start-9 col-end-13 text-end grid grid-cols-12 items-center"
-         (click)="nextMonth()">
+         (click)="calendarService.nextMonth(firstDayOfActiveMonth)">
       <span class="col-start-12 text-center">{{ firstDayOfActiveMonth().plus({month: 1}).monthLong }}</span>
       <mat-icon class="col-start-13">arrow_forward</mat-icon>
     </div>
@@ -29,7 +29,7 @@
 
   <div class="calendar h-fit">
     <div class="calendar-weeks-grid grid grid-cols-7 h-fit ">
-      @for (weekDay of weekDays(); track $index) {
+      @for (weekDay of weekDays; track $index) {
         <div class="calendar-weeks-grid-cell h-fit border border-gray-500 p-2">{{ weekDay }}</div>
       }
     </div>
@@ -37,9 +37,9 @@
       @for (dayOfMonth of daysOfMonth(); track $index) {
         <div
           [ngClass]="{
-          'today': isToday(dayOfMonth),
+          'today': calendarService.isToday(dayOfMonth),
           'day':true
-          }" (click)="setActiveDay(dayOfMonth)"
+          }" (click)="calendarService.setActiveDay(dayOfMonth,activeDay)"
         >
           {{ dayOfMonth.day }}
         </div>
@@ -50,10 +50,10 @@
   <div class="event-container">
     @if (activeDay(); as dateTime) {
       <div>
-        {{ dateTime.toLocaleString(DateTime.DATE_MED) }}
+        {{ dateTime.toLocaleString(DATE_MED) }}
       </div>
     } @else {
-      {{ today().toLocaleString(DateTime.DATE_MED) }}
+      {{ today().toLocaleString(DATE_MED) }}
     }
   </div>
 

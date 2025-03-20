@@ -1,7 +1,8 @@
-import {Component, computed, signal, Signal, WritableSignal} from '@angular/core';
-import {DateTime, Info, Interval} from 'luxon';
+import {Component, computed, inject, signal, Signal, WritableSignal} from '@angular/core';
+import {DateTime} from 'luxon';
 import {NgClass} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
+import {CalendarService, DATE_MED} from '../services/calendar.service';
 
 @Component({
   selector: 'app-calendar',
@@ -13,56 +14,18 @@ import {MatIcon} from '@angular/material/icon';
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent {
-  today: Signal<DateTime> = signal(DateTime.local());
+  protected calendarService = inject(CalendarService);
+
+  today = computed( () => this.calendarService.today()) ;
 
   firstDayOfActiveMonth: WritableSignal<DateTime> = signal(
     this.today().startOf('month')
   );
 
-  weekDays: Signal<string[]> = signal(Info.weekdays('short'));
+  weekDays: string[] = this.calendarService.weekDays();
 
-  daysOfMonth: Signal<DateTime[]> = computed(() => {
-    return Interval
-      .fromDateTimes(
-        this.firstDayOfActiveMonth().startOf('week'),
-        this.firstDayOfActiveMonth().endOf('month').endOf('week')
-      ).splitBy({day: 1})
-      .map((d) => {
-        if (d.start === null) {
-          throw new Error('Wrong date');
-        }
-        return d.start;
-      });
-  });
+  daysOfMonth: Signal<DateTime[]> = this.calendarService.getDaysOfMonth(this.firstDayOfActiveMonth);
 
   activeDay: WritableSignal<DateTime | null> = signal(null);
-
-  log() {
-    console.log(this.daysOfMonth());
-  }
-
-  nextMonth() {
-    this.firstDayOfActiveMonth.update((d) => d.plus({month: 1}));
-  }
-
-  goToPresent() {
-    this.firstDayOfActiveMonth.update(() => this.today().startOf('month'));
-  }
-
-  previousMonth() {
-    this.firstDayOfActiveMonth.update((d) => d.minus({month: 1}));
-  }
-
-  isToday(day: DateTime): boolean {
-    const today = this.today().toISODate();
-    const dayOfMonth = day.toISODate();
-
-    return today === dayOfMonth;
-  }
-
-  setActiveDay(day: DateTime) {
-    this.activeDay.update(() => day);
-  }
-
-  protected readonly DateTime = DateTime;
+  protected readonly DATE_MED = DATE_MED;
 }
