@@ -1,11 +1,11 @@
-import {Component, ViewEncapsulation, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatDivider} from '@angular/material/divider';
 import {MatFormField, MatFormFieldModule, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatIcon} from '@angular/material/icon';
+import {FormService} from '../../../shared/services/form/form.service';
 
 @Component({
   selector: 'app-register',
@@ -25,6 +25,7 @@ import {MatIcon} from '@angular/material/icon';
 })
 export class RegisterComponent {
   private formBuilder = inject(FormBuilder);
+  protected formService = inject(FormService);
 
   formGroup = this.formBuilder.group({
     firstName: ['', Validators.required],
@@ -34,23 +35,8 @@ export class RegisterComponent {
     confirmPassword: ['', Validators.required]
   });
 
-  submitForm(event: Event) {
-    event.preventDefault();
-    console.log(this.formGroup.value);
+  passwordMatch(){
+    return this.formService.fieldsMatch('password', 'confirmPassword', this.formGroup);
   }
 
-  isFieldInvalid(field: string) {
-    const formControl = this.formGroup.get(field);
-    return formControl?.invalid && (formControl.dirty || formControl?.touched);
-  }
-
-  clearFields() {
-    this.formGroup.reset();
-  }
-
-  passwordMatch(): boolean {
-    const password = this.formGroup.get('password')?.value;
-    const confirmPassword = this.formGroup.get('confirmPassword')?.value;
-    return password === confirmPassword;
-  }
 }
