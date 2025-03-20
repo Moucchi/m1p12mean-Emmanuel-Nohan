@@ -1,6 +1,6 @@
 import {Route} from '@angular/router';
-import {RegisterComponent} from './register/components/register.component';
-import {LoginComponent} from './login/components/login.component';
+import {RegisterComponent} from './sign-up/register.component';
+import {LoginComponent} from './sign-in/login.component';
 
 export const authRoutes:Route[] = [
   {

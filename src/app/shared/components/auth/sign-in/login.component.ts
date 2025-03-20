@@ -5,7 +5,7 @@ import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} fr
 import {MatDivider} from "@angular/material/divider";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {FormService} from '../../../shared/services/form/form.service';
+import {FormService} from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-login',

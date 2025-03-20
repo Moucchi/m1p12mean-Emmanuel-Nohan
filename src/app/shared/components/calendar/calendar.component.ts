@@ -2,7 +2,7 @@ import {Component, computed, inject, signal, Signal, WritableSignal} from '@angu
 import {DateTime} from 'luxon';
 import {NgClass} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
-import {CalendarService, DATE_MED} from '../services/calendar.service';
+import {CalendarService} from '../../services/calendar/calendar.service';
 
 @Component({
   selector: 'app-calendar',
@@ -27,5 +27,5 @@ export class CalendarComponent {
   daysOfMonth: Signal<DateTime[]> = this.calendarService.getDaysOfMonth(this.firstDayOfActiveMonth);
 
   activeDay: WritableSignal<DateTime | null> = signal(null);
-  protected readonly DATE_MED = DATE_MED;
+  protected readonly DATE_MED = DateTime.DATE_MED;
 }
