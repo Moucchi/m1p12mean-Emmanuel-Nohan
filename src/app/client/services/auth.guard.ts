@@ -6,6 +6,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   const token = localStorage.getItem('JWT_TOKEN');
   const router = inject(Router);
   if(token != null){
+    // TODO : verify role
     const decodedToken = jwtDecode(token);
     return true;
   }else{

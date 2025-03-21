@@ -17,7 +17,6 @@ export const routes: Routes = [
   },
   {
     path: "garage",
-    // loadComponent: () => import('./shared/components/calendar/calendar.component').then(c => c.CalendarComponent)
     loadChildren: () => import('./garage/garage.routes').then(c => c.garageRoutes),
   }
 ];

@@ -1,0 +1,19 @@
+<div>
+    <app-page-header title="Liste de mes voitures"></app-page-header>
+    <mat-card appearance="outlined">
+        <mat-card-actions class="mb-3 m-auto flex gap-2">
+            <button mat-flat-button (click)="addNewVehicle()"><mat-icon>add</mat-icon> Nouvelle voiture</button>
+            <button mat-icon-button><mat-icon>sync</mat-icon></button>
+        </mat-card-actions>
+        <mat-card-content>
+            @if(false) {
+                <p class="text-center font-medium">Vous n'avez pas de voiture !</p>
+            } @else {
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <app-vehicle-card/>
+                    <app-vehicle-card/>
+                </div>
+            }
+        </mat-card-content>
+    </mat-card>
+</div>
