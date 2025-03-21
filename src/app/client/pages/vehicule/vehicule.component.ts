@@ -9,17 +9,27 @@ import {
   MatDialogConfig
 } from '@angular/material/dialog';
 import { AddVehicleComponent } from '../../components/add.vehicle/add.vehicle.component';
+import { VehicleStoreService } from '../../services/vehicle-store.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-vehicule',
-  imports: [PageHeaderComponent, MatCardModule, MatButtonModule, MatIconModule, VehicleCardComponent],
+  imports: [PageHeaderComponent, MatCardModule, MatButtonModule, MatIconModule, VehicleCardComponent, MatProgressSpinnerModule],
   templateUrl: './vehicule.component.html',
   styleUrl: './vehicule.component.css'
 })
 export class VehiculeComponent {
   private dialog = inject(MatDialog);
+  private vehicleStore = inject(VehicleStoreService);
+  vehicles = this.vehicleStore.getVehicles();
+  isLoading = this.vehicleStore.loading();
 
-  addNewVehicle() {
+  reloadData() {
+    this.vehicleStore.fetchVehicles();
+  }
+
+  addNewVehicleDialog() {
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { catchError, Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { UserInterface } from '../../shared/models/User.interface';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,7 @@ export class AuthService {
   private apiUrl = environment.apiUrl;
   private isAuthenticated = signal<boolean>(false);
   private http  = inject(HttpClient);
-  currentUser = signal<UserInterface>({
-    email: '',
-    lastName: '',
-    firstName: '',
-    role: 'client'
-  });
+ 
 
   constructor() {}
 
@@ -28,6 +24,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/api/clients/auth`, user).pipe(
       tap((response: any) => {
         this.isAuthenticated.set(true);
+      
         localStorage.setItem(this.JWT_TOKEN, response.token);
       }),
       catchError(error => {
