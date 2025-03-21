@@ -6,8 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { VehicleCardComponent } from '../../components/vehicle-card/vehicle-card.component';
 import {
   MatDialog,
-  MatDialogTitle,
-  MatDialogContent,
   MatDialogConfig
 } from '@angular/material/dialog';
 import { AddVehicleComponent } from '../../components/add.vehicle/add.vehicle.component';
@@ -27,6 +25,7 @@ export class VehiculeComponent {
     dialogConfig.autoFocus = true;
     
     this.dialog.open(AddVehicleComponent, {
+      maxWidth: 600,
       minWidth: 400,
       minHeight: 600
     });
