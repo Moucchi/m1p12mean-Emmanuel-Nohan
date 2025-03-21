@@ -3,3 +3,10 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@font-face {
+    font-family: 'Corporate';
+    src: url('../public/Corporate.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
