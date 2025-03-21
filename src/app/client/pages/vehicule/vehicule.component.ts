@@ -24,6 +24,10 @@ export class VehiculeComponent {
   vehicles = this.vehicleStore.getVehicles();
   isLoading = this.vehicleStore.loading();
 
+  reloadData() {
+    this.vehicleStore.fetchVehicles();
+  }
+
   addNewVehicleDialog() {
 
     const dialogConfig = new MatDialogConfig();

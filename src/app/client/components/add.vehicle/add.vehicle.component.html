@@ -1,11 +1,11 @@
-<h2 mat-dialog-title>Ajout d'une voiture</h2>
+<app-page-header mat-dialog-title title="Ajout d'une voiture"></app-page-header>
 <mat-dialog-content>
-  <form class="flex flex-col gap-5">
+  <form [formGroup]="formGroup" (submit)="submit($event)" class="flex flex-col gap-5">
     <!-- Immatriculation -->
     <div>
       <label for="matriculation" class="block text-sm/6 font-medium text-gray-900">Immatriculation</label>
       <div class="mt-2">
-        <input type="text" placeholder="ex : 1234 TAC" name="matriculation" id="matriculation" class="block w-full rounded-md bg-gray-50 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+        <input required type="text" formControlName="registrationNumber" placeholder="ex : 1234 TAC" name="matriculation" id="matriculation" class="block w-full rounded-md bg-gray-50 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
       </div>
     </div>
     
@@ -13,9 +13,9 @@
     <div>
       <label for="marque" class="block text-sm/6 font-medium text-gray-900">Marque de la voiture</label>
       <div class="mt-2 grid grid-cols-1">
-        <select id="marque" name="marque" autocomplete="brand-name" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-gray-50 py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+        <select required formControlName="vehicleBrandId" id="marque" name="marque" autocomplete="brand-name" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-gray-50 py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
           @for(marque of marques(); track marque._id){
-            <option>{{ marque.name }}</option>
+            <option [value]="marque._id">{{ marque.name }}</option>
           }
         </select>
         <svg class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
@@ -28,9 +28,9 @@
     <div>
       <label for="type" class="block text-sm/6 font-medium text-gray-900">Type de la voiture</label>
       <div class="mt-2 grid grid-cols-1">
-        <select id="type" name="type" autocomplete="type-name" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-gray-50 py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+        <select formControlName="vehicleTypeId" required id="type" name="type" autocomplete="type-name" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-gray-50 py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
           @for(type of types(); track type._id){
-            <option>{{ type.type }}</option>
+            <option [value]="type._id">{{ type.type }}</option>
           }
         </select>
         <svg class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
@@ -43,13 +43,13 @@
     <div class="col-span-full">
       <label for="description" class="block text-sm/6 font-medium text-gray-900">Description</label>
       <div class="mt-2">
-        <textarea name="description" id="description" rows="3" class="block w-full rounded-md bg-gray-50 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"></textarea>
+        <textarea formControlName="description" required name="description" id="description" rows="3" class="block w-full rounded-md bg-gray-50 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"></textarea>
       </div>
     </div>
-
+    
+    <div class="flex justify-end">
+      <button type="submit" mat-button mat-dialog-close>Close</button>
+      <button mat-button [disabled]="formGroup.invalid || isDisabled()">Valider</button>
+    </div>
   </form>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
-  <button mat-button>Valider</button>
-</mat-dialog-actions>

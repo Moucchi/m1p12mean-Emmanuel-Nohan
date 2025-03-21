@@ -3,7 +3,7 @@
     <mat-card appearance="outlined">
         <mat-card-actions class="mb-3 m-auto flex gap-2">
             <button mat-flat-button (click)="addNewVehicleDialog()"><mat-icon>add</mat-icon> Nouvelle voiture</button>
-            <button mat-icon-button><mat-icon>sync</mat-icon></button>
+            <button mat-icon-button (click)="reloadData()"><mat-icon>sync</mat-icon></button>
         </mat-card-actions>
         <mat-card-content>
             @if(isLoading()) {

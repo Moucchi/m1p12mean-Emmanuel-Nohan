@@ -34,6 +34,19 @@ export class VehicleStoreService {
     }
   }
 
+  addVehicle(data: any) {
+    const token = localStorage.getItem('JWT_TOKEN');
+    let user: UserInterface;
+    if(token){
+      user = {
+        ...jwtDecode(token)
+      };
+      this.http.post<Vehicle>(`${environment.apiUrl}/api/clients/${user.id}/vehicles`, data).subscribe(() => {
+          this.fetchVehicles();
+      });
+    }
+  }
+
   loading(): Signal<boolean> {
     return this.isLoading;
   }
