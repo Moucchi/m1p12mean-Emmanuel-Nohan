@@ -3,6 +3,7 @@ import {DateTime} from 'luxon';
 import {NgOptimizedImage} from '@angular/common';
 import {GarageFooterComponent} from '../../components/garage-footer/garage-footer.component';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-garage-layout',
@@ -11,7 +12,8 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
     GarageFooterComponent,
     RouterOutlet,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    MatIcon
   ],
   templateUrl: './garage-layout.component.html',
   styleUrl: './garage-layout.component.css'

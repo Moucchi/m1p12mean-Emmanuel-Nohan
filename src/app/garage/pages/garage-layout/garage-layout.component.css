@@ -1,3 +1,10 @@
+@import "tailwindcss";
+
+.active-link{
+  @apply border-l-red-600;
+  @apply border-l-2;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 2px;
 }
@@ -14,3 +21,4 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #000000;
 }
+
