@@ -10,3 +10,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-weight: normal;
     font-style: normal;
 }
+
+.mat-mdc-dialog-surface {
+    border-radius: 6px !important;
+    background-color: white !important;
+}
