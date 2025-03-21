@@ -2,17 +2,22 @@
     <app-page-header title="Liste de mes voitures"></app-page-header>
     <mat-card appearance="outlined">
         <mat-card-actions class="mb-3 m-auto flex gap-2">
-            <button mat-flat-button (click)="addNewVehicle()"><mat-icon>add</mat-icon> Nouvelle voiture</button>
+            <button mat-flat-button (click)="addNewVehicleDialog()"><mat-icon>add</mat-icon> Nouvelle voiture</button>
             <button mat-icon-button><mat-icon>sync</mat-icon></button>
         </mat-card-actions>
         <mat-card-content>
-            @if(false) {
-                <p class="text-center font-medium">Vous n'avez pas de voiture !</p>
+            @if(isLoading()) {
+                <mat-spinner class="m-auto mt-10"></mat-spinner>
             } @else {
-                <div class="flex flex-wrap gap-3 justify-center">
-                    <app-vehicle-card/>
-                    <app-vehicle-card/>
-                </div>
+                @if(vehicles().length == 0) {
+                    <p class="text-center font-medium">Vous n'avez pas de voiture !</p>
+                } @else {
+                    <div class="flex flex-wrap gap-3 justify-center">
+                        @for(vehicle of vehicles(); track vehicle._id){
+                            <app-vehicle-card [vehicle]="vehicle"/>
+                        }
+                    </div>
+                }
             }
         </mat-card-content>
     </mat-card>

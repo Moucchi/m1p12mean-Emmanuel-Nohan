@@ -1,19 +1,22 @@
 <mat-card class="card" appearance="outlined">
     <mat-card-header>
-      <mat-card-title>Audi</mat-card-title>
-      <mat-card-subtitle>2345 TAC</mat-card-subtitle>
+      <mat-card-title>{{ vehicle()?.vehicleBrandId?.name }}</mat-card-title>
+      <mat-card-subtitle>{{ vehicle()?.registrationNumber }}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image width="200" class="m-auto" src="https://raw.githubusercontent.com/filippofilip95/car-logos-dataset/master/logos/optimized/audi.png" alt="vehicle_logo">
+    <img mat-card-image width="200" class="m-auto" [src]="vehicle()?.vehicleBrandId?.image?.optimized" alt="vehicle_logo">
     <mat-card-content>
-      <div class="p-3">
+      <div class="p-3 mb-3">
         <p>
-            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-        
+            {{ vehicle()?.description }}
         </p>
       </div>
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-md font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">{{ vehicle()?.vehicleTypeId?.type }}</span>
+        @if(vehicle()?.state == 'free') {
+          <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-md font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">Libre</span>
+        } @else {
+          <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-md font-medium text-yellow-800 ring-1 ring-yellow-600/20 ring-inset">Indisponible</span>
+        }
+      </div>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
-    </mat-card-actions>
 </mat-card>
