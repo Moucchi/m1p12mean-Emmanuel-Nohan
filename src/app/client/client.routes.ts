@@ -4,6 +4,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { InscriptionComponent } from './pages/inscription/inscription.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { authGuard } from './services/auth.guard';
+import { VehiculeComponent } from './pages/vehicule/vehicule.component';
+import { AppointmentComponent } from './pages/appointment/appointment.component';
 
 export const clientRoutes: Route[] = [
   {
@@ -25,6 +27,22 @@ export const clientRoutes: Route[] = [
     path: 'home',
     component: WelcomeComponent,
     title: 'Home - Car Servicing',
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    canActivateChild: [authGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'rendez-vous', 
+        pathMatch: 'full'
+      },
+      {
+        path: 'vehicules',
+        component: VehiculeComponent,
+      },
+      {
+        path: 'rendez-vous',
+        component: AppointmentComponent
+      }
+    ]
   }
 ];
