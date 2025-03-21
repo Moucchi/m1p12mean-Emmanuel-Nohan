@@ -1,5 +1,5 @@
-import { Routes} from '@angular/router';
-import { clientRoutes } from './client/client.routes';
+import {Routes} from '@angular/router';
+import {clientRoutes} from './client/client.routes';
 
 export const routes: Routes = [
   {
@@ -9,7 +9,8 @@ export const routes: Routes = [
   {
     path: "client",
     children: clientRoutes
-
+  },
+  {
     path: '',
     redirectTo: 'client',
     pathMatch: 'full'
