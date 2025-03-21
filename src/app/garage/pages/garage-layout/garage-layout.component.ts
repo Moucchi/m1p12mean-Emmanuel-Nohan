@@ -1,11 +1,17 @@
 import {Component, computed} from '@angular/core';
 import {DateTime} from 'luxon';
 import {NgOptimizedImage} from '@angular/common';
+import {GarageFooterComponent} from '../../components/garage-footer/garage-footer.component';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-garage-layout',
   imports: [
-    NgOptimizedImage
+    NgOptimizedImage,
+    GarageFooterComponent,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './garage-layout.component.html',
   styleUrl: './garage-layout.component.css'

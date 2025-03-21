@@ -11,10 +11,8 @@
 
       <div
         class="row-start-4 row-end-12  overflow-y-auto scroll-smooth max-h-full flex flex-col gap-3 py-3 custom-scrollbar border-t border-t-gray-200 border-b border-b-gray-200">
-        @for (i of links; track $index) {
-          <div class="side-bar-item px-4">ITEM {{ i + 1 }}</div>
-        }
-        <div class="side-bar-item px-4 border-l border-l-black-300">ITEM Z</div>
+        <a routerLink="" routerLinkActive="border-l border-l-black-300" class="side-bar-item px-4">Accueil</a>
+        <a routerLink="calendar" routerLinkActive="border-l border-l-black-300" class="side-bar-item px-4">Calendrier</a>
       </div>
       <div class="row-start-12 p-2 border border-dashed place-self-center text-black hover:border-solid hover:bg-black hover:text-white font-semibold">
         Se deconnecter
@@ -26,22 +24,19 @@
     <header class="row-start-1  w-full px-20 border-b border-b-gray-200">
       <h1 class="mt-2 max-w-3xl text-5xl tracking-tight sm:text-6xl text-pretty">{{text()}}, OFR</h1>
     </header>
-    <section class="row-start-2 row-end-12  w-full px-20 ">
-      <div
-        class="row-start-4 row-end-12  overflow-y-auto scroll-smooth max-h-full flex flex-col gap-3 py-3 custom-scrollbar">
-        @for (i of content; track $index) {
-          <div class="side-bar-item px-4">ITEM {{ i + 1 }}</div>
-        }
+
+    <section class="row-start-2 row-end-12  w-full px-20 pt-2">
+      <div class="row-start-4 row-end-12  overflow-y-auto scroll-smooth max-h-full flex flex-col gap-3 py-3 custom-scrollbar">
+<!--        @for (i of content; track $index) {-->
+<!--          <div class="side-bar-item px-4">ITEM {{ i + 1 }}</div>-->
+<!--        }-->
+
+        <router-outlet></router-outlet>
+
       </div>
     </section>
-    <footer class="row-start-12  px-20 border-t border-t-gray-200 grid grid-cols-12 items-center">
-      <span class="w-fit col-start-1 col-end-5 ">©2025 ITU-MASTER_1-P_12-MEAN-GARAGE</span>
-      <span class="col-start-8 col-span-4 col-end-13 flex items-center justify-center space-x-6 text-center">
-        <span>Emmanuel RAFIDINJANAHARY</span>
-        <div class="h-5 w-px bg-gray-300"></div>
-        <span>Nohan Soava RAZAFINJATO</span>
-      </span>
-    </footer>
+
+    <garage-footer class="row-start-12 w-full px-20 border-t border-t-gray-200 grid grid-cols-12 items-center"/>
   </div>
 
   <div class="col-start-12 row-span-full max-sm:hidden text-gray-950/5 border-x border-x-current bg-[size:10px_10px] bg-fixed bg-[image:repeating-linear-gradient(315deg,currentColor_0,currentColor_1px,_transparent_0,_transparent_50%)]"></div>
