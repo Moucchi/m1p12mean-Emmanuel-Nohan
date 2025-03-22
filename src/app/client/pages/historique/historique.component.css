@@ -1,0 +1,23 @@
+mat-card{
+    border-radius: 2px;
+    background-color: transparent;
+    border: none;
+    padding: 16px;
+}
+
+table{
+    border: thin solid rgb(220, 220, 220);
+}
+
+table a{
+    text-decoration: underline;
+    color: blue;
+}
+
+button{
+    cursor: pointer;
+}
+
+button:disabled{
+    cursor: not-allowed;
+}

@@ -12,10 +12,11 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { CurrencyPipe } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
 import { UserInterface } from '../../../shared/models/User.interface';
+import { SuccessAlertComponent } from '../../components/success-alert/success-alert.component';
 
 @Component({
   selector: 'app-appointment',
-  imports: [CurrencyPipe, MatCheckboxModule, MatButtonModule, PageHeaderComponent, MatCardModule, MatStepperModule, FormsModule, ReactiveFormsModule
+  imports: [SuccessAlertComponent, CurrencyPipe, MatCheckboxModule, MatButtonModule, PageHeaderComponent, MatCardModule, MatStepperModule, FormsModule, ReactiveFormsModule
   ],
   templateUrl: './appointment.component.html',
   styleUrl: './appointment.component.css'
