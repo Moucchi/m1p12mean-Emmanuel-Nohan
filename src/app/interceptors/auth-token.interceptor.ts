@@ -1,4 +1,7 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, Observable, tap } from 'rxjs';
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('JWT_TOKEN');
@@ -11,3 +14,15 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   }
   return next(requestToSend);
 };
+
+export function httpInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+  const router = inject(Router);
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401 || error.status == 403) {
+        router.navigateByUrl('/client/login');
+      }
+      throw error;
+    })
+  );
+}
