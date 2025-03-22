@@ -1,5 +1,5 @@
 export interface TypeVoiture {
     _id: string,
     type: string,
-    priceMultiplierPercent: Number
+    priceMultiplierPercent: number
 }
