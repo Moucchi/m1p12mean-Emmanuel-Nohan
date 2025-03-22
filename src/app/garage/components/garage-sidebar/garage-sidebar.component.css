@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* Active link styling - this already looks correct */
+.active-link {
+  @apply bg-gray-100 text-red-600;
+}
+
+.active-link div {
+  @apply bg-red-600;
+  @apply text-white;
+}
+
+.active-link p {
+  @apply text-red-600;
+}
+
+/* Fix for hover effect synchronization */
+a:hover p {
+  @apply text-red-600;
+}
+
+a:hover div {
+  @apply bg-red-600;
+}
+
+a:hover div mat-icon {
+  @apply text-white;
+}

@@ -1,27 +1,20 @@
 import {Component, computed} from '@angular/core';
 import {DateTime} from 'luxon';
-import {NgOptimizedImage} from '@angular/common';
-import {GarageFooterComponent} from '../../components/garage-footer/garage-footer.component';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-import {MatIcon} from '@angular/material/icon';
+import {GarageFooterComponent} from '../garage-footer/garage-footer.component';
+import { RouterOutlet} from '@angular/router';
+import {GarageSIdebarComponent} from '../garage-sidebar/garage-sidebar.component';
 
 @Component({
   selector: 'app-garage-layout',
   imports: [
-    NgOptimizedImage,
     GarageFooterComponent,
     RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
-    MatIcon
+    GarageSIdebarComponent
   ],
   templateUrl: './garage-layout.component.html',
   styleUrl: './garage-layout.component.css'
 })
 export class GarageLayoutComponent {
-  links: number[] = Array.from({ length: 3 }, (_, i) => i);
-  content: number[] = Array.from({ length: 30 }, (_, i) => i);
-
   text = computed(() => {
     const hour = DateTime.now().hour;
 
@@ -32,9 +25,5 @@ export class GarageLayoutComponent {
     } else {
       return 'Bonsoir';
     }
-  });
-
-  logo = computed(() => {
-    return 'logo/vroom.png';
   });
 }
