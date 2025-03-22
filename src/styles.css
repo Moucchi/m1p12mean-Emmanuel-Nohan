@@ -37,3 +37,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border-radius: 6px !important;
     background-color: white !important;
 }
+
+.active-link {
+  @apply bg-gray-100 text-red-600;
+}
+
+.active-link div {
+  @apply bg-red-600;
+  @apply text-white;
+}
+
+.active-link p {
+  @apply text-red-600;
+}

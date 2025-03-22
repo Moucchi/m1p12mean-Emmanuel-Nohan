@@ -3,14 +3,16 @@ import {DateTime} from 'luxon';
 import {GarageFooterComponent} from '../garage-footer/garage-footer.component';
 import { RouterOutlet} from '@angular/router';
 import {GarageSIdebarComponent} from '../garage-sidebar/garage-sidebar.component';
+import {GarageBreadcrumbComponent} from "../garage-breadcrumb/garage-breadcrumb.component";
 
 @Component({
   selector: 'app-garage-layout',
-  imports: [
-    GarageFooterComponent,
-    RouterOutlet,
-    GarageSIdebarComponent
-  ],
+    imports: [
+        GarageFooterComponent,
+        RouterOutlet,
+        GarageSIdebarComponent,
+        GarageBreadcrumbComponent
+    ],
   templateUrl: './garage-layout.component.html',
   styleUrl: './garage-layout.component.css'
 })
