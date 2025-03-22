@@ -6,6 +6,8 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { authGuard } from './services/auth.guard';
 import { VehiculeComponent } from './pages/vehicule/vehicule.component';
 import { AppointmentComponent } from './pages/appointment/appointment.component';
+import { HistoriqueComponent } from './pages/historique/historique.component';
+import { SuiviComponent } from './pages/suivi/suivi.component';
 
 export const clientRoutes: Route[] = [
   {
@@ -33,7 +35,7 @@ export const clientRoutes: Route[] = [
       {
         path: '',
         redirectTo: 'rendez-vous', 
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'vehicules',
@@ -42,6 +44,14 @@ export const clientRoutes: Route[] = [
       {
         path: 'rendez-vous',
         component: AppointmentComponent
+      },
+      {
+        path: 'historique-des-rendez-vous',
+        component: HistoriqueComponent
+      },
+      {
+        path: 'suivi',
+        component: SuiviComponent
       }
     ]
   }

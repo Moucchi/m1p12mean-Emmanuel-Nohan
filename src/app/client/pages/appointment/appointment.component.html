@@ -2,9 +2,7 @@
     <app-page-header title="Demande de rendez-vous"></app-page-header>
     <mat-card appearance="outlined">
         @if(success()){
-            <div class="p-4 mb-4 text-md text-green-800 rounded-lg bg-green-50 " role="alert">
-                <span class="font-medium">Votre demande a été envoyée!</span> 
-            </div>
+            <app-success-alert>Votre demande a été envoyée!</app-success-alert>
         }
         <mat-stepper orientation="vertical" #stepper linear>
             <mat-step [stepControl]="firstFormGroup">
