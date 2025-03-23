@@ -12,10 +12,11 @@ import {
   MatDialogConfig
 } from '@angular/material/dialog';
 import { HistoriqueInfoComponent } from '../../components/historique-info/historique-info.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-historique',
-  imports: [DatePipe, PageHeaderComponent, MatCardModule],
+  imports: [MatButton, DatePipe, PageHeaderComponent, MatCardModule],
   templateUrl: './historique.component.html',
   styleUrl: './historique.component.css'
 })
@@ -27,14 +28,17 @@ export class HistoriqueComponent implements OnInit {
   page = signal<number>(1);
   total = signal<number>(1);
   totalPage = signal<number>(1);
+  currentRate = signal(0);
 
   ngOnInit(): void {
       this.fetchData(1);
   }
 
+  setCurrentRate(i: number){
+    this.currentRate.set(i);
+  }
+
   historyInfoDialog(index: number) {
-  
-      const dialogConfig = new MatDialogConfig();      
       this.dialog.open(HistoriqueInfoComponent, {
         maxWidth: '90vw',
         maxHeight: '90vh',
