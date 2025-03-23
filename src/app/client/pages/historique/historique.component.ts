@@ -12,6 +12,7 @@ import {
 } from '@angular/material/dialog';
 import { HistoriqueInfoComponent } from '../../components/historique-info/historique-info.component';
 
+
 @Component({
   selector: 'app-historique',
   imports: [DatePipe, PageHeaderComponent, MatCardModule],
