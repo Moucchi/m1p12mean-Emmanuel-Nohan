@@ -26,6 +26,14 @@ export class HistoriqueComponent implements OnInit {
       this.fetchData(1);
   }
 
+  downloadFacturePdf(id: string){
+    this.http.get(`${environment.apiUrl}/api/appointments/${id}/pdf`, {
+      responseType: 'blob'
+    }).subscribe(pdf => {
+      window.open(URL.createObjectURL(pdf));
+    });
+  } 
+
   fetchData(p_page: number) {
     const token = localStorage.getItem('JWT_TOKEN');
     let user: UserInterface;
