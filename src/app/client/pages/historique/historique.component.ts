@@ -7,6 +7,11 @@ import { environment } from '../../../environments/environment';
 import { UserInterface } from '../../../shared/models/User.interface';
 import { jwtDecode } from 'jwt-decode';
 import { DatePipe } from '@angular/common';
+import {
+  MatDialog,
+  MatDialogConfig
+} from '@angular/material/dialog';
+import { HistoriqueInfoComponent } from '../../components/historique-info/historique-info.component';
 
 @Component({
   selector: 'app-historique',
@@ -16,6 +21,7 @@ import { DatePipe } from '@angular/common';
 })
 export class HistoriqueComponent implements OnInit {
   private http = inject(HttpClient);
+  private dialog = inject(MatDialog);
 
   data = signal<HistoryItem[]>([]);
   page = signal<number>(1);
@@ -26,6 +32,16 @@ export class HistoriqueComponent implements OnInit {
       this.fetchData(1);
   }
 
+  historyInfoDialog(index: number) {
+  
+      const dialogConfig = new MatDialogConfig();      
+      this.dialog.open(HistoriqueInfoComponent, {
+        maxWidth: '90vw',
+        maxHeight: '90vh',
+        data: this.data()[index]
+      });
+    }
+
   downloadFacturePdf(id: string){
     this.http.get(`${environment.apiUrl}/api/appointments/${id}/pdf`, {
       responseType: 'blob'
@@ -33,7 +49,7 @@ export class HistoriqueComponent implements OnInit {
       window.open(URL.createObjectURL(pdf));
     });
   } 
-
+  
   fetchData(p_page: number) {
     const token = localStorage.getItem('JWT_TOKEN');
     let user: UserInterface;

@@ -19,6 +19,9 @@
                                 Immatriculation
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                Note
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 Actions
                             </th>
                         </tr>
@@ -40,8 +43,27 @@
                                     {{ history.registrationNumber }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <a href="#">Information</a>
-                                    <a (click)="downloadFacturePdf(history._id)" class="ml-3 cursor-pointer">Télécharger la facture (PDF)</a>
+                                    <div class="flex space-x-1 text-yellow-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+                                          <path d="M12 2l2.9 6.1L22 9.3l-5 5 .9 7.1L12 17l-5.9 4.4.9-7.1-5-5 7.1-1.2L12 2z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+                                          <path d="M12 2l2.9 6.1L22 9.3l-5 5 .9 7.1L12 17l-5.9 4.4.9-7.1-5-5 7.1-1.2L12 2z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+                                          <path d="M12 2l2.9 6.1L22 9.3l-5 5 .9 7.1L12 17l-5.9 4.4.9-7.1-5-5 7.1-1.2L12 2z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+                                          <path d="M12 2l2.9 6.1L22 9.3l-5 5 .9 7.1L12 17l-5.9 4.4.9-7.1-5-5 7.1-1.2L12 2z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-6 h-6 text-gray-300" viewBox="0 0 24 24">
+                                          <path d="M12 2l2.9 6.1L22 9.3l-5 5 .9 7.1L12 17l-5.9 4.4.9-7.1-5-5 7.1-1.2L12 2z"/>
+                                        </svg>
+                                      </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a (click)="historyInfoDialog($index)" class="cursor-pointer">Rapport</a> <br>
+                                    <a (click)="downloadFacturePdf(history._id)" class="cursor-pointer">Télécharger la facture (PDF)</a>
                                 </td>
                             </tr>
                         }
@@ -73,5 +95,6 @@
                   </div>
             </div>
         </mat-card-content>
+       
     </mat-card>
 </div>
