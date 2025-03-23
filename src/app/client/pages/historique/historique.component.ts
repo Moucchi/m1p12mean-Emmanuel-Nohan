@@ -9,14 +9,12 @@ import { jwtDecode } from 'jwt-decode';
 import { DatePipe } from '@angular/common';
 import {
   MatDialog,
-  MatDialogConfig
 } from '@angular/material/dialog';
 import { HistoriqueInfoComponent } from '../../components/historique-info/historique-info.component';
-import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-historique',
-  imports: [MatButton, DatePipe, PageHeaderComponent, MatCardModule],
+  imports: [DatePipe, PageHeaderComponent, MatCardModule],
   templateUrl: './historique.component.html',
   styleUrl: './historique.component.css'
 })
