@@ -11,7 +11,7 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 import { HistoriqueInfoComponent } from '../../components/historique-info/historique-info.component';
-
+import { ValidationDialogComponent } from '../../components/validation-dialog/validation-dialog.component';
 
 @Component({
   selector: 'app-historique',
@@ -43,7 +43,24 @@ export class HistoriqueComponent implements OnInit {
         maxHeight: '90vh',
         data: this.data()[index]
       });
-    }
+  }
+
+  confirmDialog(id: string, i: number) {
+    const confirmDialogRef = this.dialog.open(ValidationDialogComponent);
+    confirmDialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.http.put(`${environment.apiUrl}/api/appointments/${id}/rate`, {
+          rate: i
+        }).subscribe(() => {
+          this.data.update(histories =>
+            histories.map(history => 
+              history._id === id ? { ...history, rate: i } : history
+            )
+          );
+        });
+      }
+    });
+  }
 
   downloadFacturePdf(id: string){
     this.http.get(`${environment.apiUrl}/api/appointments/${id}/pdf`, {
