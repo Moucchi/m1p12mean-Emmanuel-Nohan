@@ -1,0 +1,15 @@
+<div class="py-3 px-6 flex items-center justify-between sticky top-0 bg-white z-10 border-b border-gray-300">
+    <h2 class="font-medium text-lg">Rapport sur la prestation</h2>
+    <button mat-icon-button mat-dialog-close tabindex="-1">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<div class="p-4 h-[100vh] overflow-auto">
+    <div [innerHTML]="data.report" class="mb-3"></div>
+    <div class="flex flex-wrap gap-3 justify-center">
+        @for(image of data.reportImages; track $index){
+            <img [src]="getImageUrl(image)" [alt]="'report_image' + $index" width="400">
+        }
+    </div>
+</div>
