@@ -8,7 +8,7 @@ import {GarageLink} from '../../models/sidebar/garage-link';
   selector: 'garage-sidebar',
   imports: [
     MatIcon,
-    NgOptimizedImage,
+    // NgOptimizedImage,
     RouterLink,
     RouterLinkActive
   ],
