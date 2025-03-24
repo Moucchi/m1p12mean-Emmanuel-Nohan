@@ -1,5 +1,10 @@
-<div class="w-full">
+<div class="w-full flex flex-col">
     <app-page-header title="Suivi des voitures"></app-page-header>
+
+    <div class="p-2 border-b-2 border-gray-50">
+        <button (click)="refreshData()" mat-flat-button [disabled]="isRefreshing()"><mat-icon>sync</mat-icon> Recharger</button>
+    </div>
+
     <div class="flex flex-wrap gap-2 justify-center items-start">
         <!-- pending state -->
         <app-suivi-card title="En attente" state="pending" [data]="suivi().pending"></app-suivi-card>

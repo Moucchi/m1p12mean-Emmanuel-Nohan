@@ -30,8 +30,8 @@
                         @for(history of data(); track $index){
                             <tr class="bg-white border-t border-gray-200">
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                    <p>Début : <span>{{ history.startedAt | date:'dd-MM-YYYY, HH:mm' }}</span></p>
-                                    <p>Fin : {{ history.endingAt | date:'dd-MM-YYYY, HH:mm' }}</p>
+                                    <p>Début : <span>{{ history.startedAt | date:'dd-MM-YYYY, HH:mm':'UTC' }}</span></p>
+                                    <p>Fin : {{ history.endingAt | date:'dd-MM-YYYY, HH:mm':'UTC' }}</p>
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ history.brandName }}

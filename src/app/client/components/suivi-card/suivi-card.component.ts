@@ -15,9 +15,14 @@ export class SuiviCardComponent {
   title = input();
   state = input<string>('');
   data = input<Appointment[]>();
+  isProcessing = this.suiviStore.getProcessing();
 
   cancel(id: string, index: number){
     this.suiviStore.cancelAppointment(id, index, this.state());
+  }
+
+  confirm(id: string, index: number) {
+    this.suiviStore.confirmAppointment(id, index);
   }
 
   getStateColor() {
