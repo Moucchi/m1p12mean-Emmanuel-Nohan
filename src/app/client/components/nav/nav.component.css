@@ -3,6 +3,7 @@ a{
     font-weight: 500;
     position: relative; 
     color: #333;
+    background-color: white;
 }
 
 a::after {
