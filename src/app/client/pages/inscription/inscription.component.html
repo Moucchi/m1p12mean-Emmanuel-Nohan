@@ -6,32 +6,48 @@
         </div>
       
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form class="space-y-6" action="#" method="POST">
+          <form class="space-y-6" [formGroup]="signupForm" (submit)="onSubmit($event)">
+            @if(errorMessage() != ''){
+              <span class="text-sm text-red-400">{{ errorMessage() }}</span>
+            }
             <div>
               <label for="email" class="block text-sm/6 font-medium text-gray-900">Adresse email</label>
               <div class="mt-2">
-                <input placeholder="example@gmail.com" type="email" name="email" id="email" autocomplete="email" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+                <input formControlName="email" placeholder="example@gmail.com" type="email" name="email" id="email" autocomplete="email" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+                @if(signupForm.get('email')?.invalid && signupForm.get('email')?.touched){
+                  <span class="text-sm text-red-500">Email invalide !</span>
+                }
               </div>
             </div>
 
             <div>
-              <label for="email" class="block text-sm/6 font-medium text-gray-900">Nom de famille</label>
+              <label for="lastName" class="block text-sm/6 font-medium text-gray-900">Nom de famille</label>
               <div class="mt-2">
-                <input placeholder="Votre nom de famille" type="email" name="email" id="email" autocomplete="email" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+                <input formControlName="lastName" placeholder="Votre nom de famille" type="text" id="lastName" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+                @if(signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched){
+                  <span class="text-sm text-red-500">Nom invalide !</span>
+                }
               </div>
             </div>
 
             <div>
-              <label for="email" class="block text-sm/6 font-medium text-gray-900">Prénom</label>
+              <label for="firstName" class="block text-sm/6 font-medium text-gray-900">Prénom</label>
               <div class="mt-2">
-                <input placeholder="Votre prénom" type="email" name="email" id="email" autocomplete="email" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+                <input formControlName="firstName" placeholder="Votre prénom" type="text" name="firstName" id="firstName" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+                @if(signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched){
+                  <span class="text-sm text-red-500">Prénom invalide !</span>
+                }
               </div>
             </div>
 
+            
             <div>
-              <label for="email" class="block text-sm/6 font-medium text-gray-900">Numéro téléphone</label>
+              <label for="phone" class="block text-sm/6 font-medium text-gray-900">Numéro téléphone</label>
               <div class="mt-2">
-                <input placeholder="Votre numéro de téléphone" type="email" name="email" id="email" autocomplete="email" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+                <input formControlName="phone" placeholder="Votre numéro de téléphone" type="text" name="phone" id="phone" autocomplete="phone" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+                @if(signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched){
+                  <span class="text-sm text-red-500">Numéro de téléphone invalide !</span>
+                }
               </div>
             </div>
       
@@ -40,12 +56,18 @@
                 <label for="password" class="block text-sm/6 font-medium text-gray-900">Mot de passe</label>
               </div>
               <div class="mt-2">
-                <input type="password" placeholder="Votre mot de passe" name="password" id="password" autocomplete="current-password" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
+                <input formControlName="password" type="password" placeholder="Votre mot de passe" name="password" id="password" autocomplete="current-password" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
               </div>
             </div>
       
             <div>
-              <button type="submit" class="flex w-full justify-center rounded-md bg-red-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 cursor-pointer">S'inscrire</button>
+              <button type="submit" class="flex w-full justify-center rounded-md bg-red-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 cursor-pointer">
+                @if(submit()){
+                  <app-spinner></app-spinner>
+                } @else {
+                  S'inscrire
+                }
+              </button>
             </div>
           </form>
       
