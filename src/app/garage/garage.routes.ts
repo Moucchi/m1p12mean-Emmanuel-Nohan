@@ -20,5 +20,10 @@ export const garageRoutes: Route[] = [
         data: { breadcrumb: 'Calendrier' }
       }
     ]
+  },
+  {
+    path: "login",
+    loadComponent: () => import("./pages/garage-login/garage-login.component").then(m => m.GarageLoginComponent),
+    title: "Connexion",
   }
 ]

@@ -1,33 +1,34 @@
 import {Component, inject} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {MatButton} from "@angular/material/button";
-import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
-import {MatDivider} from "@angular/material/divider";
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent
+} from "@angular/material/card";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {FormService} from '../../../services/form/form.service';
+import {NgClass, NgOptimizedImage} from '@angular/common';
+import {FormService} from '../../../shared/services/form/form.service';
 
 @Component({
   selector: 'app-login',
   imports: [
     FormsModule,
-    MatButton,
     MatCard,
     MatCardActions,
     MatCardContent,
-    MatCardHeader,
-    MatCardTitle,
-    MatDivider,
     MatError,
     MatFormField,
     MatInput,
     MatLabel,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgOptimizedImage,
+    NgClass
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: 'garage-login.component.html',
+  styleUrl: 'garage-login.component.css'
 })
-export class LoginComponent {
+export class GarageLoginComponent {
   private formBuilder = inject(FormBuilder);
   protected formService = inject(FormService)
 
@@ -40,4 +41,6 @@ export class LoginComponent {
     event.preventDefault();
     console.log(this.formGroup.value);
   }
+
+  logo = 'logo/vroom.png';
 }
