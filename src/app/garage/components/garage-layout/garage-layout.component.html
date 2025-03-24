@@ -1,0 +1,30 @@
+<div class="grid grid-cols-12 h-screen overflow-hidden font-sans isolate ">
+  <!-- Decorative column (unchanged) -->
+  <div
+    class="col-start-1 row-span-full max-sm:hidden text-gray-950/5 border-x border-x-current bg-[size:10px_10px] bg-fixed bg-[image:repeating-linear-gradient(315deg,currentColor_0,currentColor_1px,_transparent_0,_transparent_50%)]"></div>
+
+  <!-- Side bar -->
+  <garage-sidebar class="col-start-2 col-span-2 bg-white shadow-md grid grid-rows-12 h-screen" />
+
+  <!-- Content -->
+  <div class="col-start-4 col-span col-end-12 grid grid-rows-12 h-screen">
+
+    <!--  HEADER  -->
+    <header class="row-start-1 row-end-3 w-full px-4 sm:px-8 md:px-12 lg:px-20 border-b border-b-gray-200 flex flex-col justify-center">
+      <garage-breadcrumb class="h-fit"></garage-breadcrumb>
+      <h1 class="text-xl sm:text-2xl md:text-4xl lg:text-6xl tracking-tight text-pretty">{{ text() }}, OFR</h1>
+    </header>
+
+    <!--  MAIN CONTENT  -->
+    <section class="row-start-3 row-end-12  w-full px-20 pt-2 overflow-y-auto scroll-smooth max-h-full flex flex-col gap-3 py-3 custom-scrollbar">
+      <router-outlet></router-outlet>
+    </section>
+
+    <!--  FOOTER  -->
+    <garage-footer class="row-start-12 w-full px-20 border-t border-t-gray-200 grid grid-cols-12 items-center"/>
+  </div>
+
+  <div
+    class="col-start-12 row-span-full max-sm:hidden text-gray-950/5 border-x border-x-current bg-[size:10px_10px] bg-fixed bg-[image:repeating-linear-gradient(315deg,currentColor_0,currentColor_1px,_transparent_0,_transparent_50%)]"></div>
+
+</div>

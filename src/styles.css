@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -11,7 +13,42 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-style: normal;
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(241, 241, 241, 0);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #000000;
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #000000;
+}
+
 .mat-mdc-dialog-surface {
     border-radius: 6px !important;
     background-color: white !important;
+}
+
+.mat-mdc-dialog-surface {
+    border-radius: 6px !important;
+    background-color: white !important;
+}
+
+.active-link {
+  @apply bg-gray-100 text-red-600;
+}
+
+.active-link div {
+  @apply bg-red-600;
+  @apply text-white;
+}
+
+.active-link p {
+  @apply text-red-600;
 }

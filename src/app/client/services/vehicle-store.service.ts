@@ -2,7 +2,6 @@ import { inject, Injectable, Signal, signal, WritableSignal } from '@angular/cor
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Vehicle } from '../../shared/models/vehicle.inteface';
-import { AuthService } from './auth.service';
 import { jwtDecode } from 'jwt-decode';
 import { UserInterface } from '../../shared/models/User.interface';
 
@@ -16,7 +15,7 @@ export class VehicleStoreService {
   constructor() {
     this.fetchVehicles();
   }
-  
+
   fetchVehicles() {
     this.isLoading.set(true);
     const token = localStorage.getItem('JWT_TOKEN');

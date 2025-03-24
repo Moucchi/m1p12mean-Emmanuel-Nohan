@@ -1,5 +1,5 @@
-import { Routes} from '@angular/router';
-import { clientRoutes } from './client/client.routes';
+import {Routes} from '@angular/router';
+import {clientRoutes} from './client/client.routes';
 
 export const routes: Routes = [
   {
@@ -18,7 +18,5 @@ export const routes: Routes = [
   {
     path: "garage",
     loadChildren: () => import('./garage/garage.routes').then(c => c.garageRoutes),
-    pathMatch: "full",
-
   }
 ];

@@ -4,4 +4,4 @@ export interface Service {
     basePrice: number,
     description: string,
     isSelected: boolean
-};
+}

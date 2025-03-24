@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fix for hover effect synchronization */
+a:hover p {
+  @apply text-red-600;
+}
+
+a:hover div {
+  @apply bg-red-600;
+}
+
+a:hover div mat-icon {
+  @apply text-white;
+}
