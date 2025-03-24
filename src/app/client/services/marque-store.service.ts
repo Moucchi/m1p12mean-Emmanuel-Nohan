@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 export class MarqueStoreService {
   private marques: WritableSignal<Marque[]> = signal([]);
   private http = inject(HttpClient);
+  
 
   constructor() {
     this.http.get<Marque[]>(`${environment.apiUrl}/api/vehicles`).subscribe((response: any) => {
