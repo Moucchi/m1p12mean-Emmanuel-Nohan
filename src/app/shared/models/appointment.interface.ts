@@ -4,7 +4,7 @@ interface Item{
     qty: number
 }
 
-export interface HistoryItem {
+export interface Appointment {
     _id: string,
     startedAt: Date,
     endingAt: Date,
@@ -15,5 +15,6 @@ export interface HistoryItem {
     items: Item[],
     reportImages: string[],
     rate: number,
+    orderCreatedAt : Date,
     registrationNumber: string
 }

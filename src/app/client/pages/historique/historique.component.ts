@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { PageHeaderComponent } from '../../components/page-header/page-header.component';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClient } from '@angular/common/http';
-import { HistoryItem } from '../../../shared/models/historique-appointment.interface';
+import { Appointment } from '../../../shared/models/appointment.interface';
 import { environment } from '../../../environments/environment';
 import { UserInterface } from '../../../shared/models/User.interface';
 import { jwtDecode } from 'jwt-decode';
@@ -11,7 +11,7 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 import { HistoriqueInfoComponent } from '../../components/historique-info/historique-info.component';
-
+import { ValidationDialogComponent } from '../../components/validation-dialog/validation-dialog.component';
 
 @Component({
   selector: 'app-historique',
@@ -23,7 +23,7 @@ export class HistoriqueComponent implements OnInit {
   private http = inject(HttpClient);
   private dialog = inject(MatDialog);
 
-  data = signal<HistoryItem[]>([]);
+  data = signal<Appointment[]>([]);
   page = signal<number>(1);
   total = signal<number>(1);
   totalPage = signal<number>(1);
@@ -43,7 +43,24 @@ export class HistoriqueComponent implements OnInit {
         maxHeight: '90vh',
         data: this.data()[index]
       });
-    }
+  }
+
+  confirmDialog(id: string, i: number) {
+    const confirmDialogRef = this.dialog.open(ValidationDialogComponent);
+    confirmDialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.http.put(`${environment.apiUrl}/api/appointments/${id}/rate`, {
+          rate: i
+        }).subscribe(() => {
+          this.data.update(histories =>
+            histories.map(history => 
+              history._id === id ? { ...history, rate: i } : history
+            )
+          );
+        });
+      }
+    });
+  }
 
   downloadFacturePdf(id: string){
     this.http.get(`${environment.apiUrl}/api/appointments/${id}/pdf`, {

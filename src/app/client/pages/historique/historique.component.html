@@ -43,7 +43,7 @@
                                     {{ history.registrationNumber }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if(!history.rate){
+                                    @if(history.rate){
                                       <div class="flex space-x-1 text-yellow-400">
                                         @for (item of [].constructor(history.rate); track $index) {
                                           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
@@ -60,7 +60,7 @@
                                     } @else {
                                       <div class="flex">
                                         @for (item of [].constructor(5); track $index) {
-                                          <svg (mouseover)="setCurrentRate($index + 1)" (mouseleave)="setCurrentRate(0)" xmlns="http://www.w3.org/2000/svg" [attr.fill]="$index + 1 <= currentRate() ? '#fcc700' : 'none'" stroke="currentColor" class="w-6 h-6 text-gray-300" viewBox="0 0 24 24">
+                                          <svg (click)="confirmDialog(history._id, $index + 1)" (mouseover)="setCurrentRate($index + 1)" (mouseleave)="setCurrentRate(0)" xmlns="http://www.w3.org/2000/svg" [attr.fill]="$index + 1 <= currentRate() ? '#fcc700' : 'none'" stroke="currentColor" class="w-6 h-6 text-gray-300 cursor-pointer" viewBox="0 0 24 24">
                                             <path d="M12 2l2.9 6.1L22 9.3l-5 5 .9 7.1L12 17l-5.9 4.4.9-7.1-5-5 7.1-1.2L12 2z"/>
                                           </svg>
                                         }

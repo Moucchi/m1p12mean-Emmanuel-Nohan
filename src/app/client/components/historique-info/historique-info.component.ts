@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MatDialogClose, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { HistoryItem } from '../../../shared/models/historique-appointment.interface';
+import { Appointment } from '../../../shared/models/appointment.interface';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -12,7 +12,7 @@ import { environment } from '../../../environments/environment';
   styleUrl: './historique-info.component.css'
 })
 export class HistoriqueInfoComponent {
-  data: HistoryItem = inject(MAT_DIALOG_DATA);
+  data: Appointment = inject(MAT_DIALOG_DATA);
 
   getImageUrl(img: string){
     return environment.apiUrl + '/uploads/' + img;

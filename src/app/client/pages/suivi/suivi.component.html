@@ -1,1 +1,16 @@
-<p>suivi works!</p>
+<div class="w-full">
+    <app-page-header title="Suivi des voitures"></app-page-header>
+    <div class="flex flex-wrap gap-2 justify-center items-start">
+        <!-- pending state -->
+        <app-suivi-card title="En attente" state="pending" [data]="suivi().pending"></app-suivi-card>
+
+        <!-- set state -->
+        <app-suivi-card title="Rendez-vous fixé" state="set" [data]="suivi().set"></app-suivi-card>
+
+        <!-- confirmed state -->
+        <app-suivi-card title="Rendez-vous confirmé" state="confirmed" [data]="suivi().confirmed"></app-suivi-card>
+
+        <!-- in progress state -->
+        <app-suivi-card title="En cours" state="in_progress" [data]="suivi().in_progress"></app-suivi-card>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 a{
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
     position: relative; 
     color: #333;
@@ -21,4 +21,8 @@ a::after {
 a:hover::after, .active-link::after {
     transform: scaleY(1); 
     transform-origin: top center; 
+}
+
+button{
+    font-size: 15px;
 }

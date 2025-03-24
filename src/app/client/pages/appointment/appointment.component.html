@@ -57,7 +57,7 @@
                 <p class="text-sm text-red-600">* Des frais de pièces pourraient être ajoutés à la facture finale.</p>
                 <div class="flex gap-3 mt-5">
                     <button mat-button matStepperPrevious>Retour</button>
-                    <button mat-flat-button (click)="saveOrder(stepper)" [disabled]="isLoading()">Valider</button>
+                    <button mat-flat-button (click)="saveOrder(stepper)" [disabled]="isLoading() ||firstFormGroup.invalid || total() == 0">Valider</button>
                 </div>
                 
               </div>

@@ -1,0 +1,11 @@
+.warn {
+    color: rgb(252, 5, 5) !important;
+}
+
+.warn:hover{
+    background-color: rgba(255, 0, 0, 0.105);
+}
+
+.warn:focus{
+    background-color: rgba(255, 0, 0, 0.21);
+}
