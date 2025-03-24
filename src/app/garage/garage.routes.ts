@@ -12,7 +12,7 @@ export const garageRoutes: Route[] = [
     path: "",
     data: { breadcrumb: 'Garage' },
     loadComponent: () => import("./components/garage-layout/garage-layout.component").then(m => m.GarageLayoutComponent),
-    canActivate: [garageAuthGuard],
+    canActivateChild: [garageAuthGuard],
     children: [
       {
         path: "",

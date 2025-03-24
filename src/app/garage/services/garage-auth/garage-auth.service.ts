@@ -35,6 +35,7 @@ import { HttpClient } from '@angular/common/http';
     getUser(token: string): UserInterface {
       try {
         const decodedToken = jwtDecode<UserInterface>(token);
+
         return {
           id: decodedToken.id,
           email: decodedToken.email,

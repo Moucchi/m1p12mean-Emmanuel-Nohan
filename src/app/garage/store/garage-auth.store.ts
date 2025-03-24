@@ -77,7 +77,10 @@ export const GarageAuthStore = signalStore(
           try {
             const user = authService.getUser(token);
 
-            if (user === null || (user.role !== "manager" && user.role !== "mechanics")) {
+            console.log(user);
+
+            if (user === null || (user.role === "client")) {
+              console.log("ofr");
               throw new Error("Token invalide");
             }
 
@@ -95,7 +98,8 @@ export const GarageAuthStore = signalStore(
               error: error instanceof Error ? error.message : "Token invalide"
             });
 
-            route.navigate(['/garage/login']);
+            throw new Error("Token invalide");
+            // route.navigate(['/garage/login']);
           }
         }
       }
