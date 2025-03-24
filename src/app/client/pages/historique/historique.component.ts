@@ -12,22 +12,26 @@ import {
 } from '@angular/material/dialog';
 import { HistoriqueInfoComponent } from '../../components/historique-info/historique-info.component';
 import { ValidationDialogComponent } from '../../components/validation-dialog/validation-dialog.component';
+import { FormsModule } from '@angular/forms';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
 
 @Component({
   selector: 'app-historique',
-  imports: [DatePipe, PageHeaderComponent, MatCardModule],
+  imports: [SpinnerComponent, FormsModule, DatePipe, PageHeaderComponent, MatCardModule],
   templateUrl: './historique.component.html',
   styleUrl: './historique.component.css'
 })
 export class HistoriqueComponent implements OnInit {
   private http = inject(HttpClient);
   private dialog = inject(MatDialog);
-
+  
+  search = { value: ''};
   data = signal<Appointment[]>([]);
   page = signal<number>(1);
   total = signal<number>(1);
   totalPage = signal<number>(1);
   currentRate = signal(0);
+  isSearching = signal(false);
 
   ngOnInit(): void {
       this.fetchData(1);
@@ -77,13 +81,40 @@ export class HistoriqueComponent implements OnInit {
       user = {
         ...jwtDecode(token)
       };
+    
       this.http.get(`${environment.apiUrl}/api/clients/${user.id}/appointments/completed`, {
-        params: {page: p_page}
+        params: {
+          page: p_page        
+        }
       }).subscribe((response: any) => {
         this.data.set(response.data);
         this.page.set(parseInt(response.page));
         this.total.set(response.total);
         this.totalPage.set(response.totalPage);
+      });
+    }
+  }
+
+  searchVehicle() {
+    this.isSearching.set(true)
+    const token = localStorage.getItem('JWT_TOKEN');
+    let user: UserInterface;
+    if(token){
+      user = {
+        ...jwtDecode(token)
+      };
+    
+      this.http.get(`${environment.apiUrl}/api/clients/${user.id}/appointments/completed`, {
+        params: {
+          page: 1,
+          registrationNumber: this.search.value
+        }
+      }).subscribe((response: any) => {
+        this.data.set(response.data);
+        this.page.set(parseInt(response.page));
+        this.total.set(response.total);
+        this.totalPage.set(response.totalPage);
+        this.isSearching.set(false)
       });
     }
   }

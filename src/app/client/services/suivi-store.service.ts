@@ -16,12 +16,36 @@ export class SuiviStoreService {
     in_progress: []
   });
   private http = inject(HttpClient);
+  private isRefreshing = signal(false);
+  private isProcessing = signal(false);
+
+  getRefresh(){
+    return this.isRefreshing;
+  }
+
+  getProcessing(){
+    return this.isProcessing;
+  }
 
   constructor() {
     this.fetchSuivi();
   }
 
+  confirmAppointment(id: string, index: number){
+    this.isProcessing.set(true)
+    const tmpData = this.suivi().set[index];
+    this.http.put(`${environment.apiUrl}/api/clients/appointments/${id}/confirm`, {}).subscribe(() => {
+      this.suivi.update(suivi => ({
+        ...suivi,
+        set: suivi.set.filter((_, i) => index !== i),
+        confirmed: [...(suivi.confirmed || []), tmpData]
+      }));
+      this.isProcessing.set(false)
+    });
+  }
+
   fetchSuivi(){
+    this.isRefreshing.set(true)
      const token = localStorage.getItem('JWT_TOKEN');
      let user: UserInterface;
      if(token){
@@ -29,7 +53,8 @@ export class SuiviStoreService {
          ...jwtDecode(token)
        };
        this.http.get<Suivi>(`${environment.apiUrl}/api/clients/${user.id}/active-appointments`).subscribe((response: any) => {
-         this.suivi.set(response.data);
+          this.suivi.set(response.data);
+          this.isRefreshing.set(false);
       });
     }
   }
