@@ -1,0 +1,44 @@
+<div class="container shadow-sm">
+    <div class="title-section">
+        <div class="dot" [style]="`background-color: ${getStateColor()}`"></div>
+        <h2>{{ title() }}</h2>
+    </div>
+
+    <div class="flex flex-col">
+
+        @for(appointment of data(); track $index){
+            <div class="item-card m-2">
+                <div class="flex items-center justify-between px-4 py-2">
+                    <img [src]="appointment.brandLogo" class="object-cover" alt="vehicle_logo" height="60px" width="100px">
+                    <div>
+                        <p class="text-end">{{ appointment.brandName }}</p>
+                        <p class="text-end text-sm font-medium">0456 TAC</p>
+                    </div>
+                </div>
+    
+                @if(state() != 'pending'){
+                    <div class="item-dates">
+                        <p>Début fixé :  {{ appointment.startedAt | date: 'dd/MM/YYYY à hh:mm' }}</p>
+                        <p>Fin prévue :  {{ appointment.endingAt | date: 'dd/MM/YYYY à hh:mm' }}</p>
+                    </div>
+                } @else {
+                    <div class="item-dates">
+                        <p>Crée le : {{ appointment.orderCreatedAt | date: 'dd/MM/YYYY à hh:mm' }}</p>
+                    </div>
+
+                }
+    
+                @if(state() == 'pending' || state() == 'set' || state() == 'confirmed') {
+                    <div class="item-action">
+                        <button (click)="cancel(appointment._id, $index)" type="button" class="inline-flex w-full justify-center rounded-sm bg-red-600 px-3 py-1.5 text-[12px] cursor-pointer font-semibold text-white shadow-xs hover:bg-red-700 sm:ml-3 sm:w-auto">Annuler</button>
+                        @if(state() == 'set'){
+                            <button type="button" class="focus:outline-none text-white bg-green-600 cursor-pointer hover:bg-green-700 font-medium rounded-sm text-[12px] px-5 py-1.5">Confirmer</button>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    
+
+    </div>
+</div>

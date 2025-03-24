@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { PageHeaderComponent } from '../../components/page-header/page-header.component';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClient } from '@angular/common/http';
-import { HistoryItem } from '../../../shared/models/historique-appointment.interface';
+import { Appointment } from '../../../shared/models/appointment.interface';
 import { environment } from '../../../environments/environment';
 import { UserInterface } from '../../../shared/models/User.interface';
 import { jwtDecode } from 'jwt-decode';
@@ -23,7 +23,7 @@ export class HistoriqueComponent implements OnInit {
   private http = inject(HttpClient);
   private dialog = inject(MatDialog);
 
-  data = signal<HistoryItem[]>([]);
+  data = signal<Appointment[]>([]);
   page = signal<number>(1);
   total = signal<number>(1);
   totalPage = signal<number>(1);
