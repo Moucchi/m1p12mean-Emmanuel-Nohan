@@ -35,7 +35,6 @@ export const routes: Routes = [
   {
     path: "garage",
     loadChildren: () => import('./garage/garage.routes').then(c => c.garageRoutes),
-    pathMatch: 'full'
   },
   {
     path: "**",
