@@ -1,7 +1,6 @@
 <div class="row-start-1 row-end-3 grid items-center justify-center">
   <a routerLink="/garage">
-<!--    <img alt="logo" [ngSrc]="logo()" width="150" height="70"/>-->
-    logo
+    <img alt="logo" [ngSrc]="logo()" width="150" height="54"/>
   </a>
 </div>
 
@@ -24,7 +23,8 @@
 
 <div class="row-start-12 grid">
   <div
-    class="p-2 bg-black text-white place-self-center rounded-lg hover:bg-red-600 font-semibold flex items-center gap-2 cursor-pointer">
+    class="p-2 bg-black text-white place-self-center rounded-lg hover:bg-red-600 font-semibold flex items-center gap-2 cursor-pointer"
+  (click)="logout()">
     <mat-icon>logout</mat-icon>
     Déconnexion
   </div>

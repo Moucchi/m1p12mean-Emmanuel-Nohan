@@ -9,6 +9,9 @@ import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {NgClass, NgOptimizedImage} from '@angular/common';
 import {FormService} from '../../../shared/services/form/form.service';
+import {GarageAuthStore} from '../../store/garage-auth.store';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {environment} from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +26,8 @@ import {FormService} from '../../../shared/services/form/form.service';
     MatLabel,
     ReactiveFormsModule,
     NgOptimizedImage,
-    NgClass
+    NgClass,
+    MatProgressSpinner
   ],
   templateUrl: 'garage-login.component.html',
   styleUrl: 'garage-login.component.css'
@@ -31,16 +35,17 @@ import {FormService} from '../../../shared/services/form/form.service';
 export class GarageLoginComponent {
   private formBuilder = inject(FormBuilder);
   protected formService = inject(FormService)
+  protected authStore = inject(GarageAuthStore);
 
-  formGroup = this.formBuilder.group({
+  formGroup = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
 
   submitForm(event: Event) {
     event.preventDefault();
-    console.log(this.formGroup.value);
+    this.authStore.login(this.formGroup.getRawValue());
   }
 
-  logo = 'logo/vroom.png';
+  logo = environment.logo;
 }

@@ -1,7 +1,7 @@
 import {signalStore, withMethods, withState} from '@ngrx/signals';
 import {ServiceRatingInterface} from '../models/dashboard/service-rating-interface';
 import {MonthlyAttendanceInterface} from '../models/dashboard/monthly-attendance-interface';
-import {GarageDashboardService} from '../services/garage-dashboard.service';
+import {GarageDashboardService} from '../services/garage-dashboard/garage-dashboard.service';
 import {inject} from '@angular/core';
 
 type DashboardState = {
@@ -14,7 +14,7 @@ type DashboardState = {
   isLoading : boolean;
 }
 
-const initialSate: DashboardState = {
+const initialState: DashboardState = {
   averageRate: 0,
   upComingAppointment: 0,
   totalClient: 0,
@@ -25,7 +25,7 @@ const initialSate: DashboardState = {
 }
 
 export const GarageDashboardStore = signalStore(
-  withState(initialSate),
+  withState(initialState),
   withMethods( (store, dashboardService = inject(GarageDashboardService)) => ({
     // TODO : implementer-na ireto vers 15h
     async getAverageRate() {},
