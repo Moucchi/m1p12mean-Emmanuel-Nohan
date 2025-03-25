@@ -5,7 +5,7 @@ import {AuthService} from '../client/services/auth.service';
 import {environment} from '../environments/environment';
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('JWT_TOKEN');
+  const token = localStorage.getItem(environment.tokenName);
   let requestToSend = req;
   if (token) {
     const headers = req.headers.set('Authorization', 'Bearer ' + token);
