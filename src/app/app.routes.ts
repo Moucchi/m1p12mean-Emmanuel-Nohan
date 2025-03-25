@@ -11,7 +11,7 @@ export const routes: Routes = [
       const garageAuthStore = inject(GarageAuthStore);
 
       if (!token) {
-        return 'client';
+        return 'client/home';
       }
 
       try {
@@ -22,7 +22,7 @@ export const routes: Routes = [
         return 'garage';
 
       } catch (e) {
-        return 'client';
+        return 'client/home';
       }
 
     },
