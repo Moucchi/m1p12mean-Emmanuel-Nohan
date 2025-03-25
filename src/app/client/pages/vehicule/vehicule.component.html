@@ -12,7 +12,7 @@
                 @if(vehicles().length == 0) {
                     <p class="text-center font-medium">Vous n'avez pas de voiture !</p>
                 } @else {
-                    <div class="flex flex-wrap gap-3 justify-center">
+                    <div class="flex flex-wrap gap-3">
                         @for(vehicle of vehicles(); track vehicle._id){
                             <app-vehicle-card [vehicle]="vehicle"/>
                         }
