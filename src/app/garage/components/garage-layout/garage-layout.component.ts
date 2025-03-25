@@ -2,7 +2,7 @@ import {Component, computed} from '@angular/core';
 import {DateTime} from 'luxon';
 import {GarageFooterComponent} from '../garage-footer/garage-footer.component';
 import { RouterOutlet} from '@angular/router';
-import {GarageSIdebarComponent} from '../garage-sidebar/garage-sidebar.component';
+import {GarageSidebarComponent} from '../garage-sidebar/garage-sidebar.component';
 import {GarageBreadcrumbComponent} from "../garage-breadcrumb/garage-breadcrumb.component";
 
 @Component({
@@ -10,7 +10,7 @@ import {GarageBreadcrumbComponent} from "../garage-breadcrumb/garage-breadcrumb.
     imports: [
         GarageFooterComponent,
         RouterOutlet,
-        GarageSIdebarComponent,
+        GarageSidebarComponent,
         GarageBreadcrumbComponent
     ],
   templateUrl: './garage-layout.component.html',

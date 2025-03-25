@@ -1,24 +1,32 @@
-import {Component, computed} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {NgOptimizedImage} from "@angular/common";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {GarageLink} from '../../models/sidebar/garage-link';
+import {GarageAuthStore} from '../../store/garage-auth.store';
+import {environment} from '../../../environments/environment.prod';
 
 @Component({
   selector: 'garage-sidebar',
   imports: [
     MatIcon,
-    // NgOptimizedImage,
+    NgOptimizedImage,
     RouterLink,
     RouterLinkActive
   ],
   templateUrl: './garage-sidebar.component.html',
   styleUrl: './garage-sidebar.component.css'
 })
-export class GarageSIdebarComponent {
+export class GarageSidebarComponent {
+  private authStore = inject(GarageAuthStore);
+
   logo = computed(() => {
-    return 'logo/vroom.png';
+    return environment.logo;
   });
+
+  logout(){
+    this.authStore.logout();
+  }
 
   links: GarageLink[] = [
     {
