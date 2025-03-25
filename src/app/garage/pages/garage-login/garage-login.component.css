@@ -1,3 +1,8 @@
 mat-card{
-  @apply bg-white
+  @apply bg-white;
+}
+
+.custom-spinner ::ng-deep .mdc-circular-progress__determinate-circle,
+.custom-spinner ::ng-deep .mdc-circular-progress__indeterminate-circle-graphic {
+  @apply stroke-red-600;
 }

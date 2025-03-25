@@ -39,11 +39,13 @@ export const GarageAuthStore = signalStore(
                   isLogged: true,
                   token: token,
                   user: user,
-                  loading: false,
                   error: null
                 });
 
-                route.navigateByUrl('/garage');
+                route.navigateByUrl('/garage').then(() => {
+                  patchState(store, {loading: false})
+                });
+
               } catch (error) {
                 patchState(store, {
                   loading: false,
@@ -99,7 +101,6 @@ export const GarageAuthStore = signalStore(
             });
 
             throw new Error("Token invalide");
-            // route.navigate(['/garage/login']);
           }
         }
       }
