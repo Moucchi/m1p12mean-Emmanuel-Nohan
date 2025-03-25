@@ -19,9 +19,9 @@ export class LoginComponent implements OnInit{
   errorMessage = signal<string>('');
 
   ngOnInit(): void {
-      if(localStorage.getItem('JWT_TOKEN')){
+    if(localStorage.getItem('JWT_TOKEN')){
         this.router.navigateByUrl('/client/home');
-      }
+    }
   }
 
   login(){
