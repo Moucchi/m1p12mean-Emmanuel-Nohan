@@ -55,8 +55,8 @@ export class GarageDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const userName = `Bonjour, ${this.authStore.user()!.firstName}`;
-    this.layoutStore.setText(userName);
+    const text = `Bonjour, ${this.authStore.user()!.firstName}`;
+    this.layoutStore.setText(text);
     this.dashboardStore.getDashboardData();
   }
 

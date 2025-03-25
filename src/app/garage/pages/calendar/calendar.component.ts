@@ -1,8 +1,9 @@
-import {Component, computed, inject, signal, Signal, WritableSignal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal, Signal, WritableSignal} from '@angular/core';
 import {DateTime} from 'luxon';
 import {NgClass} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 import {CalendarService} from '../../services/calendar/calendar.service';
+import {LayoutStore} from '../../store/garage-layout.store';
 
 @Component({
   selector: 'app-calendar',
@@ -13,8 +14,9 @@ import {CalendarService} from '../../services/calendar/calendar.service';
   ],
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit{
   protected calendarService = inject(CalendarService);
+  protected readonly layoutStore = inject(LayoutStore);
 
   today = computed( () => this.calendarService.today()) ;
 
@@ -28,4 +30,9 @@ export class CalendarComponent {
 
   activeDay: WritableSignal<DateTime | null> = signal(null);
   protected readonly DATE_MED = DateTime.DATE_MED;
+
+  ngOnInit(): void {
+    const text = "Evenements";
+    this.layoutStore.setText(text);
+  }
 }

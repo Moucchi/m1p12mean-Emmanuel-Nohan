@@ -1,5 +1,4 @@
 import {Route} from '@angular/router';
-import {CalendarComponent} from '../shared/components/calendar/calendar.component';
 import {garageAuthGuard} from './guards/garage-auth.guard';
 
 export const garageRoutes: Route[] = [
@@ -22,7 +21,7 @@ export const garageRoutes: Route[] = [
       },
       {
         path: "events",
-        component: CalendarComponent,
+        loadComponent: () => import('./pages/calendar/calendar.component').then(m => m.CalendarComponent),
         title: "Evenements",
         data: { breadcrumb: 'Calendrier', id : "main/2" }
       }
