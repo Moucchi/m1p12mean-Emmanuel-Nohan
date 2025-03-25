@@ -1,5 +1,6 @@
 .container {
-    width: 22vw;
+    min-width: 22vw;
+    max-width: 100vw;
     border-radius: 8px;
     position: relative;
     border: thin solid rgb(231, 230, 230);

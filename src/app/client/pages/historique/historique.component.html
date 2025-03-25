@@ -2,8 +2,7 @@
     <app-page-header title="Historique des prestations"></app-page-header>
     <mat-card appearance="outlined">
         <mat-card-content>
-            <div class="overflow-x-hidden">
-
+            <div class="overflow-x-auto py-2">
                 <div class="mb-3">
                   <form class="max-w-sm" #searchForm="ngForm">   
                     <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
@@ -99,7 +98,7 @@
                 </table>
 
                 <div>
-                    <nav class="isolate flex -space-x-px rounded-md shadow-xs justify-end" aria-label="Pagination">
+                    <nav class="isolate flex -space-x-px rounded-md shadow-xs justify-start" aria-label="Pagination">
 
                       <button [disabled]="page() == 1" (click)="fetchData(page() - 1)" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                         <span class="sr-only">Précédent</span>
