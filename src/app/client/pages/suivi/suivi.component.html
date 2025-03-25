@@ -5,7 +5,7 @@
         <button (click)="refreshData()" mat-flat-button [disabled]="isRefreshing()"><mat-icon>sync</mat-icon> Recharger</button>
     </div>
 
-    <div class="flex flex-wrap gap-2 justify-center items-start">
+    <div class="md:flex md:flex-wrap gap-2 justify-center items-start">
         <!-- pending state -->
         <app-suivi-card title="En attente" state="pending" [data]="suivi().pending"></app-suivi-card>
 

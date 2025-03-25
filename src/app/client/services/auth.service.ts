@@ -29,11 +29,10 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/api/clients/auth`, user).pipe(
       tap((response: any) => {
         this.isAuthenticated.set(true);
-      
         localStorage.setItem(this.JWT_TOKEN, response.token);
       }),
       catchError(error => {
-        throw error
+        throw error;
       })
     );
   }
