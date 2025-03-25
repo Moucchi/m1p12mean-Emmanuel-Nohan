@@ -79,10 +79,7 @@ export const GarageAuthStore = signalStore(
           try {
             const user = authService.getUser(token);
 
-            console.log(user);
-
             if (user === null || (user.role === "client")) {
-              console.log("ofr");
               throw new Error("Token invalide");
             }
 
