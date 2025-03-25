@@ -3,7 +3,7 @@
       <mat-card-title>{{ vehicle()?.vehicleBrandId?.name }}</mat-card-title>
       <mat-card-subtitle>{{ vehicle()?.registrationNumber }}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image width="200" class="m-auto" [src]="vehicle()?.vehicleBrandId?.image?.optimized" alt="vehicle_logo">
+    <img mat-card-image width="200" class="m-auto mb-3" [src]="vehicle()?.vehicleBrandId?.image?.optimized" alt="vehicle_logo">
     <mat-card-content>
       <div class="p-3 mb-3">
         <p>
