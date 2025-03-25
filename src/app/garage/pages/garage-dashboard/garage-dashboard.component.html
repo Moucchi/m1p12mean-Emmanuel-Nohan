@@ -1,31 +1,32 @@
 <div class="grid grid-cols-12 grid-flow-row-dense gap-2">
   <!-- DASHBOARD MANAGER -->
 
-  <div class="border border-teal-200 rounded-lg col-span-12">
+  <div class="border border-gary-200 rounded-lg col-span-12">
     <div class="h-24">LIENS RAPIDE</div>
   </div>
-  <div class="border border-teal-200 rounded-lg col-span-9">
+  <div class="border border-gary-200 rounded-lg col-span-9">
     <div class="h-24">Statistiques</div>
   </div>
-  <div class="border border-teal-200 rounded-lg col-span-3">
-    <span>Info general</span>
-    <ul class="divide-y divide-gray-100 py-2 px-4">
-      <li class="flex py-4">
-
-
-      </li>
-      <li class="flex py-4">
-
-      </li>
-      <li class="flex py-4">
-
-      </li>
-    </ul>
+  <div class="border border-gary-200 rounded-lg col-span-3 p-4">
+    <h3 class="text-lg font-semibold mb-3">Informations générales</h3>
+    <div class="space-y-4">
+      @for (info of generalInfo; track $index) {
+        <div class="bg-gray-100 rounded-lg p-3 shadow-sm">
+          <p class="text-sm text-gray-700 mb-1">{{ info.title }}</p>
+          <p class="text-xl font-bold">
+            @if ( info?.currency ) {
+              {{ info.value() | vola }}
+            } @else {
+              {{ info.value() }}
+            }  </p>
+        </div>
+      }
+    </div>
   </div>
 
   <!-- DASHBOARD MECANICIEN -->
 
-  <div class="border border-teal-200 rounded-lg col-span-12">
+  <div class="border border-gray-200 rounded-lg col-span-12">
     <div>En attente de confimation du client</div>
     <div>In progress</div>
     <div>Completed</div>
