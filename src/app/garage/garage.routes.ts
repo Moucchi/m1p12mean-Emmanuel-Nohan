@@ -10,7 +10,7 @@ export const garageRoutes: Route[] = [
   },
   {
     path: "",
-    data: { breadcrumb: 'Garage' },
+    data: { breadcrumb: 'Garage' , id : "main" },
     loadComponent: () => import("./components/garage-layout/garage-layout.component").then(m => m.GarageLayoutComponent),
     canActivateChild: [garageAuthGuard],
     children: [
@@ -18,13 +18,13 @@ export const garageRoutes: Route[] = [
         path: "",
         loadComponent: () => import("./pages/garage-dashboard/garage-dashboard.component").then(m => m.GarageDashboardComponent),
         title: "Dashboard",
-        data: { breadcrumb: 'Dashboard' }
+        data: { breadcrumb: 'Dashboard', id : "main/1" }
       },
       {
         path: "events",
         component: CalendarComponent,
         title: "Evenements",
-        data: { breadcrumb: 'Calendrier' }
+        data: { breadcrumb: 'Calendrier', id : "main/2" }
       }
     ]
   }

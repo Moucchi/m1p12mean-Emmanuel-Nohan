@@ -44,7 +44,8 @@ export class GarageBreadcrumbComponent implements OnInit {
         breadcrumbs.push({
           title: label,
           link: url,
-          needBar: breadcrumbs.length > 0
+          needBar: breadcrumbs.length > 0,
+          id : child.snapshot.data['id']
         });
       }
 

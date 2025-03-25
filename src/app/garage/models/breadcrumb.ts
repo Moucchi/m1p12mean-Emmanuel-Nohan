@@ -1,5 +1,6 @@
 export interface Breadcrumb {
   title: string;
   link: string;
-  needBar : boolean
+  needBar : boolean;
+  id : string;
 }
