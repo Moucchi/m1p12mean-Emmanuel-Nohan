@@ -1,12 +1,13 @@
-import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { catchError, Observable } from 'rxjs';
-import { AuthService } from '../client/services/auth.service';
+import {HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest} from '@angular/common/http';
+import {inject} from '@angular/core';
+import {catchError, Observable} from 'rxjs';
+import {AuthService} from '../client/services/auth.service';
+import {environment} from '../environments/environment';
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('JWT_TOKEN');
   let requestToSend = req;
-  if(token) {
+  if (token) {
     const headers = req.headers.set('Authorization', 'Bearer ' + token);
     requestToSend = req.clone({
       headers: headers
@@ -20,7 +21,14 @@ export function httpInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401 || error.status == 403) {
-        authService.logout();
+
+        const authUrl = `${environment.apiUrl}/api/auth`;
+        const clientUrl = `${environment.apiUrl}/api/clients/auth`;
+
+        if (req.url !== clientUrl && req.url !== authUrl) {
+          authService.logout();
+        }
+
       }
       throw error;
     })
