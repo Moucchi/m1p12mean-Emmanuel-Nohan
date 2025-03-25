@@ -5,6 +5,7 @@ import {GarageDashboardService} from '../services/garage-dashboard/garage-dashbo
 import {inject} from '@angular/core';
 import {GarageDashboardInterface} from '../models/dashboard/garage-dashboard-interface';
 import {withDevtools} from '@angular-architects/ngrx-toolkit';
+import {DateTime} from 'luxon';
 
 type DashboardState = {
   averageRate: number;
@@ -124,7 +125,7 @@ export const GarageDashboardStore = signalStore(
 
     },
 
-    getAttendancePerMonth(year: number = 2025) {
+    getAttendancePerMonth(year: number = DateTime.now().year) {
       patchState(store, {isAttendancePerMonthLoading: true});
 
       try {

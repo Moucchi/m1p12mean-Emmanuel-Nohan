@@ -4,8 +4,17 @@
   <div class="border border-gary-200 rounded-lg col-span-12">
     <div class="h-24">LIENS RAPIDE</div>
   </div>
-  <div class="border border-gary-200 rounded-lg col-span-9">
-    <div class="h-24">Statistiques</div>
+  <div class="border border-gary-200 rounded-lg col-span-9 p-4">
+    <h3 class="text-lg font-semibold mb-3">Statistiques</h3>
+    <div>
+      <canvas baseChart class="w-full"
+              [type]="'line'"
+              [data]="lineChartData"
+              [options]="lineChartOptions"
+              [legend]="lineChartLegend"
+      >
+      </canvas>
+    </div>
   </div>
   <div class="border border-gary-200 rounded-lg col-span-3 p-4">
     <h3 class="text-lg font-semibold mb-3">Informations générales</h3>
@@ -14,7 +23,7 @@
         <div class="bg-gray-100 rounded-lg p-3 shadow-sm">
           <p class="text-sm text-gray-700 mb-1">{{ info.title }}</p>
           <p class="text-xl font-bold">
-            @if ( info?.currency ) {
+            @if (info?.currency) {
               {{ info.value() | vola }}
             } @else {
               {{ info.value() }}
