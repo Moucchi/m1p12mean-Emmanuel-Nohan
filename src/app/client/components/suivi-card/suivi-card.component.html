@@ -12,10 +12,10 @@
                     <img [src]="appointment.brandLogo" class="object-cover" alt="vehicle_logo" height="60px" width="100px">
                     <div>
                         <p class="text-end">{{ appointment.brandName }}</p>
-                        <p class="text-end text-sm font-medium">0456 TAC</p>
+                        <p class="text-end text-sm font-medium">{{ appointment.registrationNumber }}</p>
                     </div>
                 </div>
-    
+
                 @if(state() != 'pending'){
                     <div class="item-dates">
                         <p>Début fixé :  {{ appointment.startedAt | date: 'dd-MM-YYYY à HH:mm':'UTC' }}</p>
@@ -26,7 +26,7 @@
                         <p>Crée le : {{ appointment.orderCreatedAt | date: 'dd-MM-YYYY à HH:mm':'UTC' }}</p>
                     </div>
                 }
-    
+
                 @if(state() == 'pending' || state() == 'set' || state() == 'confirmed') {
                     <div class="item-action">
                         <button (click)="cancel(appointment._id, $index)" type="button" class="inline-flex w-full justify-center rounded-sm bg-red-600 px-3 py-1.5 text-[12px] cursor-pointer font-semibold text-white shadow-xs hover:bg-red-700 sm:ml-3 sm:w-auto">Annuler</button>
@@ -37,7 +37,7 @@
                 }
             </div>
         }
-    
+
 
     </div>
 </div>
