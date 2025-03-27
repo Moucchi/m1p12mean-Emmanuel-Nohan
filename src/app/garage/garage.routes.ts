@@ -24,6 +24,12 @@ export const garageRoutes: Route[] = [
         loadComponent: () => import('./pages/calendar/calendar.component').then(m => m.CalendarComponent),
         title: "Evenements",
         data: { breadcrumb: 'Calendrier', id : "main/2" }
+      },
+      {
+        path: "mecanics",
+        loadComponent: () => import('./pages/garage-mechanics/garage-mechanics.component').then(m => m.GarageMechanicsComponent),
+        title: "Mecaniciens",
+        data: { breadcrumb: 'Mécanicien', id : "main/2" }
       }
     ]
   }
