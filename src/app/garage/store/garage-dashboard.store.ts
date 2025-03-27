@@ -7,6 +7,8 @@ import {GarageDashboardInterface} from '../models/dashboard/garage-dashboard-int
 import {withDevtools} from '@angular-architects/ngrx-toolkit';
 import {DateTime} from 'luxon';
 
+const defaultErrorMessage = "Une erreur est survenue, veuillez réessayer plus tard ";
+
 type DashboardState = {
   averageRate: number;
   isAverageRateLoading: boolean;
@@ -54,7 +56,7 @@ export const GarageDashboardStore = signalStore(
       } catch (e) {
         patchState(store, {
           isAverageRateLoading: false,
-          error: "Une erreur est survenue, veuillez réessayer plus tard "
+          error: defaultErrorMessage
         });
       }
 
@@ -68,7 +70,7 @@ export const GarageDashboardStore = signalStore(
       } catch (e) {
         patchState(store, {
           isUpComingAppointmentLoading: false,
-          error: "Une erreur est survenue, veuillez réessayer plus tard "
+          error: defaultErrorMessage
         });
       }
 
@@ -87,7 +89,7 @@ export const GarageDashboardStore = signalStore(
       } catch (e) {
         patchState(store, {
           isTotalClientsLoading: false,
-          error: "Une erreur est survenue, veuillez réessayer plus tard "
+          error: defaultErrorMessage
         });
       }
 
@@ -103,7 +105,7 @@ export const GarageDashboardStore = signalStore(
       } catch (e) {
         patchState(store, {
           isTopServicesLoading: false,
-          error: "Une erreur est survenue, veuillez réessayer plus tard "
+          error: defaultErrorMessage
         });
       }
 
@@ -119,7 +121,7 @@ export const GarageDashboardStore = signalStore(
       } catch (e) {
         patchState(store, {
           isActualMonthRevenueLoading: false,
-          error: "Une erreur est survenue, veuillez réessayer plus tard "
+          error: defaultErrorMessage
         });
       }
 
@@ -135,7 +137,7 @@ export const GarageDashboardStore = signalStore(
       } catch (e) {
         patchState(store, {
           isAttendancePerMonthLoading: false,
-          error: "Une erreur est survenue, veuillez réessayer plus tard "
+          error: defaultErrorMessage
         });
       }
 
@@ -157,7 +159,7 @@ export const GarageDashboardStore = signalStore(
           });
         });
       } catch (e) {
-        patchState(store, {isLoading: false, error: "Une erreur est survenue, veuillez réessayer plus tard "});
+        patchState(store, {isLoading: false, error: defaultErrorMessage});
       }
     }
 
