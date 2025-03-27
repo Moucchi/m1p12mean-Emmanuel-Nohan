@@ -12,6 +12,7 @@ import {FormService} from '../../../shared/services/form/form.service';
 import {GarageAuthStore} from '../../store/garage-auth.store';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {environment} from '../../../environments/environment.prod';
+import {SpinnerComponent} from '../../components/spinner/spinner.component';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,7 @@ import {environment} from '../../../environments/environment.prod';
     ReactiveFormsModule,
     NgOptimizedImage,
     NgClass,
-    MatProgressSpinner
+    SpinnerComponent
   ],
   templateUrl: 'garage-login.component.html',
   styleUrl: 'garage-login.component.css'

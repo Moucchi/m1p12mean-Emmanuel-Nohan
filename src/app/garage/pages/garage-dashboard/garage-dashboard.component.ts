@@ -67,6 +67,8 @@ export class GarageDashboardComponent implements OnInit {
   pieChartLegend = true;
 
 constructor() {
+  this.layoutStore.setText(`Bonjour, ${this.authStore.user()!.firstName}`);
+
   effect(() => {
     this.updateAttendaceChartData();
   });
@@ -77,8 +79,6 @@ constructor() {
 }
 
   ngOnInit(): void {
-    const text = `Bonjour, ${this.authStore.user()!.firstName}`;
-    this.layoutStore.setText(text);
     this.dashboardStore.getDashboardData();
   }
 
