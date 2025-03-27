@@ -41,26 +41,48 @@ export class GarageDashboardComponent implements OnInit {
       }
     ]
   };
-
   lineChartOptions: ChartOptions<'line'> = {
     responsive: false
   };
-
   lineChartLegend = true;
 
-  constructor() {
-    effect(() => {
-      this.updateChartData();
-    });
-  }
+  pieChartData: ChartConfiguration<'pie'>['data'] = {
+    labels: [],
+    datasets: [{
+      data: [],
+      backgroundColor: []
+    }]
+  };
+
+  pieChartOptions: ChartOptions<'pie'> = {
+    responsive: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right',
+      }
+    }
+  };
+
+  pieChartLegend = true;
+
+constructor() {
+  effect(() => {
+    this.updateAttendaceChartData();
+  });
+
+  effect(() => {
+    this.updateServicesPieChart();
+  });
+}
 
   ngOnInit(): void {
-    const userName = `Bonjour, ${this.authStore.user()!.firstName}`;
-    this.layoutStore.setText(userName);
+    const text = `Bonjour, ${this.authStore.user()!.firstName}`;
+    this.layoutStore.setText(text);
     this.dashboardStore.getDashboardData();
   }
 
-  updateChartData(): void {
+  updateAttendaceChartData(): void {
     const attendanceData = this.dashboardStore.attendancePerMonth();
 
     if (attendanceData && attendanceData.length > 0) {
@@ -84,6 +106,24 @@ export class GarageDashboardComponent implements OnInit {
             backgroundColor: 'oklch(0.577 0.245 27.325)'
           }
         ]
+      };
+    }
+  }
+
+  updateServicesPieChart(): void {
+    const topServicesData = this.dashboardStore.topServices();
+
+    if (topServicesData && topServicesData.length > 0) {
+      this.pieChartData = {
+        labels: topServicesData.map(service => service.name),
+        datasets: [{
+          data: topServicesData.map(service => service.count),
+          backgroundColor: [
+            '#E8000C',
+            '#E80097',
+            '#E82500'
+          ]
+        }]
       };
     }
   }
