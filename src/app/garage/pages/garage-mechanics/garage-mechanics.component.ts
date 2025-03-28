@@ -7,6 +7,8 @@ import {SpinnerComponent} from '../../components/spinner/spinner.component';
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
 import {GarageMechanicsModalComponent} from '../../components/garage-mechanics-modal/garage-mechanics-modal.component';
+import {GarageAuthStore} from '../../store/garage-auth.store';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'mean-garage-mechanics',
@@ -22,7 +24,9 @@ import {GarageMechanicsModalComponent} from '../../components/garage-mechanics-m
 export class GarageMechanicsComponent implements OnInit {
   private readonly layoutStore = inject(LayoutStore);
   protected readonly mechanicStore = inject(MechanicStore);
+  protected readonly authStore = inject(GarageAuthStore);
   readonly dialog = inject(MatDialog);
+  private readonly snackbar = inject(MatSnackBar);
   mechanics: Mechanics[] = [];
 
   currentPage = 0;
@@ -36,6 +40,7 @@ export class GarageMechanicsComponent implements OnInit {
     effect(() => {
       this.updateMechanics();
       this.updatePagination();
+      this.showSnackBar();
     });
   }
 
@@ -49,6 +54,17 @@ export class GarageMechanicsComponent implements OnInit {
 
   updateMechanics() {
     this.mechanics = this.mechanicStore.mechanics();
+  }
+
+  showSnackBar() {
+    const errorMessage = this.authStore.registerError();
+    const successMessage = this.authStore.registerSuccess();
+
+    if (errorMessage) {
+      this.snackbar.open(errorMessage, 'Fermer', {duration: 3000});
+    } else if (successMessage) {
+      this.snackbar.open(successMessage, 'Fermer', {duration: 3000});
+    }
   }
 
   updatePagination() {
