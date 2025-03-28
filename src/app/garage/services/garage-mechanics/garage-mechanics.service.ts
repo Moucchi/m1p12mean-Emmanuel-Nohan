@@ -18,4 +18,12 @@ export class GarageMechanicsService {
       })
     );
   }
+
+  getPage(page: number){
+    return this.http.get<MechanicResponse>(`${this.backendUrl}/api/employees/mechanics?page=${page}`).pipe(
+      catchError((error: Error) => {
+        throw error;
+      })
+    );
+  }
 }

@@ -5,7 +5,6 @@ import {GarageAuthService} from '../services/garage-auth/garage-auth.service';
 import {Router} from '@angular/router';
 import {GarageLoginFormData} from '../models/auth/garage-login-form-data';
 import {withDevtools} from '@angular-architects/ngrx-toolkit';
-import {GarageMechanicsFormData} from '../models/auth/garage-mechanics-form-data';
 import {MechanicStore} from './garage-mecanics.store';
 
 type AuthState = {
@@ -14,7 +13,8 @@ type AuthState = {
   user: UserInterface | null;
   loading: boolean;
   error: string | null;
-  registerMessage: string | null;
+  registerSuccess: string | null;
+  registerError: string | null;
 }
 
 const initialState: AuthState = {
@@ -23,7 +23,8 @@ const initialState: AuthState = {
   user: null,
   loading: false,
   error: null,
-  registerMessage: null
+  registerSuccess: null,
+  registerError: null,
 }
 
 export const GarageAuthStore = signalStore(
@@ -105,26 +106,42 @@ export const GarageAuthStore = signalStore(
           }
         },
 
-        register(formData: GarageMechanicsFormData) {
+        register(formData : FormData) {
           patchState(store, {loading: true, error: null});
 
+          console.log(`formData : ${JSON.stringify(formData)}`);
+
           authService.register(formData).subscribe({
-            next: (response) => {
+            next: () => {
               patchState(store, {
                 loading: false,
-                registerMessage: response.message
+                registerSuccess: 'L\'employé a été ajouté avec succès',
               });
 
               mechanicStore.getAllMechanics();
             },
             error: (error) => {
+              console.log(error);
               patchState(store, {
                 loading: false,
-                registerMessage: error instanceof Error ? error.message : "Une erreur s'est produite lors de l'ajout de l'employé",
+                registerError: "Une erreur s'est produite lors de l'ajout de l'employé",
               });
             }
           });
         },
+
+        resetRegisterError() {
+          patchState(store, {registerError: null});
+        },
+
+        resetRegisterSuccess() {
+          patchState(store, {registerSuccess: null});
+        },
+
+        resetRegisterMessage() {
+          patchState(store, {registerError: null, registerSuccess: null});
+        }
+
       }
     )
   ),

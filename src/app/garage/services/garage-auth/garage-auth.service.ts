@@ -7,7 +7,6 @@ import {tap} from 'rxjs/operators';
 import {jwtDecode} from 'jwt-decode';
 import {UserInterface} from '../../../shared/models/User.interface';
 import {environment} from '../../../environments/environment.prod';
-import {GarageMechanicsFormData} from '../../models/auth/garage-mechanics-form-data';
 import {GarageMechanicsResponse} from '../../models/auth/garage-mechanics-response';
 
 @Injectable({
@@ -50,7 +49,7 @@ export class GarageAuthService {
     }
   }
 
-  register(formData: GarageMechanicsFormData) {
+  register(formData: FormData) {
     return this.http.post<GarageMechanicsResponse>(`${this.apiUrl}/api/register`, formData)
       .pipe(
         catchError((error: Error) => {

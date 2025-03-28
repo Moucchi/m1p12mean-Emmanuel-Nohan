@@ -61,9 +61,11 @@ export class GarageMechanicsComponent implements OnInit {
     const successMessage = this.authStore.registerSuccess();
 
     if (errorMessage) {
-      this.snackbar.open(errorMessage, 'Fermer', {duration: 3000});
+      const snackbar = this.snackbar.open(errorMessage, 'Fermer', {duration: 3000});
+      snackbar.afterDismissed().subscribe(() => this.authStore.resetRegisterMessage());
     } else if (successMessage) {
-      this.snackbar.open(successMessage, 'Fermer', {duration: 3000});
+      const snackbar = this.snackbar.open(successMessage, 'Fermer', {duration: 3000});
+      snackbar.afterDismissed().subscribe(() => this.authStore.resetRegisterMessage());
     }
   }
 
@@ -76,6 +78,7 @@ export class GarageMechanicsComponent implements OnInit {
   }
 
   nextPage() {
+
     this.mechanicStore.nextPage();
   }
 

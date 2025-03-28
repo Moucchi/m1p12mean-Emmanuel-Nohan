@@ -7,8 +7,8 @@ import {MechanicResponse} from '../models/mechanics/mechanic-response';
 
 type MechanicStoreState = {
   mechanics: Mechanics[];
-  total : number;
-  totalPage : number;
+  total: number;
+  totalPage: number;
   page: number;
   isLoading: boolean;
   error: string;
@@ -16,8 +16,8 @@ type MechanicStoreState = {
 
 const intialState: MechanicStoreState = {
   mechanics: [],
-  total : 0,
-  totalPage : 0,
+  total: 0,
+  totalPage: 0,
   page: 1,
   isLoading: false,
   error: ''
@@ -45,21 +45,52 @@ export const MechanicStore = signalStore(
     },
 
     nextPage() {
-      if (store.page() < store.totalPage()) {
-        patchState(store , { page: store.page() + 1 });
+      if( store.page() + 1 <= store.totalPage()) {
+        mecanicsService.getPage(store.page() + 1).subscribe({
+          next: (response: MechanicResponse) => {
+            patchState(store, {
+              mechanics: response.data,
+              total: response.total,
+              totalPage: response.totalPage,
+              page: response.page,
+              isLoading: false
+            });
+          },
+          error: (error: Error) => patchState(store, {error: error.message, isLoading: false})
+        });
       }
     },
 
     previousPage() {
-      if (store.page() > 1) {
-        patchState(store , { page: store.page() - 1 });
+      if (store.page() - 1 >= 1) {
+        mecanicsService.getPage(store.page() - 1).subscribe({
+          next: (response: MechanicResponse) => {
+            patchState(store, {
+              mechanics: response.data,
+              total: response.total,
+              totalPage: response.totalPage,
+              page: response.page,
+              isLoading: false
+            });
+          },
+          error: (error: Error) => patchState(store, {error: error.message, isLoading: false})
+        });
       }
     },
 
     goToPage(page: number) {
-      if (page >= 1 && page <= store.totalPage()) {
-        patchState(store , { page: page });
-      }
+      mecanicsService.getPage(page).subscribe({
+        next: (response: MechanicResponse) => {
+          patchState(store, {
+            mechanics: response.data,
+            total: response.total,
+            totalPage: response.totalPage,
+            page: response.page,
+            isLoading: false
+          });
+        },
+        error: (error: Error) => patchState(store, {error: error.message, isLoading: false})
+      });
     }
   })),
   withDevtools('mechanicStore')

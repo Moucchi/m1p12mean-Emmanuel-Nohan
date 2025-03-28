@@ -29,14 +29,6 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Téléphone</mat-label>
-      <input type="tel" matInput formControlName="phone">
-      @if (mechanicsForm.get('phone')?.hasError('required')) {
-        <mat-error>Le téléphone est requis</mat-error>
-      }
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
       <mat-label>Date de naissance</mat-label>
       <input type="date" matInput formControlName="birthday">
       @if (mechanicsForm.get('birthday')?.hasError('required')) {
