@@ -71,7 +71,7 @@
 <mat-dialog-actions>
   <button mat-button (click)="clearForm()">Effacer</button>
   <button mat-button [mat-dialog-close]="true">Annuler</button>
-  <button mat-button [mat-dialog-close]="true" [disabled]="mechanicsForm.invalid" (click)="addEmployee()"
+  <button mat-button [disabled]="mechanicsForm.invalid" (click)="addEmployee()"
           cdkFocusInitial>Ajouter
   </button>
 </mat-dialog-actions>
