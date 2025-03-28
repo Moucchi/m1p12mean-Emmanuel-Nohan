@@ -4,7 +4,7 @@
           <img class="mx-auto h-15" src="/img/Logo.svg" alt="Your Company">
           <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Inscription à la plateforme</h2>
         </div>
-      
+
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form class="space-y-6" [formGroup]="signupForm" (submit)="onSubmit($event)">
             @if(errorMessage() != ''){
@@ -40,17 +40,6 @@
               </div>
             </div>
 
-            
-            <div>
-              <label for="phone" class="block text-sm/6 font-medium text-gray-900">Numéro téléphone</label>
-              <div class="mt-2">
-                <input formControlName="phone" placeholder="Votre numéro de téléphone" type="text" name="phone" id="phone" autocomplete="phone" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
-                @if(signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched){
-                  <span class="text-sm text-red-500">Numéro de téléphone invalide !</span>
-                }
-              </div>
-            </div>
-      
             <div>
               <div class="flex items-center justify-between">
                 <label for="password" class="block text-sm/6 font-medium text-gray-900">Mot de passe</label>
@@ -59,7 +48,7 @@
                 <input formControlName="password" type="password" placeholder="Votre mot de passe" name="password" id="password" autocomplete="current-password" required class="block w-full rounded-md bg-gray-100 px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6">
               </div>
             </div>
-      
+
             <div>
               <button type="submit" class="flex w-full justify-center rounded-md bg-red-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 cursor-pointer">
                 @if(submit()){
@@ -70,7 +59,7 @@
               </button>
             </div>
           </form>
-      
+
           <p class="mt-10 text-center text-sm/6 text-gray-500">
             Vous avez un compte?
             <a routerLink="/client/login" class="font-semibold text-gray-800">Connectez-vous ici</a>
