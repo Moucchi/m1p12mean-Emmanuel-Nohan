@@ -6,5 +6,5 @@ export interface Mechanics {
   lastName: string;
   profilePicture: string;
   completedAppointment: number;
-  currentAppointment: number
+  currentAppointment: number;
 }
