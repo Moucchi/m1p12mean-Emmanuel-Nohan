@@ -1,66 +1,91 @@
 import {Component, effect, inject, OnInit} from '@angular/core';
-    import {LayoutStore} from '../../store/garage-layout.store';
-    import {MechanicStore} from '../../store/garage-mecanics.store';
-    import {Mechanics} from '../../models/mechanics/mechanics';
-    import {NgClass, NgOptimizedImage} from '@angular/common';
+import {LayoutStore} from '../../store/garage-layout.store';
+import {MechanicStore} from '../../store/garage-mecanics.store';
+import {Mechanics} from '../../models/mechanics/mechanics';
+import {NgClass, NgOptimizedImage} from '@angular/common';
 import {SpinnerComponent} from '../../components/spinner/spinner.component';
+import {MatIcon} from '@angular/material/icon';
+import {MatDialog} from '@angular/material/dialog';
+import {GarageMechanicsModalComponent} from '../../components/garage-mechanics-modal/garage-mechanics-modal.component';
+import {GarageAuthStore} from '../../store/garage-auth.store';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
-    @Component({
-      selector: 'mean-garage-mechanics',
-      imports: [
-        NgOptimizedImage,
-        SpinnerComponent,
-        NgClass
-      ],
-      templateUrl: './garage-mechanics.component.html',
-      styleUrl: './garage-mechanics.component.css'
-    })
-    export class GarageMechanicsComponent implements OnInit{
-      private readonly layoutStore = inject(LayoutStore);
-      protected readonly mechanicStore = inject(MechanicStore);
-      mechanics: Mechanics[] = [];
+@Component({
+  selector: 'mean-garage-mechanics',
+  imports: [
+    NgOptimizedImage,
+    SpinnerComponent,
+    NgClass,
+    MatIcon
+  ],
+  templateUrl: './garage-mechanics.component.html',
+  styleUrl: './garage-mechanics.component.css'
+})
+export class GarageMechanicsComponent implements OnInit {
+  private readonly layoutStore = inject(LayoutStore);
+  protected readonly mechanicStore = inject(MechanicStore);
+  protected readonly authStore = inject(GarageAuthStore);
+  readonly dialog = inject(MatDialog);
+  private readonly snackbar = inject(MatSnackBar);
+  mechanics: Mechanics[] = [];
 
-      currentPage = 0;
-      totalPages = 0;
-      totalItems = 0;
-      pagesArray: number[] = [];
+  currentPage = 0;
+  totalPages = 0;
+  totalItems = 0;
+  pagesArray: number[] = [];
 
-      constructor() {
-        this.layoutStore.setText('Mécanicien');
+  constructor() {
+    this.layoutStore.setText('Mécanicien');
 
-        effect(() => {
-          this.updateMechanics();
-          this.updatePagination();
-        });
-      }
+    effect(() => {
+      this.updateMechanics();
+      this.updatePagination();
+      this.showSnackBar();
+    });
+  }
 
-      ngOnInit(): void {
-        this.mechanicStore.getAllMechanics();
-      }
+  ngOnInit(): void {
+    this.mechanicStore.getAllMechanics();
+  }
 
-      updateMechanics() {
-        this.mechanics = this.mechanicStore.mechanics();
-      }
+  showAddMechanicModal() {
+    this.dialog.open(GarageMechanicsModalComponent, {});
+  }
 
-      updatePagination() {
-        this.currentPage = this.mechanicStore.page();
-        this.totalPages = this.mechanicStore.totalPage();
-        this.totalItems = this.mechanicStore.total();
+  updateMechanics() {
+    this.mechanics = this.mechanicStore.mechanics();
+  }
 
-        this.pagesArray = Array.from({length: this.totalPages}, (_, i) => i + 1);
-      }
+  showSnackBar() {
+    const errorMessage = this.authStore.registerError();
+    const successMessage = this.authStore.registerSuccess();
 
-      nextPage() {
-        this.mechanicStore.nextPage();
-      }
-
-      previousPage() {
-        this.mechanicStore.previousPage();
-      }
-
-      goToPage(page: number) {
-        this.mechanicStore.goToPage(page);
-      }
-
-      protected readonly Math = Math;
+    if (errorMessage) {
+      this.snackbar.open(errorMessage, 'Fermer', {duration: 3000});
+    } else if (successMessage) {
+      this.snackbar.open(successMessage, 'Fermer', {duration: 3000});
     }
+  }
+
+  updatePagination() {
+    this.currentPage = this.mechanicStore.page();
+    this.totalPages = this.mechanicStore.totalPage();
+    this.totalItems = this.mechanicStore.total();
+
+    this.pagesArray = Array.from({length: this.totalPages}, (_, i) => i + 1);
+  }
+
+  nextPage() {
+    this.mechanicStore.nextPage();
+  }
+
+  previousPage() {
+    this.mechanicStore.previousPage();
+  }
+
+  goToPage(page: number) {
+    this.mechanicStore.goToPage(page);
+  }
+
+  protected readonly Math = Math;
+}

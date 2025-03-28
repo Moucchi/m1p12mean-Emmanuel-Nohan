@@ -1,16 +1,11 @@
 import {Component, inject} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {
-  MatCard,
-  MatCardActions,
-  MatCardContent
-} from "@angular/material/card";
+import {MatCard, MatCardActions, MatCardContent} from "@angular/material/card";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {NgClass, NgOptimizedImage} from '@angular/common';
 import {FormService} from '../../../shared/services/form/form.service';
 import {GarageAuthStore} from '../../store/garage-auth.store';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {environment} from '../../../environments/environment.prod';
 import {SpinnerComponent} from '../../components/spinner/spinner.component';
 
