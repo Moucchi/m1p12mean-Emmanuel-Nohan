@@ -2,6 +2,18 @@
   <mean-spinner></mean-spinner>
 } @else {
   <div class="py-8">
+
+    <div class="grid grid-cols-12 mb-2">
+      <div class="col-start-13">
+        <div
+          class="cursor-pointer border p-2 rounded-lg flex items-center justify-between text-center font-semibold bg-black text-white hover:bg-red-600"
+          (click)="showAddMechanicModal()">
+
+          <mat-icon>add</mat-icon>
+          <span class="px-1">Ajouter</span>
+        </div>
+      </div>
+    </div>
     <table class="w-full border-collapse border border-gray-200 bg-white text-left text-sm text-gray-500">
       <thead class="bg-gray-50">
       <th scope="col" class="px-6 py-4 font-medium text-gray-900">Nom</th>
@@ -9,7 +21,6 @@
       <th scope="col" class="px-6 py-4 font-medium text-gray-900">Telephone</th>
       <th scope="col" class="px-6 py-4 font-medium text-gray-900">Photo</th>
       <th scope="col" class="px-6 py-4 font-medium text-gray-900">Prestations</th>
-      <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
       </thead>
 
       <tbody class="divide-y divide-gray-100 border-t border-gray-200">
@@ -22,8 +33,7 @@
               <img class="rounded-lg" [ngSrc]="mechanic.profilePicture" height="54" width="54" alt="photo de profil">
             </td>
             <td class="px-6 py-4">{{ mechanic.completedAppointment }}</td>
-            <td class="flex justify-end gap-4 px-6 py-4 font-medium"><a class="border border-gray-200 p-3 rounded-lg">Virer</a>
-            </td>
+
           </tr>
         }
       </tbody>
@@ -69,7 +79,7 @@
               <button
                 (click)="goToPage(page)"
                 class="relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-red-600 focus:z-20 focus:outline-offset-0"
-                [ngClass]="{ 'bg-black text-white' : page === currentPage }" >
+                [ngClass]="{ 'bg-black text-white' : page === currentPage }">
                 {{ page }}
               </button>
             }
