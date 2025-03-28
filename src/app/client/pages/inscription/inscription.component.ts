@@ -24,8 +24,7 @@ export class InscriptionComponent {
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
-    phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]]
+    password: ['', [Validators.required]]
   });
 
   onSubmit(event: Event){
@@ -43,6 +42,6 @@ export class InscriptionComponent {
         }
       });
     }
-    
+
   }
 }

@@ -14,8 +14,7 @@ type AuthState = {
   user: UserInterface | null;
   loading: boolean;
   error: string | null;
-  registerSuccess: string | null;
-  registerError: string | null;
+  registerMessage: string | null;
 }
 
 const initialState: AuthState = {
@@ -24,8 +23,7 @@ const initialState: AuthState = {
   user: null,
   loading: false,
   error: null,
-  registerSuccess: null,
-  registerError: null
+  registerMessage: null
 }
 
 export const GarageAuthStore = signalStore(
@@ -111,18 +109,18 @@ export const GarageAuthStore = signalStore(
           patchState(store, {loading: true, error: null});
 
           authService.register(formData).subscribe({
-            next: () => {
+            next: (response) => {
               patchState(store, {
                 loading: false,
-                registerSuccess: 'L\'employé a été ajouté avec succès',
+                registerMessage: response.message
               });
 
               mechanicStore.getAllMechanics();
             },
-            error: () => {
+            error: (error) => {
               patchState(store, {
                 loading: false,
-                registerError: "Une erreur s'est produite lors de l'ajout de l'employé",
+                registerMessage: error instanceof Error ? error.message : "Une erreur s'est produite lors de l'ajout de l'employé",
               });
             }
           });

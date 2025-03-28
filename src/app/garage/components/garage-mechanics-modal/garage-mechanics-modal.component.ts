@@ -60,18 +60,6 @@ export class GarageMechanicsModalComponent {
         this.formSubmitted = false;
     }
 
-    private normalizeName(text: string): string {
-        if (!text.trim()) return '';
-        const temp = text.split(' ');
-
-        const names = temp.map((name: string) => {
-            const result = name.toLowerCase();
-            return result.charAt(0).toUpperCase() + result.slice(1);
-        })
-
-        return names.join(' ');
-    }
-
     addEmployee() {
         this.formSubmitted = true;
 
@@ -81,14 +69,12 @@ export class GarageMechanicsModalComponent {
 
         if (this.mechanicsForm.valid) {
             const formValues = this.mechanicsForm.getRawValue();
-            const firstName = this.normalizeName(formValues.firstName);
-            const lastName = this.normalizeName(formValues.lastName);
 
             if (formValues.image) {
                 const mechanicData: GarageMechanicsFormData = {
                     email: formValues.email,
-                    firstName: firstName,
-                    lastName: lastName,
+                    firstName: formValues.firstName,
+                    lastName: formValues.lastName,
                     phone: formValues.phone,
                     birthday: formValues.birthday,
                     image: formValues.image
