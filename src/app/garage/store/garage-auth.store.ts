@@ -5,6 +5,8 @@ import {GarageAuthService} from '../services/garage-auth/garage-auth.service';
 import {Router} from '@angular/router';
 import {GarageLoginFormData} from '../models/auth/garage-login-form-data';
 import {withDevtools} from '@angular-architects/ngrx-toolkit';
+import {GarageMechanicsFormData} from '../models/auth/garage-mechanics-form-data';
+import {MechanicStore} from './garage-mecanics.store';
 
 type AuthState = {
   isLogged: boolean;
@@ -12,6 +14,7 @@ type AuthState = {
   user: UserInterface | null;
   loading: boolean;
   error: string | null;
+  registerMessage: string | null;
 }
 
 const initialState: AuthState = {
@@ -19,13 +22,14 @@ const initialState: AuthState = {
   token: '',
   user: null,
   loading: false,
-  error: null
+  error: null,
+  registerMessage: null
 }
 
 export const GarageAuthStore = signalStore(
   {providedIn: 'root'},
   withState(initialState),
-  withMethods((store, authService = inject(GarageAuthService), route = inject(Router)) => ({
+  withMethods((store, authService = inject(GarageAuthService), route = inject(Router), mechanicStore = inject(MechanicStore)) => ({
         login(credentials: GarageLoginFormData) {
           patchState(store, {loading: true, error: null});
 
@@ -99,7 +103,28 @@ export const GarageAuthStore = signalStore(
 
             throw new Error("Token invalide");
           }
-        }
+        },
+
+        register(formData: GarageMechanicsFormData) {
+          patchState(store, {loading: true, error: null});
+
+          authService.register(formData).subscribe({
+            next: (response) => {
+              patchState(store, {
+                loading: false,
+                registerMessage: response.message
+              });
+
+              mechanicStore.getAllMechanics();
+            },
+            error: (error) => {
+              patchState(store, {
+                loading: false,
+                registerMessage: error instanceof Error ? error.message : "Une erreur s'est produite lors de l'ajout de l'employé",
+              });
+            }
+          });
+        },
       }
     )
   ),
