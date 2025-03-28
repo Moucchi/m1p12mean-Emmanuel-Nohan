@@ -2,7 +2,7 @@
     <app-page-header title="Demande de rendez-vous"></app-page-header>
     <mat-card appearance="outlined">
         @if(success()){
-            <app-success-alert>Votre demande a été envoyée!</app-success-alert>
+            <app-success-alert message="Votre demande a été envoyée!"/>
         }
         <mat-stepper orientation="vertical" #stepper linear>
             <mat-step [stepControl]="firstFormGroup">
@@ -59,10 +59,10 @@
                     <button mat-button matStepperPrevious>Retour</button>
                     <button mat-flat-button (click)="saveOrder(stepper)" [disabled]="isLoading() ||firstFormGroup.invalid || total() == 0">Valider</button>
                 </div>
-                
+
               </div>
             </mat-step>
           </mat-stepper>
     </mat-card>
-    
+
 </div>
