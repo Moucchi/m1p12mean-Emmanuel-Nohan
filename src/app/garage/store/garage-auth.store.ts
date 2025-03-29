@@ -109,8 +109,6 @@ export const GarageAuthStore = signalStore(
           if (this.isManager()) {
             patchState(store, {loading: true, error: null});
 
-            console.log(`formData : ${JSON.stringify(formData)}`);
-
             authService.register(formData).subscribe({
               next: () => {
                 patchState(store, {
@@ -141,10 +139,19 @@ export const GarageAuthStore = signalStore(
           patchState(store, {registerError: null, registerSuccess: null});
         },
         isManager() {
-          return store.user()!.role === 'manager';
+          if (store.user !== null) {
+            return store.user()!.role === 'manager';
+          }
+
+          return false;
         },
         isMechanic() {
-          return store.user()!.role === 'mechanics';
+
+          if (store.user !== null) {
+            return store.user()!.role === 'mechanics';
+          }
+
+          return false;
         }
 
       }
