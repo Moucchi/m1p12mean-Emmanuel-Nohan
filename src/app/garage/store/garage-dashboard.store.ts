@@ -6,6 +6,9 @@ import {inject} from '@angular/core';
 import {GarageDashboardInterface} from '../models/dashboard/garage-dashboard-interface';
 import {withDevtools} from '@angular-architects/ngrx-toolkit';
 import {DateTime} from 'luxon';
+import {MechanicAppointments} from '../models/dashboard/mechanic-appointment-interface';
+import {GarageAuthStore} from './garage-auth.store';
+import {Router} from '@angular/router';
 
 const defaultErrorMessage = "Une erreur est survenue, veuillez réessayer plus tard ";
 
@@ -22,6 +25,7 @@ type DashboardState = {
   isActualMonthRevenueLoading: boolean;
   attendancePerMonth: MonthlyAttendanceInterface[];
   isAttendancePerMonthLoading: boolean;
+  mechanicsAppointments: MechanicAppointments;
   isLoading: boolean;
   error: string | null
 }
@@ -39,13 +43,19 @@ const initialState: DashboardState = {
   isActualMonthRevenueLoading: false,
   attendancePerMonth: [],
   isAttendancePerMonthLoading: false,
+  mechanicsAppointments: {
+    pending: [],
+    set: [],
+    confirmed: [],
+    in_progress: []
+  },
   isLoading: false,
   error: null
 }
 
 export const GarageDashboardStore = signalStore(
   withState(initialState),
-  withMethods((store, dashboardService = inject(GarageDashboardService)) => ({
+  withMethods((store, dashboardService = inject(GarageDashboardService), authStore = inject(GarageAuthStore), router = inject(Router)) => ({
     getAverageRate() {
       patchState(store, {isAverageRateLoading: true});
 
@@ -175,6 +185,28 @@ export const GarageDashboardStore = signalStore(
         patchState(store, {isLoading: false});
       } catch (e) {
         patchState(store, {isLoading: false, error: defaultErrorMessage});
+      }
+    },
+
+    getMechanicsAppointments() {
+      patchState(store, {isLoading: true});
+
+      if (authStore.isMechanic()) {
+
+        try {
+          dashboardService.getMechanicsAppointments()?.subscribe((response: MechanicAppointments) => {
+            patchState(store, {mechanicsAppointments: response});
+          });
+          patchState(store, {isLoading: false});
+
+        } catch (e) {
+          patchState(store, {isLoading: false, error: defaultErrorMessage});
+        }
+
+      } else {
+        router.navigateByUrl('/403').then(() => {
+          patchState(store, {isLoading: false});
+        });
       }
     }
 

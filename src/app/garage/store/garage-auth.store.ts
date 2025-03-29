@@ -152,6 +152,10 @@ export const GarageAuthStore = signalStore(
           }
 
           return false;
+        },
+
+        getId() {
+          return store.user()? store.user()!.id : null;
         }
 
       }

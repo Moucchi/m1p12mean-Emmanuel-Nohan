@@ -90,6 +90,10 @@ export class GarageDashboardComponent implements OnInit {
     if (this.authStore.isManager()) {
       this.dashboardStore.getDashboardData();
     }
+
+    if(this.authStore.isMechanic()){
+      this.dashboardStore.getMechanicsAppointments();
+    }
   }
 
   updateAttendaceChartData(): void {

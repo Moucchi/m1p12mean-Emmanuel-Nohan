@@ -1,12 +1,12 @@
 import {inject, Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment.prod';
 import {HttpClient} from '@angular/common/http';
-import {catchError} from 'rxjs';
+import {catchError, map} from 'rxjs';
 import {GarageDashboardInterface} from '../../models/dashboard/garage-dashboard-interface';
 import {ServiceRatingInterface} from '../../models/dashboard/service-rating-interface';
 import {MonthlyAttendanceInterface} from '../../models/dashboard/monthly-attendance-interface';
-import {GarageAuthService} from '../garage-auth/garage-auth.service';
 import {GarageAuthStore} from '../../store/garage-auth.store';
+import {MechanicsAppointmentsResponseInterface} from '../../models/dashboard/mechanics-appointments-response-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -90,6 +90,19 @@ export class GarageDashboardService {
   getDashboardData() {
     if (this.authStore.isManager()) {
       return this.http.get<GarageDashboardInterface>(`${this.backendUrl}/api/dashboard`).pipe(
+        catchError((error: Error) => {
+          throw error;
+        })
+      );
+    }
+
+    return null;
+  }
+
+  getMechanicsAppointments() {
+    if (this.authStore.isMechanic()) {
+      return this.http.get<MechanicsAppointmentsResponseInterface>(`${this.backendUrl}/api/employees/${this.authStore.getId()}/appointments`).pipe(
+        map( (response) => { return response.data; } ),
         catchError((error: Error) => {
           throw error;
         })
