@@ -1,98 +1,103 @@
 @if (mechanicStore.isLoading()) {
   <mean-spinner></mean-spinner>
 } @else {
-  <div>
-    <div class="grid grid-cols-12 mb-2">
-      <div class="col-start-13">
-        <div
-          class="cursor-pointer border p-2 rounded-lg flex items-center justify-between text-center font-semibold bg-black text-white hover:bg-red-600"
-          (click)="showAddMechanicModal()">
+  @if (canShowMechanicsTable()) {
+    <div>
+      <div class="grid grid-cols-12 mb-2">
+        <div class="col-start-13">
+          <div
+            class="cursor-pointer border p-2 rounded-lg flex items-center justify-between text-center font-semibold bg-black text-white hover:bg-red-600"
+            (click)="showAddMechanicModal()">
 
-          <mat-icon>add</mat-icon>
-          <span class="px-1">Ajouter</span>
+            <mat-icon>add</mat-icon>
+            <span class="px-1">Ajouter</span>
+          </div>
         </div>
       </div>
-    </div>
-    <table class="w-full border-collapse border border-gray-200 bg-white text-left text-sm text-gray-500">
-      <thead class="bg-gray-50">
-      <th scope="col" class="px-6 py-4 font-medium text-gray-900">Nom</th>
-      <th scope="col" class="px-6 py-4 font-medium text-gray-900">Email</th>
-      <th scope="col" class="px-6 py-4 font-medium text-gray-900">Photo</th>
-      <th scope="col" class="px-6 py-4 font-medium text-gray-900">Prestations</th>
-      </thead>
+      <table class="w-full border-collapse border border-gray-200 bg-white text-left text-sm text-gray-500">
+        <thead class="bg-gray-50">
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Nom</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Email</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Photo</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Prestations</th>
+        </thead>
 
-      <tbody class="divide-y divide-gray-100 border-t border-gray-200">
-        @for (mechanic of mechanics; track mechanic._id) {
-          <tr>
-            <td class="px-6 py-4 font-medium text-gray-900">{{ mechanic.firstName }} {{ mechanic.lastName }}</td>
-            <td class="px-6 py-4">{{ mechanic.email }}</td>
-            <td class="px-6 py-4">
-              <img class="rounded-lg" [ngSrc]="mechanic.profilePicture" height="54" width="54" alt="photo de profil">
-            </td>
-            <td class="px-6 py-4">{{ mechanic.completedAppointment }}</td>
+        <tbody class="divide-y divide-gray-100 border-t border-gray-200">
+          @for (mechanic of mechanics; track mechanic._id) {
+            <tr>
+              <td class="px-6 py-4 font-medium text-gray-900">{{ mechanic.firstName }} {{ mechanic.lastName }}</td>
+              <td class="px-6 py-4">{{ mechanic.email }}</td>
+              <td class="px-6 py-4">
+                <img class="rounded-lg" [ngSrc]="mechanic.profilePicture" height="54" width="54" alt="photo de profil">
+              </td>
+              <td class="px-6 py-4">{{ mechanic.completedAppointment }}</td>
 
-          </tr>
-        }
-      </tbody>
-    </table>
+            </tr>
+          }
+        </tbody>
+      </table>
 
-    <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 pt-3 sm:px-6 mt-2">
-      <div class="flex flex-1 justify-between sm:hidden">
-        <button
-          (click)="previousPage()"
-          [disabled]="currentPage <= 1"
-          [class.opacity-50]="currentPage <= 1"
-          class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-          Précédent
-        </button>
-        <button
-          (click)="nextPage()"
-          [disabled]="currentPage >= totalPages"
-          [class.opacity-50]="currentPage >= totalPages"
-          class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-          Suivant
-        </button>
-      </div>
-      <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-        <div>
-          <p class="text-sm text-gray-700">
-            Affichage de <span class="font-medium">{{ (currentPage - 1) * 5 + 1 }}</span> à <span
-            class="font-medium">{{ Math.min(currentPage * 5, totalItems) }}</span> sur <span
-            class="font-medium">{{ totalItems }}</span> résultats
-          </p>
-        </div>
-        <div>
-          <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+      @if (canShowPagination()) {
+        <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 pt-3 sm:px-6 mt-2">
+          <div class="flex flex-1 justify-between sm:hidden">
             <button
               (click)="previousPage()"
               [disabled]="currentPage <= 1"
-              class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-              [class.opacity-50]="currentPage <= 1">
-              <span class="sr-only">Précédent</span>
-              &laquo;
+              [class.opacity-50]="currentPage <= 1"
+              class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+              Précédent
             </button>
-
-            @for (page of pagesArray; track page) {
-              <button
-                (click)="goToPage(page)"
-                class="relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-red-600 focus:z-20 focus:outline-offset-0"
-                [ngClass]="{ 'bg-black text-white' : page === currentPage }">
-                {{ page }}
-              </button>
-            }
-
             <button
               (click)="nextPage()"
               [disabled]="currentPage >= totalPages"
-              class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-              [class.opacity-50]="currentPage >= totalPages">
-              <span class="sr-only">Suivant</span>
-              &raquo;
+              [class.opacity-50]="currentPage >= totalPages"
+              class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+              Suivant
             </button>
-          </nav>
+          </div>
+          <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm text-gray-700">
+                Affichage de <span class="font-medium">{{ (currentPage - 1) * 5 + 1 }}</span> à <span
+                class="font-medium">{{ Math.min(currentPage * 5, totalItems) }}</span> sur <span
+                class="font-medium">{{ totalItems }}</span> résultats
+              </p>
+            </div>
+            <div>
+              <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                <button
+                  (click)="previousPage()"
+                  [disabled]="currentPage <= 1"
+                  class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                  [class.opacity-50]="currentPage <= 1">
+                  <span class="sr-only">Précédent</span>
+                  &laquo;
+                </button>
+
+                @for (page of pagesArray; track page) {
+                  <button
+                    (click)="goToPage(page)"
+                    class="relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-red-600 focus:z-20 focus:outline-offset-0"
+                    [ngClass]="{ 'bg-black text-white' : page === currentPage }">
+                    {{ page }}
+                  </button>
+                }
+
+                <button
+                  (click)="nextPage()"
+                  [disabled]="currentPage >= totalPages"
+                  class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                  [class.opacity-50]="currentPage >= totalPages">
+                  <span class="sr-only">Suivant</span>
+                  &raquo;
+                </button>
+              </nav>
+            </div>
+          </div>
         </div>
-      </div>
+      }
+
     </div>
-  </div>
+  }
 }
 

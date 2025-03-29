@@ -37,6 +37,10 @@ export const routes: Routes = [
     loadChildren: () => import('./garage/garage.routes').then(c => c.garageRoutes),
   },
   {
+    path: "403",
+    loadComponent: () => import('./shared/pages/unauthorized/unauthorized.component').then(c => c.UnauthorizedComponent),
+  },
+  {
     path: "**",
     loadComponent: () => import('./shared/pages/not-found/not-found.component').then(c => c.NotFoundComponent),
   }

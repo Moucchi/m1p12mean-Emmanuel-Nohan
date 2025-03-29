@@ -50,9 +50,12 @@ export const GarageDashboardStore = signalStore(
       patchState(store, {isAverageRateLoading: true});
 
       try {
-        dashboardService.getAverageRate().subscribe((response: number) => {
-          patchState(store, {averageRate: response, isAverageRateLoading: false});
+        dashboardService.getAverageRate()?.subscribe((response: number) => {
+          patchState(store, {averageRate: response});
         });
+
+        patchState(store, {isAverageRateLoading: false});
+
       } catch (e) {
         patchState(store, {
           isAverageRateLoading: false,
@@ -66,6 +69,11 @@ export const GarageDashboardStore = signalStore(
       patchState(store, {isUpComingAppointmentLoading: true});
 
       try {
+        dashboardService.getUpComingAppointment()?.subscribe((response: number) => {
+          patchState(store, {upComingAppointment: response});
+        });
+
+        patchState(store, {isUpComingAppointmentLoading: false});
 
       } catch (e) {
         patchState(store, {
@@ -74,18 +82,18 @@ export const GarageDashboardStore = signalStore(
         });
       }
 
-      dashboardService.getUpComingAppointment().subscribe((response: number) => {
-        patchState(store, {upComingAppointment: response, isUpComingAppointmentLoading: false});
-      });
+
     },
 
     getTotalClient() {
       patchState(store, {isTotalClientsLoading: true});
 
       try {
-        dashboardService.getTotalClient().subscribe((response: number) => {
-          patchState(store, {totalClients: response, isTotalClientsLoading: false});
+        dashboardService.getTotalClient()?.subscribe((response: number) => {
+          patchState(store, {totalClients: response});
         });
+        patchState(store, {isTotalClientsLoading: false});
+
       } catch (e) {
         patchState(store, {
           isTotalClientsLoading: false,
@@ -99,9 +107,11 @@ export const GarageDashboardStore = signalStore(
       patchState(store, {isTopServicesLoading: true});
 
       try {
-        dashboardService.getTopServices().subscribe((response: ServiceRatingInterface[]) => {
-          patchState(store, {topServices: response, isTopServicesLoading: false});
+        dashboardService.getTopServices()?.subscribe((response: ServiceRatingInterface[]) => {
+          patchState(store, {topServices: response});
         });
+        patchState(store, {isTopServicesLoading: false});
+
       } catch (e) {
         patchState(store, {
           isTopServicesLoading: false,
@@ -115,9 +125,11 @@ export const GarageDashboardStore = signalStore(
       patchState(store, {isActualMonthRevenueLoading: true});
 
       try {
-        dashboardService.getActualMonthRevenue().subscribe((response: number) => {
-          patchState(store, {actualMonthRevenue: response, isActualMonthRevenueLoading: false});
+        dashboardService.getActualMonthRevenue()?.subscribe((response: number) => {
+          patchState(store, {actualMonthRevenue: response});
         });
+        patchState(store, {isActualMonthRevenueLoading: false});
+
       } catch (e) {
         patchState(store, {
           isActualMonthRevenueLoading: false,
@@ -131,9 +143,11 @@ export const GarageDashboardStore = signalStore(
       patchState(store, {isAttendancePerMonthLoading: true});
 
       try {
-        dashboardService.getAttendancePerMonth(year).subscribe((response: MonthlyAttendanceInterface[]) => {
-          patchState(store, {attendancePerMonth: response, isAttendancePerMonthLoading: false});
+        dashboardService.getAttendancePerMonth(year)?.subscribe((response: MonthlyAttendanceInterface[]) => {
+          patchState(store, {attendancePerMonth: response});
         });
+        patchState(store, {isAttendancePerMonthLoading: false});
+
       } catch (e) {
         patchState(store, {
           isAttendancePerMonthLoading: false,
@@ -147,17 +161,18 @@ export const GarageDashboardStore = signalStore(
       patchState(store, {isLoading: true});
 
       try {
-        dashboardService.getDashboardData().subscribe((response: GarageDashboardInterface) => {
+        dashboardService.getDashboardData()?.subscribe((response: GarageDashboardInterface) => {
           patchState(store, {
             averageRate: response.avgRate,
             upComingAppointment: response.upcomingAppointment,
             totalClients: response.totalClients,
             actualMonthRevenue: response.totalRevenueCurrentMonth,
             topServices: response.topServices,
-            attendancePerMonth: response.attendancePerMonth,
-            isLoading: false
+            attendancePerMonth: response.attendancePerMonth
           });
         });
+
+        patchState(store, {isLoading: false});
       } catch (e) {
         patchState(store, {isLoading: false, error: defaultErrorMessage});
       }

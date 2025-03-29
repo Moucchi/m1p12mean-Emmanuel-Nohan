@@ -1,30 +1,32 @@
 <div class="row-start-1 row-end-3 grid items-center justify-center">
   <a routerLink="/garage">
-    <img alt="logo" [ngSrc]="logo()" width="150" height="54"/>
+    <img alt="logo" [ngSrc]="logo" width="150" height="54"/>
   </a>
 </div>
 
 <div
   class="row-start-3 row-end-12 py-5 overflow-y-auto overflow-x-hidden scroll-smooth max-h-full flex flex-col custom-scrollbar divide-y divide-gray-200">
   @for (link of links; track link) {
-    <a
-      class="flex items-center px-5 py-3 hover:bg-gray-100"
-      [routerLink]="link.path"
-      [routerLinkActive]="link.activeStyle"
-      [routerLinkActiveOptions]="link.activeOptions">
-      <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 ">
-        <mat-icon>{{ link.icon }}</mat-icon>
-      </div>
-      <p
-        class="side-bar-item px-4 font-medium text-gray-700">{{ link.title }}</p>
-    </a>
+    @if ( link.role.includes( role() ) ) {
+      <a
+        class="flex items-center px-5 py-3 hover:bg-gray-100"
+        [routerLink]="link.path"
+        [routerLinkActive]="link.activeStyle"
+        [routerLinkActiveOptions]="link.activeOptions">
+        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 ">
+          <mat-icon>{{ link.icon }}</mat-icon>
+        </div>
+        <p
+          class="side-bar-item px-4 font-medium text-gray-700">{{ link.title }}</p>
+      </a>
+    }
   }
 </div>
 
 <div class="row-start-12 grid">
   <div
     class="p-2 bg-black text-white place-self-center rounded-lg hover:bg-red-600 font-semibold flex items-center gap-2 cursor-pointer"
-  (click)="logout()">
+    (click)="logout()">
     <mat-icon>logout</mat-icon>
     Déconnexion
   </div>

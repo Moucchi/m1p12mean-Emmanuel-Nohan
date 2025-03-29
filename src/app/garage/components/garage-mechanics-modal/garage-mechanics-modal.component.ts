@@ -41,12 +41,9 @@ export class GarageMechanicsModalComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
       const file = input.files[0];
-      console.log('Fichier sélectionné:', file.name, file.size);
       this.mechanicsForm.patchValue({
         image: file
       });
-      console.log('État du formulaire après mise à jour:', this.mechanicsForm.value);
-      console.log('Valeur du champ image:', this.mechanicsForm.get('image')?.value);
     }
   }
 

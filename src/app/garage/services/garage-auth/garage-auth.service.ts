@@ -8,6 +8,7 @@ import {jwtDecode} from 'jwt-decode';
 import {UserInterface} from '../../../shared/models/User.interface';
 import {environment} from '../../../environments/environment.prod';
 import {GarageMechanicsResponse} from '../../models/auth/garage-mechanics-response';
+import {MechanicStore} from '../../store/garage-mecanics.store';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,10 @@ export class GarageAuthService {
   register(formData: FormData) {
     return this.http.post<GarageMechanicsResponse>(`${this.apiUrl}/api/register`, formData)
       .pipe(
+        tap(() => {
+          const mechanicStore = inject(MechanicStore);
+          mechanicStore.getAllMechanics();
+        }),
         catchError((error: Error) => {
           throw error;
         })
