@@ -66,20 +66,30 @@ export class GarageDashboardComponent implements OnInit {
 
   pieChartLegend = true;
 
-constructor() {
-  this.layoutStore.setText(`Bonjour, ${this.authStore.user()!.firstName}`);
-
-  effect(() => {
-    this.updateAttendaceChartData();
+  isAttendanceChartBlank = computed(() => {
+    return this.dashboardStore.attendancePerMonth() && this.dashboardStore.attendancePerMonth().length > 0;
   });
 
-  effect(() => {
-    this.updateServicesPieChart();
+  isServicesChartBlank = computed(() => {
+    return this.dashboardStore.topServices() && this.dashboardStore.topServices().length > 0;
   });
-}
+
+  constructor() {
+    this.layoutStore.setText(`Bonjour, ${this.authStore.user()!.firstName}`);
+
+    effect(() => {
+      this.updateAttendaceChartData();
+    });
+
+    effect(() => {
+      this.updateServicesPieChart();
+    });
+  }
 
   ngOnInit(): void {
-    this.dashboardStore.getDashboardData();
+    if (this.authStore.isManager()) {
+      this.dashboardStore.getDashboardData();
+    }
   }
 
   updateAttendaceChartData(): void {

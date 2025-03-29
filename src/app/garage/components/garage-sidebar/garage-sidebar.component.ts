@@ -1,4 +1,4 @@
-import {Component, computed, inject} from '@angular/core';
+import {Component, computed, effect, inject, signal} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {NgOptimizedImage} from "@angular/common";
 import {RouterLink, RouterLinkActive} from "@angular/router";
@@ -8,6 +8,7 @@ import {environment} from '../../../environments/environment.prod';
 
 @Component({
   selector: 'garage-sidebar',
+  standalone: true,
   imports: [
     MatIcon,
     NgOptimizedImage,
@@ -18,14 +19,18 @@ import {environment} from '../../../environments/environment.prod';
   styleUrl: './garage-sidebar.component.css'
 })
 export class GarageSidebarComponent {
-  private authStore = inject(GarageAuthStore);
+  authStore = inject(GarageAuthStore);
+  role = signal<string>("");
+  logo = environment.logo;
 
-  logo = computed(() => {
-    return environment.logo;
-  });
-
-  logout(){
+  logout() {
     this.authStore.logout();
+  }
+
+  constructor() {
+    effect(()=>{
+      this.role.set(this.authStore.user()!.role);
+    });
   }
 
   links: GarageLink[] = [
@@ -36,7 +41,8 @@ export class GarageSidebarComponent {
         exact: true
       },
       title: "Accueil",
-      icon: "home"
+      icon: "home",
+      role: ['manager', 'mechanics']
     },
     {
       path: "/garage/events",
@@ -45,7 +51,8 @@ export class GarageSidebarComponent {
         exact: true
       },
       title: "Evenements",
-      icon: "event"
+      icon: "event",
+      role: ['manager', 'mechanics']
     },
     {
       path: "/garage/services",
@@ -54,7 +61,8 @@ export class GarageSidebarComponent {
         exact: true
       },
       title: "Services",
-      icon: "home_repair_service"
+      icon: "home_repair_service",
+      role: ['manager']
     },
     {
       path: "/garage/mecanics",
@@ -63,7 +71,8 @@ export class GarageSidebarComponent {
         exact: true
       },
       title: "Mecaniciens",
-      icon: "groups"
+      icon: "groups",
+      role: ['manager']
     },
     {
       path: "/garage/historique",
@@ -72,7 +81,8 @@ export class GarageSidebarComponent {
         exact: true
       },
       title: "Historique des prestations",
-      icon: "history"
+      icon: "history",
+      role: ['manager']
     }
   ]
 }

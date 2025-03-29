@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import {Component, computed, effect, inject, OnInit} from '@angular/core';
 import {LayoutStore} from '../../store/garage-layout.store';
 import {MechanicStore} from '../../store/garage-mecanics.store';
 import {Mechanics} from '../../models/mechanics/mechanics';
@@ -43,6 +43,14 @@ export class GarageMechanicsComponent implements OnInit {
       this.showSnackBar();
     });
   }
+
+  canShowMechanicsTable = computed(() => {
+    return this.mechanicStore.mechanics() && this.mechanicStore.mechanics().length > 0
+  });
+
+  canShowPagination = computed(() => {
+    return this.mechanicStore.totalPage() >= 2;
+  });
 
   ngOnInit(): void {
     this.mechanicStore.getAllMechanics();

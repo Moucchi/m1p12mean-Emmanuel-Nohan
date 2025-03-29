@@ -1,7 +1,7 @@
-import { DatePipe } from '@angular/common';
-import { Component, inject, input } from '@angular/core';
-import { Appointment } from '../../../shared/models/appointment.interface';
-import { SuiviStoreService } from '../../services/suivi-store.service';
+import {DatePipe} from '@angular/common';
+import {Component, inject, input} from '@angular/core';
+import {Appointment} from '../../../shared/models/appointment.interface';
+import {SuiviStoreService} from '../../services/suivi-store.service';
 
 @Component({
   selector: 'app-suivi-card',
@@ -17,7 +17,7 @@ export class SuiviCardComponent {
   data = input<Appointment[]>();
   isProcessing = this.suiviStore.getProcessing();
 
-  cancel(id: string, index: number){
+  cancel(id: string, index: number) {
     this.suiviStore.cancelAppointment(id, index, this.state());
   }
 
@@ -28,7 +28,7 @@ export class SuiviCardComponent {
   getStateColor() {
     switch (this.state()) {
       case 'pending':
-        return '#FFC107'; 
+        return '#FFC107';
       case 'set':
         return '#2196F3	';
       case 'confirmed':

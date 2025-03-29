@@ -5,7 +5,6 @@ import {GarageAuthService} from '../services/garage-auth/garage-auth.service';
 import {Router} from '@angular/router';
 import {GarageLoginFormData} from '../models/auth/garage-login-form-data';
 import {withDevtools} from '@angular-architects/ngrx-toolkit';
-import {MechanicStore} from './garage-mecanics.store';
 
 type AuthState = {
   isLogged: boolean;
@@ -30,7 +29,7 @@ const initialState: AuthState = {
 export const GarageAuthStore = signalStore(
   {providedIn: 'root'},
   withState(initialState),
-  withMethods((store, authService = inject(GarageAuthService), route = inject(Router), mechanicStore = inject(MechanicStore)) => ({
+  withMethods((store, authService = inject(GarageAuthService), route = inject(Router)) => ({
         login(credentials: GarageLoginFormData) {
           patchState(store, {loading: true, error: null});
 
@@ -106,28 +105,28 @@ export const GarageAuthStore = signalStore(
           }
         },
 
-        register(formData : FormData) {
-          patchState(store, {loading: true, error: null});
+        register(formData: FormData) {
+          if (this.isManager()) {
+            patchState(store, {loading: true, error: null});
 
-          console.log(`formData : ${JSON.stringify(formData)}`);
+            console.log(`formData : ${JSON.stringify(formData)}`);
 
-          authService.register(formData).subscribe({
-            next: () => {
-              patchState(store, {
-                loading: false,
-                registerSuccess: 'L\'employé a été ajouté avec succès',
-              });
-
-              mechanicStore.getAllMechanics();
-            },
-            error: (error) => {
-              console.log(error);
-              patchState(store, {
-                loading: false,
-                registerError: "Une erreur s'est produite lors de l'ajout de l'employé",
-              });
-            }
-          });
+            authService.register(formData).subscribe({
+              next: () => {
+                patchState(store, {
+                  loading: false,
+                  registerSuccess: 'L\'employé a été ajouté avec succès',
+                });
+              },
+              error: (error) => {
+                console.log(error);
+                patchState(store, {
+                  loading: false,
+                  registerError: "Une erreur s'est produite lors de l'ajout de l'employé",
+                });
+              }
+            });
+          }
         },
 
         resetRegisterError() {
@@ -140,6 +139,21 @@ export const GarageAuthStore = signalStore(
 
         resetRegisterMessage() {
           patchState(store, {registerError: null, registerSuccess: null});
+        },
+        isManager() {
+          if (store.user !== null) {
+            return store.user()!.role === 'manager';
+          }
+
+          return false;
+        },
+        isMechanic() {
+
+          if (store.user !== null) {
+            return store.user()!.role === 'mechanics';
+          }
+
+          return false;
         }
 
       }

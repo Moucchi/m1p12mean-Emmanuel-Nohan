@@ -30,23 +30,26 @@ export const MechanicStore = signalStore(
     getAllMechanics() {
       patchState(store, {isLoading: true});
 
-      mecanicsService.getAllMechanics().subscribe({
+      mecanicsService.getAllMechanics()?.subscribe({
         next: (response: MechanicResponse) => {
           patchState(store, {
             mechanics: response.data,
             total: response.total,
             totalPage: response.totalPage,
-            page: response.page,
-            isLoading: false
+            page: response.page
           });
         },
-        error: (error: Error) => patchState(store, {error: error.message, isLoading: false}),
+        error: (error: Error) => patchState(store, {error: error.message}),
       });
+
+      patchState(store, {isLoading: false});
     },
 
     nextPage() {
-      if( store.page() + 1 <= store.totalPage()) {
-        mecanicsService.getPage(store.page() + 1).subscribe({
+      if (store.page() + 1 <= store.totalPage()) {
+        patchState(store, {isLoading: true});
+
+        mecanicsService.getPage(store.page() + 1)?.subscribe({
           next: (response: MechanicResponse) => {
             patchState(store, {
               mechanics: response.data,
@@ -56,15 +59,20 @@ export const MechanicStore = signalStore(
               isLoading: false
             });
           },
-          error: (error: Error) => patchState(store, {error: error.message, isLoading: false})
+          error: (error: Error) => patchState(store, {error: error.message})
         });
+
+        patchState(store, {isLoading: false});
       }
     },
 
     previousPage() {
       if (store.page() - 1 >= 1) {
-        mecanicsService.getPage(store.page() - 1).subscribe({
+        patchState(store, {isLoading: true});
+
+        mecanicsService.getPage(store.page() - 1)?.subscribe({
           next: (response: MechanicResponse) => {
+
             patchState(store, {
               mechanics: response.data,
               total: response.total,
@@ -73,24 +81,33 @@ export const MechanicStore = signalStore(
               isLoading: false
             });
           },
-          error: (error: Error) => patchState(store, {error: error.message, isLoading: false})
+          error: (error: Error) => patchState(store, {error: error.message})
         });
+
+        patchState(store, {isLoading: false});
       }
     },
 
     goToPage(page: number) {
-      mecanicsService.getPage(page).subscribe({
-        next: (response: MechanicResponse) => {
-          patchState(store, {
-            mechanics: response.data,
-            total: response.total,
-            totalPage: response.totalPage,
-            page: response.page,
-            isLoading: false
-          });
-        },
-        error: (error: Error) => patchState(store, {error: error.message, isLoading: false})
-      });
+      if( page <= store.totalPage() && page >= 1) {
+        patchState(store, {isLoading: true});
+
+        mecanicsService.getPage(page)?.subscribe({
+          next: (response: MechanicResponse) => {
+
+            patchState(store, {
+              mechanics: response.data,
+              total: response.total,
+              totalPage: response.totalPage,
+              page: response.page,
+              isLoading: false
+            });
+          },
+          error: (error: Error) => patchState(store, {error: error.message})
+        });
+
+        patchState(store, {isLoading: false});
+      }
     }
   })),
   withDevtools('mechanicStore')
