@@ -3,7 +3,10 @@ import {HttpClient} from '@angular/common/http';
 import {GarageAuthStore} from '../../store/garage-auth.store';
 import {catchError} from 'rxjs';
 import {environment} from '../../../environments/environment.prod';
-import {GarageServiceResponseInterface} from '../../models/service/garage-service-response.interface';
+import {
+  GarageAddServiceResponse,
+  GarageServiceResponseInterface
+} from '../../models/service/garage-service-response.interface';
 import {GarageServiceFormInterface} from '../../models/service/garage-service-form.interface';
 
 @Injectable({
@@ -37,7 +40,17 @@ export class GarageServiceService {
     return null;
   }
 
-  addService(){}
+  addService(value : GarageServiceFormInterface){
+    if (this.authStore.isManager()) {
+      return this.http.post<GarageAddServiceResponse>(`${this.backendUrl}/api/services`, value).pipe(
+        catchError((error: Error) => {
+          throw error;
+        })
+      );
+    }
+
+    return null;
+  }
 
   updateService(id : string, value : GarageServiceFormInterface ){
     if (this.authStore.isManager()) {

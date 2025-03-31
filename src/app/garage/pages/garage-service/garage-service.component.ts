@@ -5,11 +5,14 @@ import {GarageServiceInterface} from '../../models/service/garage-service-respon
 import {VolaPipe} from '../../../shared/pipe/vola.pipe';
 import {CurrencyPipe, NgClass} from '@angular/common';
 import {MatDialog} from '@angular/material/dialog';
-import {GarageServiceModalComponent} from '../../components/garage-service-modal/garage-service-modal.component';
+import {GarageServiceModalComponent} from '../../components/garage-service-modal/update/garage-service-modal.component';
 import {MatIcon} from '@angular/material/icon';
 import {SpinnerComponent} from '../../components/spinner/spinner.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ConfirmationDialogService} from '../../services/garage-confirmation-dialog/confirmation-dialog.service';
+import {
+  GarageServiceAddModalComponent
+} from '../../components/garage-service-modal/add/garage-service-add-modal.component';
 
 @Component({
   selector: 'mean-garage-service',
@@ -29,6 +32,7 @@ export class GarageServiceComponent implements OnInit {
   readonly updateDialog = inject(MatDialog);
   private readonly snackbar = inject(MatSnackBar);
   private readonly confirmationDialog = inject(ConfirmationDialogService);
+  private readonly addDialog = inject(MatDialog);
 
   services: GarageServiceInterface[] = [];
   currentPage = 0;
@@ -99,6 +103,12 @@ export class GarageServiceComponent implements OnInit {
     this.totalItems = this.serviceStore.total();
 
     this.pagesArray = Array.from({length: this.totalPages}, (_, i) => i + 1);
+  }
+
+  showAddingServiceModal(){
+    this.addDialog.open(GarageServiceAddModalComponent, {
+      width: "500px"
+    });
   }
 
   nextPage() {

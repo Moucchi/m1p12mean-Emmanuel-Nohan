@@ -13,3 +13,8 @@ export interface GarageServiceResponseInterface {
   "data": GarageServiceInterface[]
 }
 
+export interface GarageAddServiceResponse {
+  "data": GarageServiceInterface,
+  "message": string
+}
+

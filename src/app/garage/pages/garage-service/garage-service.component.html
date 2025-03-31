@@ -1,7 +1,17 @@
 @if (serviceStore.isLoading()) {
   <mean-spinner/>
 } @else {
-  <div class="grid gap-3">
+  <div class="grid grid-cols-12">
+    <div
+      class="col-start-13 cursor-pointer border p-2 rounded-lg flex items-center justify-between text-center font-semibold bg-black text-white hover:bg-red-600"
+      (click)="showAddingServiceModal()"
+    >
+      <mat-icon>add</mat-icon>
+      <span class="px-1">Ajouter</span>
+    </div>
+  </div>
+
+  <div class="grid gap-3 mt-3">
 
     @for (service of services; track service._id) {
       <div class="grid gap-y-2 p-4 divide-y rounded-lg border">

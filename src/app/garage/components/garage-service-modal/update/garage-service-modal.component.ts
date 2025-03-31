@@ -9,8 +9,8 @@ import {
 } from '@angular/material/dialog';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButton} from '@angular/material/button';
-import {GarageServiceStore} from '../../store/garage-service.store';
-import {GarageServiceInterface} from '../../models/service/garage-service-response.interface';
+import {GarageServiceStore} from '../../../store/garage-service.store';
+import {GarageServiceInterface} from '../../../models/service/garage-service-response.interface';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {TextFieldModule} from '@angular/cdk/text-field';

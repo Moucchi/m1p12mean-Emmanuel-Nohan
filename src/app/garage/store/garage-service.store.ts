@@ -135,6 +135,27 @@ export const GarageServiceStore = signalStore(
       patchState(store, {isLoading: false});
     },
 
+    createService(value: GarageServiceFormInterface) {
+      patchState(store, {isLoading: true});
+
+      service.addService(value)?.subscribe({
+        next: (response) => {
+          this.getAllServices();
+          patchState(store, {
+            success: response.message,
+            error: null
+          });
+        },
+        error: () => {
+          patchState(store, {
+            error: defaultErrorMessage
+          });
+        }
+      });
+
+      patchState(store, {isLoading: false});
+    },
+
     nextPage() {
       const destinationPage = store.page() + 1;
 
