@@ -36,7 +36,7 @@ export const garageRoutes: Route[] = [
       {
         path: "services",
         loadComponent: () => import('./pages/garage-service/garage-service.component').then(m => m.GarageServiceComponent),
-        title: "Service",
+        title: "Services",
         data: {breadcrumb: 'Service', id: "main/3"},
         canActivate: [garageManagerGuard]
       },
