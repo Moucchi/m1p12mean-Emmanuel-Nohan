@@ -18,12 +18,12 @@
 
                 @if(state() != 'pending'){
                     <div class="item-dates">
-                        <p>Début fixé :  {{ appointment.startedAt | date: 'dd-MM-YYYY à HH:mm':'UTC' }}</p>
-                        <p>Fin prévue :  {{ appointment.endingAt | date: 'dd-MM-YYYY à HH:mm':'UTC' }}</p>
+                        <p>Début fixé :  {{ appointment.startedAt | date: 'dd-MM-YYYY à HH:mm':'UTC+3' }}</p>
+                        <p>Fin prévue :  {{ appointment.endingAt | date: 'dd-MM-YYYY à HH:mm':'UTC+3' }}</p>
                     </div>
                 } @else {
                     <div class="item-dates">
-                        <p>Crée le : {{ appointment.orderCreatedAt | date: 'dd-MM-YYYY à HH:mm':'UTC' }}</p>
+                        <p>Crée le : {{ appointment.orderCreatedAt | date: 'dd-MM-YYYY à HH:mm':'UTC+3' }}</p>
                     </div>
                 }
 
