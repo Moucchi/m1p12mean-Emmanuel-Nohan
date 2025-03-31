@@ -59,7 +59,7 @@ export class GarageServiceModalComponent implements OnInit {
       name: this.actualService!.name,
       basePrice: this.actualService!.basePrice,
       description: this.actualService!.description
-    })
+    });
   }
 
   clearForm() {
@@ -67,7 +67,21 @@ export class GarageServiceModalComponent implements OnInit {
   }
 
   updateService() {
+    if (this.serviceForm.invalid) {
+      return;
+    }
+
+    const formValues = this.serviceForm.getRawValue();
+
+    const hasChanges =
+      formValues.name !== this.actualService!.name ||
+      formValues.basePrice !== this.actualService!.basePrice ||
+      formValues.description !== this.actualService!.description;
+
+    if (hasChanges) {
+      this.serviceStore.updateService(this.actualService!._id, formValues);
+    }
+
     this.dialogRef.close();
-    console.log("OFR");
   }
 }

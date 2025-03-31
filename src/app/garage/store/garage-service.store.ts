@@ -5,6 +5,7 @@ import {
 import {inject} from '@angular/core';
 import {GarageServiceService} from '../services/garage-service/garage-service.service';
 import {withDevtools} from '@angular-architects/ngrx-toolkit';
+import {GarageServiceFormInterface} from '../models/service/garage-service-form.interface';
 
 type ServiceState = {
   total: number;
@@ -14,6 +15,7 @@ type ServiceState = {
   filteredServices: GarageServiceInterface[];
   isLoading: boolean;
   error: string | null;
+  success: string | null;
 }
 
 const initialState: ServiceState = {
@@ -23,7 +25,8 @@ const initialState: ServiceState = {
   error: null,
   total: 0,
   page: 0,
-  totalPages: 0
+  totalPages: 0,
+  success: null
 }
 
 const defaultErrorMessage = "Une erreur s'est produite, veuillez réessayer plus tard.";
@@ -85,19 +88,16 @@ export const GarageServiceStore = signalStore(
       return store.services().find((service) => service._id === id);
     },
 
-    nextPage() {
-      if (store.page() + 1 <= store.totalPages()) {
-        patchState(store, {isLoading: true});
+    updateService(id: string, value: GarageServiceFormInterface) {
+      patchState( store , {isLoading: true});
 
-        service.getPage(store.page())?.subscribe({
-          next: (response) => {
-            const {total, page, totalPages, data} = response;
-
+      service.updateService(id, value)?.subscribe(
+        {
+          next: () => {
+            this.getAllServices();
             patchState(store, {
-              services: data,
-              total: total,
-              page: page,
-              totalPages: totalPages
+              success: "Service mis à jour avec succès",
+              error: null
             });
           },
           error: () => {
@@ -105,36 +105,30 @@ export const GarageServiceStore = signalStore(
               error: defaultErrorMessage
             });
           }
-        });
+        }
+      );
 
-        patchState(store, {isLoading: false});
+      patchState( store , {isLoading: false});
+
+    },
+    nextPage() {
+      const destinationPage = store.page() + 1;
+
+      if (destinationPage <= store.totalPages()) {
+        this.goToPage(destinationPage);
       }
     },
 
     previousPage() {
-      if (store.page() - 1 >= 1) {
-        patchState(store, {isLoading: true});
+      const destinationPage = store.page() - 1;
 
-        service.getPage(store.page())?.subscribe({
-          next: (response) => {
-            const {total, page, totalPages, data} = response;
-
-            patchState(store, {
-              services: data,
-              total: total,
-              page: page,
-              totalPages: totalPages
-            });
-          },
-          error: () => {
-            patchState(store, {
-              error: defaultErrorMessage
-            });
-          }
-        });
-
-        patchState(store, {isLoading: false});
+      if (destinationPage >= 1) {
+        this.goToPage(destinationPage);
       }
+    },
+
+    resetRegisterMessage() {
+      patchState(store, {error: null, success: null});
     },
 
   })),

@@ -7,13 +7,16 @@ import {CurrencyPipe, NgClass} from '@angular/common';
 import {MatDialog} from '@angular/material/dialog';
 import {GarageServiceModalComponent} from '../../components/garage-service-modal/garage-service-modal.component';
 import {MatIcon} from '@angular/material/icon';
+import {SpinnerComponent} from '../../components/spinner/spinner.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'mean-garage-service',
   imports: [
     VolaPipe,
     MatIcon,
-    NgClass
+    NgClass,
+    SpinnerComponent
   ],
   templateUrl: './garage-service.component.html',
   styleUrl: './garage-service.component.css',
@@ -21,8 +24,9 @@ import {MatIcon} from '@angular/material/icon';
 })
 export class GarageServiceComponent implements OnInit {
   private readonly layoutStore = inject(LayoutStore);
-  private readonly serviceStore = inject(GarageServiceStore);
+  protected readonly serviceStore = inject(GarageServiceStore);
   readonly updateDialog = inject(MatDialog);
+  private readonly snackbar = inject(MatSnackBar);
 
   services: GarageServiceInterface[] = [];
   currentPage = 0;
@@ -33,16 +37,20 @@ export class GarageServiceComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      this.updateService();
+      this.refreshService();
     });
 
     effect(() => {
       this.updatePagination();
     });
+
+    effect(() => {
+      this.showUpdateSnackBar();
+    });
   }
 
   canShowPagination = computed(() => {
-    return false;
+    return this.totalPages > 1;
   });
 
   ngOnInit(): void {
@@ -50,7 +58,7 @@ export class GarageServiceComponent implements OnInit {
     this.serviceStore.getAllServices();
   }
 
-  updateService() {
+  refreshService() {
     this.services = this.serviceStore.services();
   }
 
@@ -59,6 +67,19 @@ export class GarageServiceComponent implements OnInit {
       data: {_id: id},
       width: "500px"
     });
+  }
+
+  showUpdateSnackBar() {
+    const errorMessage = this.serviceStore.error();
+    const successMessage = this.serviceStore.success();
+
+    if (errorMessage) {
+      const snackbar = this.snackbar.open(errorMessage, 'Fermer', {duration: 3000});
+      snackbar.afterDismissed().subscribe(() => this.serviceStore.resetRegisterMessage());
+    } else if (successMessage) {
+      const snackbar = this.snackbar.open(successMessage, 'Fermer', {duration: 3000});
+      snackbar.afterDismissed().subscribe(() => this.serviceStore.resetRegisterMessage());
+    }
   }
 
   updatePagination() {
