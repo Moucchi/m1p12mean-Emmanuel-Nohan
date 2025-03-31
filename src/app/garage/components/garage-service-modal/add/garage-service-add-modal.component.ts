@@ -10,7 +10,6 @@ import {
 } from "@angular/material/dialog";
 import {MatInput, MatLabel} from "@angular/material/input";
 import {GarageServiceStore} from '../../../store/garage-service.store';
-import {GarageServiceInterface} from '../../../models/service/garage-service-response.interface';
 import {MatError, MatFormField} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {GarageServiceModalComponent} from '../update/garage-service-modal.component';
