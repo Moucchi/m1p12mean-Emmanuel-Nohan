@@ -111,6 +111,30 @@ export const GarageServiceStore = signalStore(
       patchState( store , {isLoading: false});
 
     },
+
+    deleteService(id : string){
+      patchState(store, {isLoading: true});
+
+      service.deleteService(id)?.subscribe(
+        {
+          next: () => {
+            this.getAllServices();
+            patchState(store, {
+              success: "Service supprimé avec succès",
+              error: null
+            });
+          },
+          error: () => {
+            patchState(store, {
+              error: defaultErrorMessage
+            });
+          }
+        }
+      );
+
+      patchState(store, {isLoading: false});
+    },
+
     nextPage() {
       const destinationPage = store.page() + 1;
 

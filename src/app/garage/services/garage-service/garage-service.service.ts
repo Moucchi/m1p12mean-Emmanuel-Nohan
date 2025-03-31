@@ -51,5 +51,15 @@ export class GarageServiceService {
     return null;
   }
 
-  deleteService(){}
+  deleteService(id : string){
+    if (this.authStore.isManager()) {
+      return this.http.delete<GarageServiceResponseInterface>(`${this.backendUrl}/api/services/${id}`).pipe(
+        catchError((error: Error) => {
+          throw error;
+        })
+      );
+    }
+
+    return null;
+  }
 }

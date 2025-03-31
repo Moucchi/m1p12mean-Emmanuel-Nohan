@@ -20,7 +20,9 @@
             Modifier
           </button>
           <button
-            class="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white p-2 font-semibold rounded-lg flex items-center gap-x-1">
+            class="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white p-2 font-semibold rounded-lg flex items-center gap-x-1"
+            (click)="deleteService(service._id)"
+          >
             <mat-icon>delete</mat-icon>
             Supprimer
           </button>

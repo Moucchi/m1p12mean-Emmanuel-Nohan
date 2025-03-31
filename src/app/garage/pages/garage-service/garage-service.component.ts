@@ -9,6 +9,7 @@ import {GarageServiceModalComponent} from '../../components/garage-service-modal
 import {MatIcon} from '@angular/material/icon';
 import {SpinnerComponent} from '../../components/spinner/spinner.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ConfirmationDialogService} from '../../services/garage-confirmation-dialog/confirmation-dialog.service';
 
 @Component({
   selector: 'mean-garage-service',
@@ -27,6 +28,7 @@ export class GarageServiceComponent implements OnInit {
   protected readonly serviceStore = inject(GarageServiceStore);
   readonly updateDialog = inject(MatDialog);
   private readonly snackbar = inject(MatSnackBar);
+  private readonly confirmationDialog = inject(ConfirmationDialogService);
 
   services: GarageServiceInterface[] = [];
   currentPage = 0;
@@ -80,6 +82,15 @@ export class GarageServiceComponent implements OnInit {
       const snackbar = this.snackbar.open(successMessage, 'Fermer', {duration: 3000});
       snackbar.afterDismissed().subscribe(() => this.serviceStore.resetRegisterMessage());
     }
+  }
+
+  deleteService(id: string) {
+    this.confirmationDialog.confirm({
+      message: 'Êtes-vous sûr de vouloir supprimer ce service ?',
+      onConfirm: () => {
+        this.serviceStore.deleteService(id);
+      }
+    });
   }
 
   updatePagination() {
