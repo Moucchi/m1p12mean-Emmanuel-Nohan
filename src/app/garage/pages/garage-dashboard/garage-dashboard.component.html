@@ -1,5 +1,4 @@
 <div class="grid grid-cols-12 grid-flow-row-dense gap-2">
-  <!-- DASHBOARD MANAGER -->
 
   @if (authStore.isManager()) {
     <div class="border border-gary-200 rounded-lg col-span-4">
@@ -61,14 +60,13 @@
     </div>
   }
 
-  <!-- DASHBOARD MECANICIEN -->
   @if (authStore.isMechanic()) {
     <div class="rounded-lg col-span-12">
       <div class="grid grid-cols-4 gap-x-3">
         <div class="grid gap-y-1 shadow-md rounded-lg">
           <div class="flex p-2 items-center gap-x-3 rounded-t-lg bg-gray-100 border-b border-gray-200">
-            <div class="rounded-full w-3 h-3 bg-red-600"></div>
-            <h2 class="text-lg font-semibold">status title</h2>
+            <div class="rounded-full w-3 h-3 bg-orange-400"></div>
+            <h2 class="text-lg font-semibold">En attente de confirmation</h2>
           </div>
           <div class="divide-y py-2">
             <p class="px-4">1</p>
@@ -77,10 +75,11 @@
             <p class="px-4">4</p>
           </div>
         </div>
+
         <div class="grid gap-y-1 shadow-md rounded-lg">
           <div class="flex p-2 items-center gap-x-3 rounded-t-lg bg-gray-100 border-b border-gray-200">
-            <div class="rounded-full w-3 h-3 bg-red-600"></div>
-            <h2 class="text-lg font-semibold">status title</h2>
+            <div class="rounded-full w-3 h-3 bg-purple-500"></div>
+            <h2 class="text-lg font-semibold">Rendez-vous fixé</h2>
           </div>
           <div class="divide-y py-2">
             <p class="px-4">1</p>
@@ -89,10 +88,11 @@
             <p class="px-4">4</p>
           </div>
         </div>
+
         <div class="grid gap-y-1 shadow-md rounded-lg">
           <div class="flex p-2 items-center gap-x-3 rounded-t-lg bg-gray-100 border-b border-gray-200">
-            <div class="rounded-full w-3 h-3 bg-red-600"></div>
-            <h2 class="text-lg font-semibold">status title</h2>
+            <div class="rounded-full w-3 h-3 bg-blue-600"></div>
+            <h2 class="text-lg font-semibold">En cours</h2>
           </div>
           <div class="divide-y py-2">
             <p class="px-4">1</p>
@@ -101,10 +101,11 @@
             <p class="px-4">4</p>
           </div>
         </div>
+
         <div class="grid gap-y-1 shadow-md rounded-lg">
           <div class="flex p-2 items-center gap-x-3 rounded-t-lg bg-gray-100 border-b border-gray-200">
-            <div class="rounded-full w-3 h-3 bg-red-600"></div>
-            <h2 class="text-lg font-semibold">status title</h2>
+            <div class="rounded-full w-3 h-3 bg-green-600"></div>
+            <h2 class="text-lg font-semibold">Terminé</h2>
           </div>
           <div class="divide-y py-2">
             <p class="px-4">1</p>

@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {ConfirmationDialogDataInterface} from '../../models/confirmation-dialog-data.interface';
+import {ConfirmationDialogDataInterface} from '../../models/confirmation-dialog/confirmation-dialog-data.interface';
 import {ConfirmationDialogComponent} from '../../components/confirmation-dialog/confirmation-dialog.component';
 
 @Injectable({

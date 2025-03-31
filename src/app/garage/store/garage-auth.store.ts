@@ -115,6 +115,7 @@ export const GarageAuthStore = signalStore(
                   loading: false,
                   registerSuccess: 'L\'employé a été ajouté avec succès',
                 });
+                route.navigateByUrl("/garage/mechanics");
               },
               error: (error) => {
                 console.log(error);

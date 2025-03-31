@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd, RouterModule } from '@angular/router';
-import { Breadcrumb } from '../../models/breadcrumb';
+import { Breadcrumb } from '../../models/breadcrumb/breadcrumb';
 import { filter } from 'rxjs/operators';
 
 @Component({
