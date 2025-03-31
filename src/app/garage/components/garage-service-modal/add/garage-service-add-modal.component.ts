@@ -2,7 +2,6 @@ import {Component, inject} from '@angular/core';
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {
-  MAT_DIALOG_DATA,
   MatDialogActions, MatDialogClose,
   MatDialogContent,
   MatDialogRef,
@@ -10,15 +9,9 @@ import {
 } from "@angular/material/dialog";
 import {MatInput, MatLabel} from "@angular/material/input";
 import {GarageServiceStore} from '../../../store/garage-service.store';
-import {GarageServiceInterface} from '../../../models/service/garage-service-response.interface';
 import {MatError, MatFormField} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {GarageServiceModalComponent} from '../update/garage-service-modal.component';
-
-
-type DialogData = {
-  _id: string;
-}
 
 @Component({
   selector: 'mean-garage-service-add-modal',
@@ -42,7 +35,6 @@ type DialogData = {
 export class GarageServiceAddModalComponent {
   private readonly dialogRef = inject(MatDialogRef<GarageServiceModalComponent>);
   private formBuilder = inject(FormBuilder);
-  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
   private readonly serviceStore = inject(GarageServiceStore);
 
   protected serviceForm = this.formBuilder.nonNullable.group({

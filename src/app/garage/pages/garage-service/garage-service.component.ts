@@ -56,7 +56,7 @@ export class GarageServiceComponent implements OnInit {
   }
 
   canShowPagination = computed(() => {
-    return this.totalPages > 1;
+    return this.serviceStore.totalPages() > 1;
   });
 
   ngOnInit(): void {
