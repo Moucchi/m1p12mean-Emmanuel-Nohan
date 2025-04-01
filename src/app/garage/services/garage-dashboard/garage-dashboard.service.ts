@@ -7,6 +7,7 @@ import {ServiceRatingInterface} from '../../models/dashboard/service-rating-inte
 import {MonthlyAttendanceInterface} from '../../models/dashboard/monthly-attendance-interface';
 import {GarageAuthStore} from '../../store/garage-auth.store';
 import {MechanicsAppointmentsResponseInterface} from '../../models/dashboard/mechanics-appointments-response-interface';
+import {SettingAppointmentForm} from '../../models/dashboard/setting-appointment-form';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,6 @@ export class GarageDashboardService {
   private readonly backendUrl = environment.apiUrl;
   private http = inject(HttpClient);
   private readonly authStore = inject(GarageAuthStore);
-
 
   getAverageRate() {
     if (this.authStore.isManager()) {
@@ -102,7 +102,9 @@ export class GarageDashboardService {
   getMechanicsAppointments() {
     if (this.authStore.isMechanic()) {
       return this.http.get<MechanicsAppointmentsResponseInterface>(`${this.backendUrl}/api/employees/${this.authStore.getId()}/appointments`).pipe(
-        map( (response) => { return response.data; } ),
+        map((response) => {
+          return response.data;
+        }),
         catchError((error: Error) => {
           throw error;
         })
@@ -110,5 +112,13 @@ export class GarageDashboardService {
     }
 
     return null;
+  }
+
+  setAppointmentDate(id: string, form : SettingAppointmentForm) {
+    return this.http.put(`${this.backendUrl}/api/appointments/${id}`, form).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    )
   }
 }

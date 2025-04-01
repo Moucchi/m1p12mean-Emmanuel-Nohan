@@ -27,6 +27,26 @@ export class FormFieldValidatorsService {
     return null;
   }
 
+  validateAppointmentDate(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
+
+    const date = DateTime.fromISO(value);
+
+    if (!date.isValid) {
+      return {invalidDate: true};
+    }
+
+    const now = DateTime.now().startOf('day');
+    const appointmentDate = date.startOf('day');
+
+    if (appointmentDate < now) {
+      return {pastDate: true};
+    }
+
+    return null;
+  }
+
   validateImageFile(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
 

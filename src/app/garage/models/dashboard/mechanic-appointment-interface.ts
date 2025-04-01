@@ -13,8 +13,8 @@ export interface MechanicAppointmentInterface {
 }
 
 export interface MechanicAppointments {
-  pending ?: MechanicAppointmentInterface[];
-  set ?: MechanicAppointmentInterface[];
-  confirmed ?: MechanicAppointmentInterface[];
-  in_progress ?: MechanicAppointmentInterface[];
+  pending : MechanicAppointmentInterface[];
+  set : MechanicAppointmentInterface[];
+  confirmed : MechanicAppointmentInterface[];
+  in_progress : MechanicAppointmentInterface[];
 }

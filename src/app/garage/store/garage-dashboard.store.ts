@@ -9,6 +9,7 @@ import {DateTime} from 'luxon';
 import {MechanicAppointments} from '../models/dashboard/mechanic-appointment-interface';
 import {GarageAuthStore} from './garage-auth.store';
 import {Router} from '@angular/router';
+import {SettingAppointmentForm} from '../models/dashboard/setting-appointment-form';
 
 const defaultErrorMessage = "Une erreur est survenue, veuillez réessayer plus tard ";
 
@@ -25,7 +26,8 @@ type DashboardState = {
   isActualMonthRevenueLoading: boolean;
   attendancePerMonth: MonthlyAttendanceInterface[];
   isAttendancePerMonthLoading: boolean;
-  mechanicsAppointments: MechanicAppointments;
+  mechanicsAppointments: MechanicAppointments | null;
+  appointmentMessage: string;
   isLoading: boolean;
   error: string | null
 }
@@ -43,17 +45,14 @@ const initialState: DashboardState = {
   isActualMonthRevenueLoading: false,
   attendancePerMonth: [],
   isAttendancePerMonthLoading: false,
-  mechanicsAppointments: {
-    pending: [],
-    set: [],
-    confirmed: [],
-    in_progress: []
-  },
+  mechanicsAppointments: null,
   isLoading: false,
-  error: null
+  error: null,
+  appointmentMessage: ""
 }
 
 export const GarageDashboardStore = signalStore(
+  {providedIn : "root"},
   withState(initialState),
   withMethods((store, dashboardService = inject(GarageDashboardService), authStore = inject(GarageAuthStore), router = inject(Router)) => ({
     getAverageRate() {
@@ -208,6 +207,33 @@ export const GarageDashboardStore = signalStore(
           patchState(store, {isLoading: false});
         });
       }
+    },
+
+    setAppointmentDate(id : string, form : SettingAppointmentForm){
+      patchState( store, {isLoading: true});
+
+      if (authStore.isMechanic()) {
+        try {
+          dashboardService.setAppointmentDate(id, form).subscribe(() => {
+            this.getMechanicsAppointments();
+            patchState(store, {appointmentMessage: "Date enregistré avec succès"});
+          });
+        } catch (e) {
+          if(e instanceof Error){
+            patchState(store, {appointmentMessage: e.message});
+            return;
+          }
+          patchState(store, {isLoading: false, appointmentMessage: defaultErrorMessage});
+        }
+      } else {
+        router.navigateByUrl('/403').then(() => {
+          patchState(store, {isLoading: false});
+        });
+      }
+    },
+
+    resetAppointmentMessage(){
+      patchState(store, {appointmentMessage: ""});
     }
 
   })),

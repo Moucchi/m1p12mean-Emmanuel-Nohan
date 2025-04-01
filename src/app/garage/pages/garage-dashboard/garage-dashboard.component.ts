@@ -7,6 +7,12 @@ import {VolaPipe} from '../../../shared/pipe/vola.pipe';
 import {BaseChartDirective} from 'ng2-charts';
 import {ChartConfiguration, ChartOptions} from 'chart.js';
 import {Info} from 'luxon';
+import {LuxonDatePipe} from '../../../shared/pipe/luxon-date.pipe';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  SetAppointmentDialogComponent
+} from '../../components/garage-mechanics-dashboard-dialog/set-appointment-dialog/set-appointment-dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 type GeneralInfo = {
   title: string,
@@ -17,16 +23,18 @@ type GeneralInfo = {
 @Component({
   selector: 'garage-dashboard',
   imports: [
-    VolaPipe, BaseChartDirective
+    VolaPipe, BaseChartDirective, LuxonDatePipe
   ],
   templateUrl: './garage-dashboard.component.html',
   styleUrl: './garage-dashboard.component.css',
-  providers: [GarageDashboardStore, CurrencyPipe]
+  providers: [CurrencyPipe, LuxonDatePipe]
 })
 export class GarageDashboardComponent implements OnInit {
   readonly dashboardStore = inject(GarageDashboardStore);
   readonly layoutStore = inject(LayoutStore);
   readonly authStore = inject(GarageAuthStore);
+  readonly setAppointmentDialog = inject(MatDialog);
+  readonly appointmentSnackbar = inject(MatSnackBar);
 
   lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: [],
@@ -84,6 +92,11 @@ export class GarageDashboardComponent implements OnInit {
     effect(() => {
       this.updateServicesPieChart();
     });
+
+    effect(() => {
+      this.showAppointmentSnackbar();
+    });
+
   }
 
   ngOnInit(): void {
@@ -139,6 +152,21 @@ export class GarageDashboardComponent implements OnInit {
           ]
         }]
       };
+    }
+  }
+
+  setAppointmentDate(id: string) {
+    this.setAppointmentDialog.open(SetAppointmentDialogComponent , {
+      data : { id : id },
+      width : "500px"
+    });
+  }
+
+  showAppointmentSnackbar() {
+    const message = this.dashboardStore.appointmentMessage();
+    if( message ){
+      const snackbar = this.appointmentSnackbar.open(message, 'Fermer', {duration: 3000});
+      snackbar.afterDismissed().subscribe(() => this.dashboardStore.resetAppointmentMessage());
     }
   }
 

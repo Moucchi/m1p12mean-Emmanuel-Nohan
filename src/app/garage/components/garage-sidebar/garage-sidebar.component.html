@@ -8,7 +8,7 @@
   class="row-start-3 row-end-12 py-5 overflow-y-auto overflow-x-hidden scroll-smooth max-h-full flex flex-col custom-scrollbar divide-y divide-gray-200">
   @for (link of links; track link) {
     @if ( link.role.includes( role() ) ) {
-      <button
+      <a
         [routerLink]="link.path"
         class="flex items-center px-5 py-3 hover:bg-gray-100"
         [routerLinkActive]="link.activeStyle"
@@ -18,7 +18,7 @@
         </div>
         <p
           class="side-bar-item px-4 font-medium text-gray-700">{{ link.title }}</p>
-      </button>
+      </a>
     }
   }
 </div>
