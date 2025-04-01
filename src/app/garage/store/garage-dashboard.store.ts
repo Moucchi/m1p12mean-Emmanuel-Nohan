@@ -26,7 +26,7 @@ type DashboardState = {
   isActualMonthRevenueLoading: boolean;
   attendancePerMonth: MonthlyAttendanceInterface[];
   isAttendancePerMonthLoading: boolean;
-  mechanicsAppointments: MechanicAppointments | null;
+  mechanicsAppointments: MechanicAppointments;
   appointmentMessage: string;
   isLoading: boolean;
   error: string | null
@@ -45,14 +45,19 @@ const initialState: DashboardState = {
   isActualMonthRevenueLoading: false,
   attendancePerMonth: [],
   isAttendancePerMonthLoading: false,
-  mechanicsAppointments: null,
+  mechanicsAppointments: {
+    pending: undefined,
+    set: undefined,
+    confirmed: undefined,
+    in_progress: undefined
+  },
   isLoading: false,
   error: null,
   appointmentMessage: ""
 }
 
 export const GarageDashboardStore = signalStore(
-  {providedIn : "root"},
+  {providedIn: "root"},
   withState(initialState),
   withMethods((store, dashboardService = inject(GarageDashboardService), authStore = inject(GarageAuthStore), router = inject(Router)) => ({
     getAverageRate() {
@@ -209,17 +214,17 @@ export const GarageDashboardStore = signalStore(
       }
     },
 
-    setAppointmentDate(id : string, form : SettingAppointmentForm){
-      patchState( store, {isLoading: true});
+    setAppointmentDate(id: string, form: SettingAppointmentForm) {
+      patchState(store, {isLoading: true});
 
       if (authStore.isMechanic()) {
         try {
           dashboardService.setAppointmentDate(id, form).subscribe(() => {
             this.getMechanicsAppointments();
-            patchState(store, {appointmentMessage: "Date enregistré avec succès"});
+            patchState(store, {appointmentMessage: "Créneau envoyé avec succès"});
           });
         } catch (e) {
-          if(e instanceof Error){
+          if (e instanceof Error) {
             patchState(store, {appointmentMessage: e.message});
             return;
           }
@@ -232,7 +237,7 @@ export const GarageDashboardStore = signalStore(
       }
     },
 
-    resetAppointmentMessage(){
+    resetAppointmentMessage() {
       patchState(store, {appointmentMessage: ""});
     }
 
