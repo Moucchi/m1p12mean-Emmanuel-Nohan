@@ -1,4 +1,4 @@
-<div class="container shadow-sm mb-3">
+<div class="container mb-3">
     <div class="title-section">
         <div class="dot" [style]="`background-color: ${getStateColor()}`"></div>
         <h2>{{ title() }}</h2>
@@ -7,7 +7,7 @@
     <div class="flex flex-col">
 
         @for(appointment of data(); track $index){
-            <div class="item-card m-2">
+            <div class="item-card mt-2">
                 <div class="flex items-center justify-between px-4 py-2">
                     <img [src]="appointment.brandLogo" class="object-cover" alt="vehicle_logo" height="60px" width="100px">
                     <div>

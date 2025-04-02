@@ -3,16 +3,16 @@
     max-width: 100vw;
     border-radius: 8px;
     position: relative;
-    border: thin solid rgb(231, 230, 230);
-    background-color: white;
     color: #333;
 }
 
 .title-section {
     padding: 10px 20px;
-    border-bottom: thin solid rgb(231, 230, 230);
+    border: thin solid rgb(231, 230, 230);
     background-color: rgba(244, 244, 244, 0.623);
     display: flex;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px 0 rgb(231, 230, 230);
     align-items: center;
     gap: 10px;
 }
@@ -30,9 +30,9 @@ h2{
 }
 
 .item-card {
-    margin: 10px;
     border: 1px solid rgb(205, 205, 205);
     border-radius: 5px;
+    background-color: white;
 }
 
 .item-action {
