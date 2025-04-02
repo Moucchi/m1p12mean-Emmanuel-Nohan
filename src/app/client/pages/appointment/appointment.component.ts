@@ -13,6 +13,7 @@ import { CurrencyPipe } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
 import { UserInterface } from '../../../shared/models/User.interface';
 import { SuccessAlertComponent } from '../../components/success-alert/success-alert.component';
+import {SuiviStoreService} from '../../services/suivi-store.service';
 
 @Component({
   selector: 'app-appointment',
@@ -25,6 +26,7 @@ export class AppointmentComponent {
   private _formBuilder = inject(FormBuilder);
   private vehicleStore = inject(VehicleStoreService);
   private http = inject(HttpClient);
+  private suiviStoreService = inject(SuiviStoreService)
 
   success = signal<boolean>(false);
   isLoading = signal<boolean>(false);
@@ -40,7 +42,7 @@ export class AppointmentComponent {
       .filter(s => s.isSelected)
       .reduce((total, s) => total + s.basePrice, 0)
   });
-  
+
   firstFormGroup = this._formBuilder.group({
     vehicleId: ['', Validators.required],
   });
@@ -58,7 +60,7 @@ export class AppointmentComponent {
       if(car?.vehicleTypeId) type = car.vehicleTypeId._id;
       const params = new HttpParams().set('t', type);
       this.http.get<Service[]>(`${environment.apiUrl}/api/services/vehicles/types`, {params}).subscribe((response: any) => {
-        this.services.set(response.data);      
+        this.services.set(response.data);
         this.services().map((s) => s.isSelected = false);
         this.isLoading.set(false);
       });
@@ -66,8 +68,8 @@ export class AppointmentComponent {
   }
 
   updateCheck(index: number){
-    this.services.update(services => 
-      services.map((service, i) => 
+    this.services.update(services =>
+      services.map((service, i) =>
         i === index ? { ...service, isSelected: !service.isSelected } : service
       )
     );
@@ -95,6 +97,7 @@ export class AppointmentComponent {
         this.isLoading.set(false);
         stepper.reset();
         this.success.set(true);
+        this.suiviStoreService.fetchSuivi();
         setTimeout(() => this.success.set(false), 2000);
       });
     }
