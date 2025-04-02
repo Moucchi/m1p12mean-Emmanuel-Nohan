@@ -7,6 +7,8 @@ import {ServiceRatingInterface} from '../../models/dashboard/service-rating-inte
 import {MonthlyAttendanceInterface} from '../../models/dashboard/monthly-attendance-interface';
 import {GarageAuthStore} from '../../store/garage-auth.store';
 import {MechanicsAppointmentsResponseInterface} from '../../models/dashboard/mechanics-appointments-response-interface';
+import {SettingAppointmentForm} from '../../models/dashboard/setting-appointment-form';
+import {DateTime} from 'luxon';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,6 @@ export class GarageDashboardService {
   private readonly backendUrl = environment.apiUrl;
   private http = inject(HttpClient);
   private readonly authStore = inject(GarageAuthStore);
-
 
   getAverageRate() {
     if (this.authStore.isManager()) {
@@ -102,7 +103,47 @@ export class GarageDashboardService {
   getMechanicsAppointments() {
     if (this.authStore.isMechanic()) {
       return this.http.get<MechanicsAppointmentsResponseInterface>(`${this.backendUrl}/api/employees/${this.authStore.getId()}/appointments`).pipe(
-        map( (response) => { return response.data; } ),
+        map((response) => {
+          const data = response.data;
+
+          if (data.pending?.length) {
+            data.pending.sort((a, b) => {
+              const aDate = DateTime.fromISO(a.orderCreatedAt.toString());
+              const bDate = DateTime.fromISO(b.orderCreatedAt.toString());
+
+              return aDate.toMillis() - bDate.toMillis();
+            });
+          }
+
+          if (data.set?.length) {
+            data.set.sort((a, b) => {
+              const aDate = DateTime.fromISO(a.startedDate.toString());
+              const bDate = DateTime.fromISO(b.startedDate.toString());
+
+              return aDate.toMillis() - bDate.toMillis();
+            });
+          }
+
+          if (data.confirmed?.length) {
+            data.confirmed.sort((a, b) => {
+              const aDate = DateTime.fromISO(a.startedDate.toString());
+              const bDate = DateTime.fromISO(b.startedDate.toString());
+
+              return aDate.toMillis() - bDate.toMillis();
+            });
+          }
+
+          if (data.in_progress?.length) {
+            data.in_progress.sort((a, b) => {
+              const aDate = DateTime.fromISO(a.startedDate.toString());
+              const bDate = DateTime.fromISO(b.startedDate.toString());
+
+              return aDate.toMillis() - bDate.toMillis();
+            });
+          }
+
+          return data;
+        }),
         catchError((error: Error) => {
           throw error;
         })
@@ -110,5 +151,21 @@ export class GarageDashboardService {
     }
 
     return null;
+  }
+
+  setAppointmentDate(id: string, form : SettingAppointmentForm) {
+    return this.http.put(`${this.backendUrl}/api/appointments/${id}`, form).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    )
+  }
+
+  markAppointmentAsInProgress(id: string) {
+    return this.http.put(`${this.backendUrl}/api/appointments/${id}/in-progress`, {}).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    )
   }
 }

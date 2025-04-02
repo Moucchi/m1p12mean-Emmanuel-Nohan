@@ -9,6 +9,7 @@ import {DateTime} from 'luxon';
 import {MechanicAppointments} from '../models/dashboard/mechanic-appointment-interface';
 import {GarageAuthStore} from './garage-auth.store';
 import {Router} from '@angular/router';
+import {SettingAppointmentForm} from '../models/dashboard/setting-appointment-form';
 
 const defaultErrorMessage = "Une erreur est survenue, veuillez réessayer plus tard ";
 
@@ -26,8 +27,10 @@ type DashboardState = {
   attendancePerMonth: MonthlyAttendanceInterface[];
   isAttendancePerMonthLoading: boolean;
   mechanicsAppointments: MechanicAppointments;
+  appointmentMessage: string;
   isLoading: boolean;
-  error: string | null
+  error: string | null,
+  inProgress: boolean;
 }
 
 const initialState: DashboardState = {
@@ -44,16 +47,19 @@ const initialState: DashboardState = {
   attendancePerMonth: [],
   isAttendancePerMonthLoading: false,
   mechanicsAppointments: {
-    pending: [],
-    set: [],
-    confirmed: [],
-    in_progress: []
+    pending: undefined,
+    set: undefined,
+    confirmed: undefined,
+    in_progress: undefined
   },
   isLoading: false,
-  error: null
+  error: null,
+  appointmentMessage: "",
+  inProgress: false
 }
 
 export const GarageDashboardStore = signalStore(
+  {providedIn: "root"},
   withState(initialState),
   withMethods((store, dashboardService = inject(GarageDashboardService), authStore = inject(GarageAuthStore), router = inject(Router)) => ({
     getAverageRate() {
@@ -196,6 +202,13 @@ export const GarageDashboardStore = signalStore(
         try {
           dashboardService.getMechanicsAppointments()?.subscribe((response: MechanicAppointments) => {
             patchState(store, {mechanicsAppointments: response});
+
+            if (response.in_progress && response.in_progress.length > 0) {
+              patchState(store, {inProgress: true});
+            } else {
+              patchState(store, {inProgress: false});
+            }
+
           });
           patchState(store, {isLoading: false});
 
@@ -208,6 +221,59 @@ export const GarageDashboardStore = signalStore(
           patchState(store, {isLoading: false});
         });
       }
+    },
+
+    setAppointmentDate(id: string, form: SettingAppointmentForm) {
+      patchState(store, {isLoading: true});
+
+      if (authStore.isMechanic()) {
+        try {
+          dashboardService.setAppointmentDate(id, form).subscribe(() => {
+            this.getMechanicsAppointments();
+            patchState(store, {appointmentMessage: "Créneau envoyé avec succès"});
+          });
+        } catch (e) {
+          if (e instanceof Error) {
+            patchState(store, {appointmentMessage: e.message});
+            return;
+          }
+          patchState(store, {isLoading: false, appointmentMessage: defaultErrorMessage});
+        }
+      } else {
+        router.navigateByUrl('/403').then(() => {
+          patchState(store, {isLoading: false});
+        });
+      }
+    },
+
+    markAppointmentAsInProgress(id: string) {
+      patchState(store, {isLoading: true});
+
+      if (authStore.isMechanic()) {
+        try {
+          dashboardService.markAppointmentAsInProgress(id).subscribe(() => {
+            this.getMechanicsAppointments();
+            patchState(store, {appointmentMessage: "Réparation commencée"});
+          });
+        } catch (e) {
+          if (e instanceof Error) {
+            patchState(store, {appointmentMessage: e.message});
+            return;
+          }
+          patchState(store, {isLoading: false, appointmentMessage: defaultErrorMessage});
+        }
+      } else {
+        router.navigateByUrl('/403').then(() => {
+          patchState(store, {isLoading: false});
+        });
+      }
+    },
+
+    markAppointmentAsDone(id: string) {
+    },
+
+    resetAppointmentMessage() {
+      patchState(store, {appointmentMessage: ""});
     }
 
   })),

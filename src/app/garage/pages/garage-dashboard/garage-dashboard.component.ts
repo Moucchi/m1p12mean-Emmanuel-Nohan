@@ -7,6 +7,15 @@ import {VolaPipe} from '../../../shared/pipe/vola.pipe';
 import {BaseChartDirective} from 'ng2-charts';
 import {ChartConfiguration, ChartOptions} from 'chart.js';
 import {Info} from 'luxon';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  SetAppointmentDialogComponent
+} from '../../components/garage-mechanics-dashboard-dialog/set-appointment-dialog/set-appointment-dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MechanicAppointmentInterface} from '../../models/dashboard/mechanic-appointment-interface';
+import {
+  AppointmentCardComponent
+} from '../../components/garage-mechanics-dashboard-dialog/appointment-card/appointment-card.component';
 
 type GeneralInfo = {
   title: string,
@@ -15,18 +24,21 @@ type GeneralInfo = {
 }
 
 @Component({
+  standalone: true,
   selector: 'garage-dashboard',
   imports: [
-    VolaPipe, BaseChartDirective
+    VolaPipe, BaseChartDirective, AppointmentCardComponent
   ],
   templateUrl: './garage-dashboard.component.html',
   styleUrl: './garage-dashboard.component.css',
-  providers: [GarageDashboardStore, CurrencyPipe]
+  providers: [CurrencyPipe]
 })
 export class GarageDashboardComponent implements OnInit {
   readonly dashboardStore = inject(GarageDashboardStore);
   readonly layoutStore = inject(LayoutStore);
   readonly authStore = inject(GarageAuthStore);
+  readonly setAppointmentDialog = inject(MatDialog);
+  readonly appointmentSnackbar = inject(MatSnackBar);
 
   lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: [],
@@ -53,7 +65,6 @@ export class GarageDashboardComponent implements OnInit {
       backgroundColor: []
     }]
   };
-
   pieChartOptions: ChartOptions<'pie'> = {
     responsive: false,
     plugins: {
@@ -63,8 +74,14 @@ export class GarageDashboardComponent implements OnInit {
       }
     }
   };
-
   pieChartLegend = true;
+
+  pendingAppointments: MechanicAppointmentInterface[] = [];
+  setAppointments: MechanicAppointmentInterface[] = [];
+  confirmedAppointments: MechanicAppointmentInterface[] = [];
+  inProgressAppointments: MechanicAppointmentInterface[] = [];
+
+  selectedCardType = 'pending';
 
   isAttendanceChartBlank = computed(() => {
     return this.dashboardStore.attendancePerMonth() && this.dashboardStore.attendancePerMonth().length > 0;
@@ -84,6 +101,15 @@ export class GarageDashboardComponent implements OnInit {
     effect(() => {
       this.updateServicesPieChart();
     });
+
+    effect(() => {
+      this.showAppointmentSnackbar();
+    });
+
+    effect(() => {
+      this.refreshAppointments();
+    });
+
   }
 
   ngOnInit(): void {
@@ -91,7 +117,7 @@ export class GarageDashboardComponent implements OnInit {
       this.dashboardStore.getDashboardData();
     }
 
-    if(this.authStore.isMechanic()){
+    if (this.authStore.isMechanic()) {
       this.dashboardStore.getMechanicsAppointments();
     }
   }
@@ -142,6 +168,29 @@ export class GarageDashboardComponent implements OnInit {
     }
   }
 
+  setAppointmentDate(id: string) {
+    this.setAppointmentDialog.open(SetAppointmentDialogComponent, {
+      data: {id: id},
+      width: "500px"
+    });
+  }
+
+  showAppointmentSnackbar() {
+    const message = this.dashboardStore.appointmentMessage();
+    if (message) {
+      const snackbar = this.appointmentSnackbar.open(message, 'Fermer', {duration: 3000});
+      snackbar.afterDismissed().subscribe(() => this.dashboardStore.resetAppointmentMessage());
+    }
+  }
+
+  refreshAppointments() {
+    const appointments = this.dashboardStore.mechanicsAppointments() ?? {};
+    this.pendingAppointments = appointments.pending ?? [];
+    this.setAppointments = appointments.set ?? [];
+    this.confirmedAppointments = appointments.confirmed ?? [];
+    this.inProgressAppointments = appointments.in_progress ?? [];
+  }
+
   generalInfo: GeneralInfo[] = [
     {
       title: 'Note moyenne',
@@ -161,4 +210,12 @@ export class GarageDashboardComponent implements OnInit {
       currency: true
     }
   ]
+
+  markAsInProgress(id: string) {
+    this.dashboardStore.markAppointmentAsInProgress(id);
+  }
+
+  markAsCompleted(id: string) {
+    console.log(`vita ny ${id}`);
+  }
 }
