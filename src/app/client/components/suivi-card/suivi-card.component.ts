@@ -1,7 +1,9 @@
-import {DatePipe} from '@angular/common';
-import {Component, inject, input} from '@angular/core';
-import {Appointment} from '../../../shared/models/appointment.interface';
-import {SuiviStoreService} from '../../services/suivi-store.service';
+import { DatePipe } from '@angular/common';
+import { Component, inject, input } from '@angular/core';
+import { Appointment } from '../../../shared/models/appointment.interface';
+import { SuiviStoreService } from '../../services/suivi-store.service';
+import {VehicleStoreService} from '../../services/vehicle-store.service';
+
 
 @Component({
   selector: 'app-suivi-card',
@@ -11,7 +13,7 @@ import {SuiviStoreService} from '../../services/suivi-store.service';
 })
 export class SuiviCardComponent {
   private suiviStore = inject(SuiviStoreService);
-
+  private vehicleStore = inject(VehicleStoreService)
   title = input();
   state = input<string>('');
   data = input<Appointment[]>();
@@ -19,6 +21,7 @@ export class SuiviCardComponent {
 
   cancel(id: string, index: number) {
     this.suiviStore.cancelAppointment(id, index, this.state());
+    this.vehicleStore.fetchVehicles();
   }
 
   confirm(id: string, index: number) {
