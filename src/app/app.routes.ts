@@ -5,6 +5,10 @@ import {environment} from './environments/environment.prod';
 
 export const routes: Routes = [
   {
+    path:'form',
+    loadComponent: () => import('./shared/pages/dynamic-form/dynamic-form.component').then(c => c.DynamicFormComponent),
+  },
+  {
     path: '',
     redirectTo: () => {
       const token = localStorage.getItem(environment.tokenName);
