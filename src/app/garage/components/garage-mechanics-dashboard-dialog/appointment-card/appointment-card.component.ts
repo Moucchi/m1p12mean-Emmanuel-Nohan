@@ -1,7 +1,8 @@
-import {Component, input, output} from '@angular/core';
+import {Component, inject, input, output} from '@angular/core';
 import {MechanicAppointmentInterface} from '../../../models/dashboard/mechanic-appointment-interface';
 import {LuxonDatePipe} from '../../../../shared/pipe/luxon-date.pipe';
 import {CurrencyPipe, NgOptimizedImage} from '@angular/common';
+import {GarageDashboardStore} from '../../../store/garage-dashboard.store';
 
 @Component({
   standalone: true,
@@ -14,6 +15,8 @@ import {CurrencyPipe, NgOptimizedImage} from '@angular/common';
   templateUrl: './appointment-card.component.html',
 })
 export class AppointmentCardComponent {
+  protected readonly dashboardStore = inject(GarageDashboardStore);
+
   onFixDate = output<string>();
   onBegin = output<string>();
   onCompleted = output<string>();

@@ -81,6 +81,8 @@ export class GarageDashboardComponent implements OnInit {
   confirmedAppointments: MechanicAppointmentInterface[] = [];
   inProgressAppointments: MechanicAppointmentInterface[] = [];
 
+  selectedCardType = 'pending';
+
   isAttendanceChartBlank = computed(() => {
     return this.dashboardStore.attendancePerMonth() && this.dashboardStore.attendancePerMonth().length > 0;
   });
@@ -208,4 +210,12 @@ export class GarageDashboardComponent implements OnInit {
       currency: true
     }
   ]
+
+  markAsInProgress(id: string) {
+    this.dashboardStore.markAppointmentAsInProgress(id);
+  }
+
+  markAsCompleted(id: string) {
+    console.log(`vita ny ${id}`);
+  }
 }

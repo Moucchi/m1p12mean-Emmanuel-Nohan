@@ -29,7 +29,8 @@ type DashboardState = {
   mechanicsAppointments: MechanicAppointments;
   appointmentMessage: string;
   isLoading: boolean;
-  error: string | null
+  error: string | null,
+  inProgress: boolean;
 }
 
 const initialState: DashboardState = {
@@ -53,7 +54,8 @@ const initialState: DashboardState = {
   },
   isLoading: false,
   error: null,
-  appointmentMessage: ""
+  appointmentMessage: "",
+  inProgress: false
 }
 
 export const GarageDashboardStore = signalStore(
@@ -200,6 +202,13 @@ export const GarageDashboardStore = signalStore(
         try {
           dashboardService.getMechanicsAppointments()?.subscribe((response: MechanicAppointments) => {
             patchState(store, {mechanicsAppointments: response});
+
+            if (response.in_progress && response.in_progress.length > 0) {
+              patchState(store, {inProgress: true});
+            } else {
+              patchState(store, {inProgress: false});
+            }
+
           });
           patchState(store, {isLoading: false});
 
@@ -235,6 +244,32 @@ export const GarageDashboardStore = signalStore(
           patchState(store, {isLoading: false});
         });
       }
+    },
+
+    markAppointmentAsInProgress(id: string) {
+      patchState(store, {isLoading: true});
+
+      if (authStore.isMechanic()) {
+        try {
+          dashboardService.markAppointmentAsInProgress(id).subscribe(() => {
+            this.getMechanicsAppointments();
+            patchState(store, {appointmentMessage: "Réparation commencée"});
+          });
+        } catch (e) {
+          if (e instanceof Error) {
+            patchState(store, {appointmentMessage: e.message});
+            return;
+          }
+          patchState(store, {isLoading: false, appointmentMessage: defaultErrorMessage});
+        }
+      } else {
+        router.navigateByUrl('/403').then(() => {
+          patchState(store, {isLoading: false});
+        });
+      }
+    },
+
+    markAppointmentAsDone(id: string) {
     },
 
     resetAppointmentMessage() {
