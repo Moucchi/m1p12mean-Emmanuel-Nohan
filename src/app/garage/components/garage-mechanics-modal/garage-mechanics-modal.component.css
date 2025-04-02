@@ -1,0 +1,29 @@
+.file-input-container {
+  margin-bottom: 20px;
+}
+
+.file-input-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.mat-error {
+  font-size: 12px;
+  color: #f44336;
+  margin-top: 4px;
+}
+
+input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+  display: block;
+}

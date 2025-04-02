@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
   <ol class="inline-flex items-center font-mono">
-    @for (breadcrumb of breadcrumbs; track breadcrumb.link) {
+    @for (breadcrumb of breadcrumbs; track breadcrumb.id) {
       <li class="inline-flex items-center">
         @if (breadcrumb.needBar) {
           <span class="mx-1.5"> / </span>

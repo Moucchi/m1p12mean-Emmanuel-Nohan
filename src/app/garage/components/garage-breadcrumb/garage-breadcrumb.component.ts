@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd, RouterModule } from '@angular/router';
-import { Breadcrumb } from '../../models/breadcrumb';
+import { Breadcrumb } from '../../models/breadcrumb/breadcrumb';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -44,7 +44,8 @@ export class GarageBreadcrumbComponent implements OnInit {
         breadcrumbs.push({
           title: label,
           link: url,
-          needBar: breadcrumbs.length > 0
+          needBar: breadcrumbs.length > 0,
+          id : child.snapshot.data['id']
         });
       }
 

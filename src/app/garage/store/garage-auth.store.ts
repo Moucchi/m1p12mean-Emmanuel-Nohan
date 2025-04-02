@@ -12,6 +12,8 @@ type AuthState = {
   user: UserInterface | null;
   loading: boolean;
   error: string | null;
+  registerSuccess: string | null;
+  registerError: string | null;
 }
 
 const initialState: AuthState = {
@@ -19,7 +21,9 @@ const initialState: AuthState = {
   token: '',
   user: null,
   loading: false,
-  error: null
+  error: null,
+  registerSuccess: null,
+  registerError: null,
 }
 
 export const GarageAuthStore = signalStore(
@@ -79,10 +83,7 @@ export const GarageAuthStore = signalStore(
           try {
             const user = authService.getUser(token);
 
-            console.log(user);
-
             if (user === null || (user.role === "client")) {
-              console.log("ofr");
               throw new Error("Token invalide");
             }
 
@@ -102,7 +103,62 @@ export const GarageAuthStore = signalStore(
 
             throw new Error("Token invalide");
           }
+        },
+
+        register(formData: FormData) {
+          if (this.isManager()) {
+            patchState(store, {loading: true, error: null});
+
+            authService.register(formData).subscribe({
+              next: () => {
+                patchState(store, {
+                  loading: false,
+                  registerSuccess: 'L\'employé a été ajouté avec succès',
+                });
+                route.navigateByUrl("/garage/mechanics");
+              },
+              error: (error) => {
+                console.log(error);
+                patchState(store, {
+                  loading: false,
+                  registerError: "Une erreur s'est produite lors de l'ajout de l'employé",
+                });
+              }
+            });
+          }
+        },
+
+        resetRegisterError() {
+          patchState(store, {registerError: null});
+        },
+
+        resetRegisterSuccess() {
+          patchState(store, {registerSuccess: null});
+        },
+
+        resetRegisterMessage() {
+          patchState(store, {registerError: null, registerSuccess: null});
+        },
+        isManager() {
+          if (store.user !== null) {
+            return store.user()!.role === 'manager';
+          }
+
+          return false;
+        },
+        isMechanic() {
+
+          if (store.user !== null) {
+            return store.user()!.role === 'mechanics';
+          }
+
+          return false;
+        },
+
+        getId() {
+          return store.user()? store.user()!.id : null;
         }
+
       }
     )
   ),

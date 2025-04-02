@@ -1,33 +1,120 @@
 <div class="grid grid-cols-12 grid-flow-row-dense gap-2">
-  <!-- DASHBOARD MANAGER -->
 
-  <div class="border border-teal-200 rounded-lg col-span-12">
-    <div class="h-24">LIENS RAPIDE</div>
-  </div>
-  <div class="border border-teal-200 rounded-lg col-span-9">
-    <div class="h-24">Statistiques</div>
-  </div>
-  <div class="border border-teal-200 rounded-lg col-span-3">
-    <span>Info general</span>
-    <ul class="divide-y divide-gray-100 py-2 px-4">
-      <li class="flex py-4">
+  @if (authStore.isManager()) {
+    <div class="border border-gary-200 rounded-lg col-span-4">
+      <div class="h-24">LIENS RAPIDE</div>
+    </div>
 
+    <div class="border border-gary-200 rounded-lg col-span-12 p-4 grid gap-3">
+      <h2 class="text-xl font-bold">Statistiques</h2>
+      <div class="grid gap-y-10 px-7">
+        <div>
+          <h3 class="text-lg font-semibold">Prestations effectuées</h3>
 
-      </li>
-      <li class="flex py-4">
+          @if (isAttendanceChartBlank()) {
+            <canvas baseChart class="w-full"
+                    [type]="'line'"
+                    [data]="lineChartData"
+                    [options]="lineChartOptions"
+                    [legend]="lineChartLegend"
+            >
+            </canvas>
+          } @else {
+            <div class=" inline-flex justify-center w-full"> Rien à afficher pour le moment ...</div>
+          }
+        </div>
 
-      </li>
-      <li class="flex py-4">
+        <div>
+          <h3 class="text-lg font-semibold">Top services</h3>
 
-      </li>
-    </ul>
-  </div>
+          @if (isServicesChartBlank()) {
+            <canvas baseChart class="w-1/2"
+                    [type]="'pie'"
+                    [data]="pieChartData"
+                    [options]="pieChartOptions"
+                    [legend]="pieChartLegend">
+            </canvas>
+          } @else {
+            <div class=" inline-flex justify-center w-full"> Rien à afficher pour le moment ...</div>
+          }
 
-  <!-- DASHBOARD MECANICIEN -->
+        </div>
+      </div>
+    </div>
 
-  <div class="border border-teal-200 rounded-lg col-span-12">
-    <div>En attente de confimation du client</div>
-    <div>In progress</div>
-    <div>Completed</div>
-  </div>
+    <div class="border border-gary-200 rounded-lg col-span-8 p-4 h-fit">
+      <h2 class="text-xl font-bold">Informations générales</h2>
+      <div class="flex items-center overflow-x-auto scroll-smooth max-w-full gap-3 py-3 custom-scrollbar ">
+        @for (info of generalInfo; track $index) {
+          <div class="bg-gray-100 rounded-lg p-3 shadow-sm">
+            <p class="text-sm text-gray-700 mb-1">{{ info.title }}</p>
+            <p class="text-xl font-bold">
+              @if (info?.currency) {
+                {{ info.value() | vola }}
+              } @else {
+                {{ info.value() }}
+              }  </p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (authStore.isMechanic()) {
+    <div class="rounded-lg col-span-12">
+      <div class="grid grid-cols-4 gap-x-3">
+        <div class="grid gap-y-1 shadow-md rounded-lg">
+          <div class="flex p-2 items-center gap-x-3 rounded-t-lg bg-gray-100 border-b border-gray-200">
+            <div class="rounded-full w-3 h-3 bg-orange-400"></div>
+            <h2 class="text-lg font-semibold">En attente de confirmation</h2>
+          </div>
+          <div class="divide-y py-2">
+            <p class="px-4">1</p>
+            <p class="px-4">2</p>
+            <p class="px-4">3</p>
+            <p class="px-4">4</p>
+          </div>
+        </div>
+
+        <div class="grid gap-y-1 shadow-md rounded-lg">
+          <div class="flex p-2 items-center gap-x-3 rounded-t-lg bg-gray-100 border-b border-gray-200">
+            <div class="rounded-full w-3 h-3 bg-purple-500"></div>
+            <h2 class="text-lg font-semibold">Rendez-vous fixé</h2>
+          </div>
+          <div class="divide-y py-2">
+            <p class="px-4">1</p>
+            <p class="px-4">2</p>
+            <p class="px-4">3</p>
+            <p class="px-4">4</p>
+          </div>
+        </div>
+
+        <div class="grid gap-y-1 shadow-md rounded-lg">
+          <div class="flex p-2 items-center gap-x-3 rounded-t-lg bg-gray-100 border-b border-gray-200">
+            <div class="rounded-full w-3 h-3 bg-blue-600"></div>
+            <h2 class="text-lg font-semibold">En cours</h2>
+          </div>
+          <div class="divide-y py-2">
+            <p class="px-4">1</p>
+            <p class="px-4">2</p>
+            <p class="px-4">3</p>
+            <p class="px-4">4</p>
+          </div>
+        </div>
+
+        <div class="grid gap-y-1 shadow-md rounded-lg">
+          <div class="flex p-2 items-center gap-x-3 rounded-t-lg bg-gray-100 border-b border-gray-200">
+            <div class="rounded-full w-3 h-3 bg-green-600"></div>
+            <h2 class="text-lg font-semibold">Terminé</h2>
+          </div>
+          <div class="divide-y py-2">
+            <p class="px-4">1</p>
+            <p class="px-4">2</p>
+            <p class="px-4">3</p>
+            <p class="px-4">4</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
 </div>

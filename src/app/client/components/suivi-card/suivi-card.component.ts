@@ -4,6 +4,7 @@ import { Appointment } from '../../../shared/models/appointment.interface';
 import { SuiviStoreService } from '../../services/suivi-store.service';
 import {VehicleStoreService} from '../../services/vehicle-store.service';
 
+
 @Component({
   selector: 'app-suivi-card',
   imports: [DatePipe],
@@ -18,7 +19,7 @@ export class SuiviCardComponent {
   data = input<Appointment[]>();
   isProcessing = this.suiviStore.getProcessing();
 
-  cancel(id: string, index: number){
+  cancel(id: string, index: number) {
     this.suiviStore.cancelAppointment(id, index, this.state());
     this.vehicleStore.fetchVehicles();
   }

@@ -1,6 +1,6 @@
 import {Route} from '@angular/router';
-import {CalendarComponent} from '../shared/components/calendar/calendar.component';
 import {garageAuthGuard} from './guards/garage-auth.guard';
+import {garageManagerGuard} from './guards/garage-manager.guard';
 
 export const garageRoutes: Route[] = [
   {
@@ -10,7 +10,7 @@ export const garageRoutes: Route[] = [
   },
   {
     path: "",
-    data: { breadcrumb: 'Garage' },
+    data: {breadcrumb: 'Garage', id: "main"},
     loadComponent: () => import("./components/garage-layout/garage-layout.component").then(m => m.GarageLayoutComponent),
     canActivateChild: [garageAuthGuard],
     children: [
@@ -18,13 +18,34 @@ export const garageRoutes: Route[] = [
         path: "",
         loadComponent: () => import("./pages/garage-dashboard/garage-dashboard.component").then(m => m.GarageDashboardComponent),
         title: "Dashboard",
-        data: { breadcrumb: 'Dashboard' }
+        data: {breadcrumb: 'Dashboard', id: "main/1"}
       },
       {
         path: "events",
-        component: CalendarComponent,
+        loadComponent: () => import('./pages/calendar/calendar.component').then(m => m.CalendarComponent),
         title: "Evenements",
-        data: { breadcrumb: 'Calendrier' }
+        data: {breadcrumb: 'Calendrier', id: "main/2"}
+      },
+      {
+        path: "mecanics",
+        loadComponent: () => import('./pages/garage-mechanics/garage-mechanics.component').then(m => m.GarageMechanicsComponent),
+        title: "Mecaniciens",
+        data: {breadcrumb: 'Mécanicien', id: "main/2"},
+        canActivate: [garageManagerGuard]
+      },
+      {
+        path: "services",
+        loadComponent: () => import('./pages/garage-service/garage-service.component').then(m => m.GarageServiceComponent),
+        title: "Services",
+        data: {breadcrumb: 'Service', id: "main/3"},
+        canActivate: [garageManagerGuard]
+      },
+      {
+        path: "historique",
+        loadComponent: () => import('./pages/garage-historique/garage-historique.component').then(m => m.GarageHistoriqueComponent),
+        title: "Historique des prestations",
+        data: {breadcrumb: 'Historique des prestations', id: "main/4"},
+        canActivate: [garageManagerGuard]
       }
     ]
   }
