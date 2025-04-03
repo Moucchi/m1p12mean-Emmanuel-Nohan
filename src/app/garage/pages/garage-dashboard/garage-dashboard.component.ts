@@ -42,7 +42,6 @@ export class GarageDashboardComponent implements OnInit {
   readonly authStore = inject(GarageAuthStore);
   readonly setAppointmentDialog = inject(MatDialog);
   readonly appointmentSnackbar = inject(MatSnackBar);
-  readonly completeAppointmentDialog = inject(MatDialog);
 
   lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: [],

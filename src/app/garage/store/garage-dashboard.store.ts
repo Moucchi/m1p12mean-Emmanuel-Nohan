@@ -292,7 +292,6 @@ export const GarageDashboardStore = signalStore(
           patchState(store, {isLoading: false});
         });
       }
-
     },
 
     resetAppointmentMessage() {
