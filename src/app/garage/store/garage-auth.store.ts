@@ -105,29 +105,6 @@ export const GarageAuthStore = signalStore(
           }
         },
 
-        register(formData: FormData) {
-          if (this.isManager()) {
-            patchState(store, {loading: true, error: null});
-
-            authService.register(formData).subscribe({
-              next: () => {
-                patchState(store, {
-                  loading: false,
-                  registerSuccess: 'L\'employé a été ajouté avec succès',
-                });
-                route.navigateByUrl("/garage/mecanics");
-              },
-              error: (error) => {
-                console.log(error);
-                patchState(store, {
-                  loading: false,
-                  registerError: "Une erreur s'est produite lors de l'ajout de l'employé",
-                });
-              }
-            });
-          }
-        },
-
         resetRegisterError() {
           patchState(store, {registerError: null});
         },

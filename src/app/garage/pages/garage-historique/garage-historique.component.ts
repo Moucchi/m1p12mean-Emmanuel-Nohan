@@ -1,6 +1,6 @@
 import {Component, computed, effect, inject, OnInit} from '@angular/core';
 import {CompletedAppointmentStore} from '../../store/AppointmentHistory.store';
-import {CurrencyPipe, DatePipe, NgClass, NgOptimizedImage} from '@angular/common';
+import {CurrencyPipe, DatePipe, NgClass} from '@angular/common';
 import {SpinnerComponent} from '../../components/spinner/spinner.component';
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
@@ -12,7 +12,6 @@ import {VolaPipe} from '../../../shared/pipe/vola.pipe';
   selector: 'mean-garage-historique',
   imports: [
     MatIcon,
-    NgOptimizedImage,
     SpinnerComponent,
     NgClass,
     DatePipe,

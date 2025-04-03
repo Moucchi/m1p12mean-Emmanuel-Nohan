@@ -33,7 +33,7 @@ export class SuiviCardComponent {
       case 'pending':
         return '#FFC107';
       case 'set':
-        return '#2196F3	';
+        return '#2196F3';
       case 'confirmed':
         return '#4CAF50';
       default:

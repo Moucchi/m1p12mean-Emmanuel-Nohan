@@ -26,7 +26,7 @@ const initialState: AppointmentHistoryState = {
 export const CompletedAppointmentStore = signalStore(
   {providedIn: "root"},
   withState(initialState),
-  withMethods((store, service = inject(CompletedAppointmentService), route = inject(Router)) => ({
+  withMethods((store, service = inject(CompletedAppointmentService)) => ({
     getAllCompletedAppointment() {
       patchState(store, {loading: true});
 
