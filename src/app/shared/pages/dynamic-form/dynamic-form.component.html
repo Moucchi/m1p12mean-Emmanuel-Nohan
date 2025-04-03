@@ -1,0 +1,76 @@
+<div class="w-full h-full flex justify-center items-center ">
+  <div class="grid gap-2 border rounded-lg h-fit w-fit">
+    <div class="flex items-center justify-end w-full  p-3">
+      <span
+        class="border p-2 rounded-lg bg-black font-semibold text-white"
+        (click)="addInputExtra()"
+      >
+        AJOUTER
+      </span>
+    </div>
+
+    <div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-1 grid-flow-row p-5">
+        <div>
+          <label for="files">Images</label>
+          <div>
+            <input type="file" id="files" multiple class="border" (change)="onFileChange($event)">
+          </div>
+          @if (form.get('files')?.hasError('required')) {
+            <div class="text-red-600">Fichier ne doit pas etre vide</div>
+          }
+
+          @if (form.get('files')?.hasError('invalidFile')) {
+            <div class="text-red-600">Fichier invalide</div>
+          }
+          @if (form.get('files')?.hasError('invalidType')) {
+            <div class="text-red-600">Type de fichier invalide</div>
+          }
+          @if (form.get('files')?.hasError('oversizedFile')) {
+            <div class="text-red-600">Fichier trop volumineux</div>
+          }
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Rapport</mat-label>
+          <input matInput formControlName="report">
+        </mat-form-field>
+
+        <ng-container formArrayName="items">
+          @for (item of itemsArray.controls; track item.value.id) {
+            <div [formGroupName]="$index" class="flex gap-x-3 items-center">
+
+              <div class="grid grid-flow-col gap-x-2">
+                <mat-form-field appearance="outline">
+                  <mat-label>Nom</mat-label>
+                  <input matInput formControlName="name">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Prix</mat-label>
+                  <input matInput formControlName="price">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Quantité</mat-label>
+                  <input matInput formControlName="quantity">
+                </mat-form-field>
+              </div>
+
+              <div (click)="removeItem($index)" class="border border-red-600 w-fit p-2 cursor-pointer">Supprimer</div>
+
+            </div>
+          }
+        </ng-container>
+
+        <button type="submit" class="border p-2 rounded-lg">Okay</button>
+      </form>
+
+      <pre>{{ form.value | json }}</pre>
+
+      <quill-editor [(ngModel)]="content">
+      </quill-editor>
+      <div class="preview" [innerHTML]="content"></div>
+    </div>
+  </div>
+</div>

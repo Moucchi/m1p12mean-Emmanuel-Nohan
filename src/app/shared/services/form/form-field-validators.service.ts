@@ -56,7 +56,7 @@ export class FormFieldValidatorsService {
       return {invalidFile: true};
     }
 
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
     if (!allowedTypes.includes(file.type)) {
       return {invalidType: true};
     }
@@ -68,4 +68,5 @@ export class FormFieldValidatorsService {
 
     return null;
   }
+
 }
