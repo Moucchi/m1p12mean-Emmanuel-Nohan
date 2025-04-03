@@ -80,7 +80,7 @@
           [appointments]="confirmedAppointments"
           title="En attente"
           color="#FFA500FF"
-          emptyMessage="Aucun créneau approuvé actuellement"
+          emptyMessage="Aucun créneau approuvé pour le moment"
           (onBegin)="markAsInProgress($event)"
           type="approved">
         </appointment-card>
@@ -89,7 +89,7 @@
           [appointments]="inProgressAppointments"
           title="En cours"
           color="#2563EB"
-          emptyMessage="Aucun rendez-vous en cours"
+          emptyMessage="Aucun vehicule en cours de traitement"
           (onCompleted)="markAsCompleted($event)"
           type="in_progress">
         </appointment-card>

@@ -1,14 +1,8 @@
-<div class="w-full h-full flex justify-center items-center ">
-  <div class="grid gap-2 border rounded-lg h-fit w-fit">
-    <div class="flex items-center justify-end w-full  p-3">
-      <span
-        class="border p-2 rounded-lg bg-black font-semibold text-white"
-        (click)="addInputExtra()"
-      >
-        AJOUTER
-      </span>
+<div class="modal-wrapper">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="add-btn" (click)="addInputExtra()">AJOUTER</span>
     </div>
-
     <div>
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-1 grid-flow-row p-5">
         <div>
@@ -19,7 +13,6 @@
           @if (form.get('files')?.hasError('required')) {
             <div class="text-red-600">Fichier ne doit pas etre vide</div>
           }
-
           @if (form.get('files')?.hasError('invalidFile')) {
             <div class="text-red-600">Fichier invalide</div>
           }
@@ -30,39 +23,30 @@
             <div class="text-red-600">Fichier trop volumineux</div>
           }
         </div>
-
         <ng-container formArrayName="items">
-          @for (item of itemsArray.controls; track item.value.id) {
-            <div [formGroupName]="$index" class="flex gap-x-3 items-center">
-
-              <div class="grid grid-flow-col gap-x-2">
-                <mat-form-field appearance="outline">
-                  <mat-label>Nom</mat-label>
-                  <input matInput formControlName="name">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                  <mat-label>Prix</mat-label>
-                  <input matInput formControlName="price">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                  <mat-label>Quantité</mat-label>
-                  <input matInput formControlName="quantity">
-                </mat-form-field>
-              </div>
-
-              <div (click)="removeItem($index)" class="border border-red-600 w-fit p-2 cursor-pointer">Supprimer</div>
-
+          @for (item of itemsArray.controls; track item.value.id){
+          <div [formGroupName]="$index" class="flex gap-x-3 items-center">
+            <div class="grid grid-flow-col gap-x-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="name">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Prix</mat-label>
+                <input matInput formControlName="price">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Quantité</mat-label>
+                <input matInput formControlName="quantity">
+              </mat-form-field>
             </div>
+            <div (click)="removeItem($index)" class="border border-red-600 w-fit p-2 cursor-pointer">Supprimer</div>
+          </div>
           }
         </ng-container>
-
-        <button type="submit" class="border p-2 rounded-lg  bg-black font-semibold text-white">Okay</button>
+        <button type="submit" class="border p-2 rounded-lg bg-black font-semibold text-white">Okay</button>
       </form>
-
-      <quill-editor [(ngModel)]="content">
-      </quill-editor>
+      <quill-editor [(ngModel)]="content"></quill-editor>
     </div>
   </div>
 </div>
