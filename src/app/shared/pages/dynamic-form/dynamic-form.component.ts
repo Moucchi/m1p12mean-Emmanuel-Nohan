@@ -5,13 +5,14 @@ import {
   ReactiveFormsModule,
   Validators,
   AbstractControl,
-  ValidationErrors
+  ValidationErrors, FormsModule
 } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {CommonModule} from '@angular/common';
 import {FormFieldValidatorsService} from '../../services/form/form-field-validators.service';
+import {QuillEditorComponent} from 'ngx-quill';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -22,7 +23,9 @@ import {FormFieldValidatorsService} from '../../services/form/form-field-validat
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    QuillEditorComponent,
+    FormsModule
   ],
   styleUrl: './dynamic-form.component.css'
 })
@@ -35,6 +38,8 @@ export class DynamicFormComponent {
     report: ['', Validators.required],
     items: this.formBuilder.array([])
   });
+
+  content = '';
 
   get itemsArray() {
     return this.form.get('items') as FormArray;

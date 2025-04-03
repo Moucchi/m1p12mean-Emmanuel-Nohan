@@ -67,6 +67,10 @@
       </form>
 
       <pre>{{ form.value | json }}</pre>
+
+      <quill-editor [(ngModel)]="content">
+      </quill-editor>
+      <div class="preview" [innerHTML]="content"></div>
     </div>
   </div>
 </div>

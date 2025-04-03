@@ -5,6 +5,7 @@ import {routes} from './app.routes';
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {authTokenInterceptor, httpInterceptor} from './interceptors/auth-token.interceptor';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import {provideQuillConfig} from 'ngx-quill';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +17,18 @@ export const appConfig: ApplicationConfig = {
           httpInterceptor
         ]
       )
-    ), provideCharts(withDefaultRegisterables())
+    ), provideCharts(withDefaultRegisterables()),
+    provideQuillConfig({
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote', 'code-block'],
+          [{ 'header': 1 }, { 'header': 2 }],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }]
+        ]
+      },
+      placeholder: 'Écrivez ici...',
+      theme: 'snow'
+    })
   ]
 };
