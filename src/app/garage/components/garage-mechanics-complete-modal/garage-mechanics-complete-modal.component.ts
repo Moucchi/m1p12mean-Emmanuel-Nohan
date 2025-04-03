@@ -17,12 +17,10 @@ import {
   Validators
 } from '@angular/forms';
 import {GarageDashboardStore} from '../../store/garage-dashboard.store';
-import {MatInput, MatLabel} from '@angular/material/input';
+import {MatError, MatInput, MatLabel} from '@angular/material/input';
 import {QuillEditorComponent} from 'ngx-quill';
 import {MatFormField} from '@angular/material/form-field';
 import {MatIcon} from '@angular/material/icon';
-import {JsonPipe} from '@angular/common';
-
 
 @Component({
   selector: 'mean-garage-mechanics-complete-modal',
@@ -38,7 +36,7 @@ import {JsonPipe} from '@angular/common';
     MatDialogActions,
     MatDialogClose,
     MatIcon,
-    JsonPipe
+    MatError
   ],
   templateUrl: './garage-mechanics-complete-modal.component.html',
   styleUrl: './garage-mechanics-complete-modal.component.css'
@@ -49,10 +47,10 @@ export class GarageMechanicsCompleteModalComponent {
   private formBuilder = inject(FormBuilder);
   private readonly dashboardStore = inject(GarageDashboardStore);
 
-  itemsArrayLenght = signal<number>(0);
+  itemsArrayLength = signal<number>(0);
 
   isItemsAdded = computed(()=>{
-    return this.itemsArrayLenght() > 0 ;
+    return this.itemsArrayLength() > 0 ;
   });
 
   form = this.formBuilder.nonNullable.group({
@@ -61,15 +59,13 @@ export class GarageMechanicsCompleteModalComponent {
     items: this.formBuilder.array([])
   });
 
-  content = '';
-
   get itemsArray() {
     return this.form.get('items') as FormArray;
   }
 
   removeItem(index: number): void {
     this.itemsArray.removeAt(index);
-    this.itemsArrayLenght.set(this.itemsArray.length);
+    this.itemsArrayLength.set(this.itemsArray.length);
   }
 
   validateMultipleFiles(control: AbstractControl): ValidationErrors | null {
@@ -88,7 +84,7 @@ export class GarageMechanicsCompleteModalComponent {
 
       const maxSize = 5 * 1024 * 1024;
       if (file.size > maxSize) {
-        return {oversizedFile: true};
+        return {overSizedFile: true};
       }
     }
 
@@ -103,7 +99,7 @@ export class GarageMechanicsCompleteModalComponent {
         files: Array.from(input.files)
       });
 
-      console.log(`Files: ${JSON.stringify(this.form.get('files')?.value ?? 'OFR')}`);
+      this.form.updateValueAndValidity();
     }
   }
 
@@ -112,7 +108,7 @@ export class GarageMechanicsCompleteModalComponent {
       id: [this.generateItemId()],
       name: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0)]],
-      quantity: [0, [Validators.required, Validators.min(0)]]
+      quantity: [0, [Validators.required, Validators.min(-1)]]
     });
   }
 
@@ -122,17 +118,14 @@ export class GarageMechanicsCompleteModalComponent {
 
   addInputExtra(): void {
     this.itemsArray.push(this.generateItem());
-    this.itemsArrayLenght.set(this.itemsArray.length);
+    this.itemsArrayLength.set(this.itemsArray.length);
   }
 
   onSubmit(): void {
 
-    this.form.patchValue({
-      report: this.content
-    });
+    this.form.updateValueAndValidity();
 
     const formValues = this.form.getRawValue();
-
     const formValue = new FormData();
 
     formValues.files!.forEach((file: File) => {
@@ -143,10 +136,10 @@ export class GarageMechanicsCompleteModalComponent {
 
     formValue.append('items', JSON.stringify(formValues.items));
 
-    this.dashboardStore.markAppointmentAsCompleted(this.data.id, formValue);
+    if( this.form.valid ){
+      this.dashboardStore.markAppointmentAsCompleted(this.data.id, formValue);
+    }
 
     this.dialogRef.close();
   }
-
-  protected readonly JSON = JSON;
 }

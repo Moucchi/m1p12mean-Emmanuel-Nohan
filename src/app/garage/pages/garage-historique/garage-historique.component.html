@@ -27,7 +27,7 @@
               <td class="px-6 py-4">
                 <div>{{ appointment.brandName }} - {{ appointment.registrationNumber }}</div>
               </td>
-              <td class="px-6 py-4">{{ appointment.rate }}/5</td>
+              <td class="px-6 py-4">{{ appointment.rate ?? 0 }}/5</td>
               <td class="px-6 py-4">{{ getTotal(appointment.items) | vola }}</td>
 
               <td class="px-6 py-4">
