@@ -17,8 +17,8 @@
               }
 
               @if (type() !== 'pending') {
-                <p class="text-end text-sm font-medium">Debut : {{ appointment.startedDate | luxonDate }}</p>
-                <p class="text-end text-sm font-medium">Fin prévue : {{ appointment.endingDate | luxonDate }}</p>
+                <p class="text-end text-sm font-medium">Debut : {{ appointment.startedDate.toString() | date: 'dd-MM-YYYY à HH:mm':'UTC+0' }}</p>
+                <p class="text-end text-sm font-medium">Fin prévue : {{ appointment.endingDate.toString() | date: 'dd-MM-YYYY à HH:mm':'UTC+0' }}</p>
               }
             </div>
           </div>
