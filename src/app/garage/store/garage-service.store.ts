@@ -4,7 +4,6 @@ import {
 } from '../models/service/garage-service-response.interface';
 import {inject} from '@angular/core';
 import {GarageServiceService} from '../services/garage-service/garage-service.service';
-import {withDevtools} from '@angular-architects/ngrx-toolkit';
 import {GarageServiceFormInterface} from '../models/service/garage-service-form.interface';
 
 type ServiceState = {
@@ -177,5 +176,4 @@ export const GarageServiceStore = signalStore(
     },
 
   })),
-  withDevtools("ServiceStore")
 );

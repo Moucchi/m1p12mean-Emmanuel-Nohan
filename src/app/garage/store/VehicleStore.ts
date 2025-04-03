@@ -3,7 +3,6 @@ import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {environment} from '../../environments/environment';
 import {inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {withDevtools} from '@angular-architects/ngrx-toolkit';
 import {catchError, map} from 'rxjs';
 import {VehicleTypeResponse} from '../../shared/models/vehicle-type-response';
 import {VehicleTypeForm} from '../../shared/models/vehicle-type-form';
@@ -44,10 +43,6 @@ export const vehicleStore = signalStore(
         });
     },
 
-    updateType(id: string) {
-
-    },
-
     addType(form: VehicleTypeForm) {
       patchState(store, {isLoading: true});
 
@@ -72,5 +67,4 @@ export const vehicleStore = signalStore(
     }
 
   })),
-  withDevtools("TypeStore")
 );

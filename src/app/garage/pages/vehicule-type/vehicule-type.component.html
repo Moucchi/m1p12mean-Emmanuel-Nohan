@@ -5,6 +5,7 @@
     <div class="col-start-13">
       <div
         class="cursor-pointer border p-2 rounded-lg flex items-center justify-between text-center font-semibold bg-black text-white hover:bg-red-600"
+        title="Ajouter un type"
         (click)="showAddTypeDialog()"
       >
 
@@ -17,17 +18,19 @@
     <div>
       <table class="w-full border-collapse border border-gray-200 bg-white text-left text-sm text-gray-500 mt-3">
         <thead class="bg-gray-50">
-        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Nom</th>
-        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Pourcentage</th>
-        <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+        <th scope="col" class="px-4 py-3 font-medium text-gray-900">Nom</th>
+        <th scope="col" class="px-4 py-3 font-medium text-gray-900">Pourcentage</th>
+        <th scope="col" class="px-4 py-3 font-medium text-gray-900 w-16 text-right"></th>
         </thead>
 
         <tbody class="divide-y divide-gray-100 border-t border-gray-200">
           @for (type of types; track type._id) {
             <tr>
-              <td class="px-6 py-4 font-medium text-gray-900">{{ type.type }}</td>
-              <td class="px-6 py-4">{{ type.priceMultiplierPercent }}</td>
-              <td class="px-6 py-4">SOLONA</td>
+              <td class="px-4 py-3 font-medium text-gray-900">{{ type.type }}</td>
+              <td class="px-4 py-3">{{ type.priceMultiplierPercent }}</td>
+              <td class="px-4 py-3 text-center">
+                <mat-icon title="Supprimer" class="cursor-pointer text-black hover:text-red-600">delete</mat-icon>
+              </td>
             </tr>
           }
         </tbody>

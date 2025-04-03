@@ -1,6 +1,5 @@
 import {CompletedAppointment, CompletedAppointmentResponse} from '../models/appointment/history/completed-appointment';
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
-import {withDevtools} from '@angular-architects/ngrx-toolkit';
 import {inject} from '@angular/core';
 import {CompletedAppointmentService} from '../services/garage-admin-appointment/completed-appointment.service';
 
@@ -49,5 +48,4 @@ export const CompletedAppointmentStore = signalStore(
     }
 
   })),
-  withDevtools("CompletedAppointmentHistory")
 );

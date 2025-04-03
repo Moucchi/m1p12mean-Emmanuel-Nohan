@@ -27,4 +27,12 @@ export class FormService {
     event.preventDefault();
     console.log(formGroup.value);
   }
+
+  clear(formGroup : FormGroup){
+    this.clearFields(formGroup);
+    formGroup.setValue({
+      email: "",
+      password: ""
+    });
+  }
 }

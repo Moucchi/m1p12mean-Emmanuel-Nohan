@@ -28,7 +28,7 @@ export class GarageSidebarComponent {
   }
 
   constructor() {
-    effect(()=>{
+    effect(() => {
       this.role.set(this.authStore.user()!.role);
     });
   }
@@ -75,16 +75,6 @@ export class GarageSidebarComponent {
       role: ['manager']
     },
     {
-      path: "/garage/historique",
-      activeStyle: "active-link",
-      activeOptions: {
-        exact: true
-      },
-      title: "Historique des prestations",
-      icon: "history",
-      role: ['manager']
-    },
-    {
       path: "/garage/types",
       activeStyle: "active-link",
       activeOptions: {
@@ -94,5 +84,15 @@ export class GarageSidebarComponent {
       icon: "directions_car",
       role: ['manager']
     },
+    {
+      path: "/garage/historique",
+      activeStyle: "active-link",
+      activeOptions: {
+        exact: true
+      },
+      title: "Historique des prestations",
+      icon: "history",
+      role: ['manager']
+    }
   ]
 }

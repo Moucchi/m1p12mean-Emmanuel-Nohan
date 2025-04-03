@@ -5,6 +5,12 @@ import {environment} from './environments/environment.prod';
 
 export const routes: Routes = [
   {
+    path: "garage/mechanic",
+    pathMatch: "full",
+    loadComponent: () => import("./garage/pages/garage-mechanic-login/garage-mechanic-login.component").then((c) => c.GarageMechanicLoginComponent),
+    title: "Connexion en tant que mécanicien",
+  },
+  {
     path: '',
     redirectTo: () => {
       const token = localStorage.getItem(environment.tokenName);

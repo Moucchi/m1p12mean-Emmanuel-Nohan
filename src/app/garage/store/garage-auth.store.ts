@@ -4,7 +4,6 @@ import {inject} from '@angular/core';
 import {GarageAuthService} from '../services/garage-auth/garage-auth.service';
 import {Router} from '@angular/router';
 import {GarageLoginFormData} from '../models/auth/garage-login-form-data';
-import {withDevtools} from '@angular-architects/ngrx-toolkit';
 
 type AuthState = {
   isLogged: boolean;
@@ -139,5 +138,4 @@ export const GarageAuthStore = signalStore(
       }
     )
   ),
-  withDevtools('GarageAuthStore')
 );

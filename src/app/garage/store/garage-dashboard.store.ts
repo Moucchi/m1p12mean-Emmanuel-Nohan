@@ -4,7 +4,6 @@ import {MonthlyAttendanceInterface} from '../models/dashboard/monthly-attendance
 import {GarageDashboardService} from '../services/garage-dashboard/garage-dashboard.service';
 import {inject} from '@angular/core';
 import {GarageDashboardInterface} from '../models/dashboard/garage-dashboard-interface';
-import {withDevtools} from '@angular-architects/ngrx-toolkit';
 import {DateTime} from 'luxon';
 import {MechanicAppointments} from '../models/dashboard/mechanic-appointment-interface';
 import {GarageAuthStore} from './garage-auth.store';
@@ -299,5 +298,4 @@ export const GarageDashboardStore = signalStore(
     }
 
   })),
-  withDevtools('GarageDashboardStore')
 );

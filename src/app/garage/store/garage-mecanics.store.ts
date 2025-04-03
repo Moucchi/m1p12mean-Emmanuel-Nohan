@@ -1,6 +1,5 @@
 import {Mechanics} from '../models/mechanics/mechanics';
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
-import {withDevtools} from '@angular-architects/ngrx-toolkit';
 import {inject} from '@angular/core';
 import {GarageMechanicsService} from '../services/garage-mechanics/garage-mechanics.service';
 import {MechanicResponse} from '../models/mechanics/mechanic-response';
@@ -147,5 +146,4 @@ export const MechanicStore = signalStore(
       patchState(store, {registerError: null, registerSuccess: null});
     },
   })),
-  withDevtools('mechanicStore')
 );
