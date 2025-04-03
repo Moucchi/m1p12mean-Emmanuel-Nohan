@@ -2,7 +2,6 @@ import {CompletedAppointment, CompletedAppointmentResponse} from '../models/appo
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {inject} from '@angular/core';
 import {CompletedAppointmentService} from '../services/garage-admin-appointment/completed-appointment.service';
-import {withDevtools} from '@angular-architects/ngrx-toolkit';
 
 type AppointmentHistoryState = {
   appointments: CompletedAppointment[] | null,

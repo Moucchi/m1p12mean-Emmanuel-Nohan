@@ -4,10 +4,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Appointment } from '../../../shared/models/appointment.interface';
 import { environment } from '../../../environments/environment';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-historique-info',
-  imports: [MatDialogClose, MatIconModule, MatButtonModule],
+  imports: [MatDialogClose, MatIconModule, MatButtonModule, NgOptimizedImage],
   templateUrl: './historique-info.component.html',
   styleUrl: './historique-info.component.css'
 })

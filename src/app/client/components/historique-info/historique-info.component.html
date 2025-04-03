@@ -9,7 +9,7 @@
     <div [innerHTML]="data.report" class="mb-3"></div>
     <div class="flex flex-wrap gap-3 justify-center">
         @for(image of data.reportImages; track $index){
-            <img [src]="getImageUrl(image)" [alt]="'report_image' + $index" width="400">
+            <img [ngSrc]="getImageUrl(image)" [alt]="'report_image' + $index" width="400" height="400">
         }
     </div>
 </div>
