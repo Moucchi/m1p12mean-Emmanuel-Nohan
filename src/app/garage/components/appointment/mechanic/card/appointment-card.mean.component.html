@@ -13,7 +13,7 @@
             <img [ngSrc]="appointment.brandLogo" alt="vehicle_logo" width="82" height="82">
             <div>
               <p class="text-end font-semibold">{{ appointment.brandName }}</p>
-              <p class="text-end font-semibold text-red-600 hover:cursor-pointer" title="Antécedent du vehicule" (click)="showCarHistoryDialog(appointment.clientVehicle)">Antecedents</p>
+              <p class="text-end font-semibold text-red-600 hover:cursor-pointer" title="Antécédent du vehicule" (click)="showCarHistoryDialog(appointment.clientVehicle)">Antécédents</p>
               @if (type() === 'pending') {
                 <p class="text-end text-sm font-medium">{{ appointment.orderCreatedAt | luxonDate }}</p>
               }
