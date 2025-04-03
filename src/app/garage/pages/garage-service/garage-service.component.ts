@@ -55,6 +55,10 @@ export class GarageServiceComponent implements OnInit {
     });
   }
 
+  canShowServiceTable = computed(() => {
+    return this.serviceStore.services() && this.serviceStore.services().length > 0;
+  });
+
   canShowPagination = computed(() => {
     return this.serviceStore.totalPages() > 1;
   });
