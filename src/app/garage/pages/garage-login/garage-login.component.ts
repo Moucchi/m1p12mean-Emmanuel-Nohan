@@ -34,8 +34,8 @@ export class GarageLoginComponent {
   protected authStore = inject(GarageAuthStore);
 
   formGroup = this.formBuilder.nonNullable.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
+    email: ['nohan.razafinjato.pro@gmail.com', [Validators.required, Validators.email]],
+    password: ['217739', Validators.required],
   });
 
   submitForm(event: Event) {

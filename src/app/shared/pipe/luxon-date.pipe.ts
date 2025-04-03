@@ -11,7 +11,9 @@ export class LuxonDatePipe implements PipeTransform {
       return '';
     }
 
-    let temp = DateTime.fromISO(value.toString());
+    let temp = DateTime.fromISO(value.toString() , {zone: 'Africa/Nairobi'} );
+
+    console.log(` Zone : ${JSON.stringify(temp.zone) }, Zone name : ${temp.zoneName} ` );
 
     if( temp.isValid ){
       return temp.toLocaleString(DateTime.DATETIME_SHORT)
