@@ -6,6 +6,7 @@ import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {FormFieldValidatorsService} from '../../../shared/services/form/form-field-validators.service';
 import {GarageAuthStore} from "../../store/garage-auth.store";
+import {MechanicStore} from '../../store/garage-mecanics.store';
 
 @Component({
   selector: 'mean-garage-mechanics-modal',
@@ -25,7 +26,7 @@ export class GarageMechanicsModalComponent {
   readonly dialogRef = inject(MatDialogRef<GarageMechanicsModalComponent>);
   private readonly formFieldsValidators = inject(FormFieldValidatorsService);
   private formBuilder = inject(FormBuilder);
-  protected readonly authStore = inject(GarageAuthStore);
+  protected readonly mechanicStore = inject(MechanicStore);
 
   mechanicsForm = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -84,7 +85,7 @@ export class GarageMechanicsModalComponent {
         formData.append('lastName', lastName);
         formData.append('birthday', formValues.birthday);
 
-        this.authStore.register(formData);
+        this.mechanicStore.register(formData);
         this.dialogRef.close();
       }
 

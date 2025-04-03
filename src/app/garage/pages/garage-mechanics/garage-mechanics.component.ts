@@ -39,13 +39,20 @@ export class GarageMechanicsComponent implements OnInit {
 
     effect(() => {
       this.updateMechanics();
+    });
+
+    effect(() => {
       this.updatePagination();
+    });
+
+    effect(() => {
       this.showSnackBar();
+
     });
   }
 
   canShowMechanicsTable = computed(() => {
-    return this.mechanicStore.mechanics() && this.mechanicStore.mechanics().length > 0
+    return this.mechanics && this.mechanics.length > 0
   });
 
   canShowPagination = computed(() => {
@@ -65,15 +72,15 @@ export class GarageMechanicsComponent implements OnInit {
   }
 
   showSnackBar() {
-    const errorMessage = this.authStore.registerError();
-    const successMessage = this.authStore.registerSuccess();
+    const errorMessage = this.mechanicStore.registerError();
+    const successMessage = this.mechanicStore.registerSuccess();
 
     if (errorMessage) {
       const snackbar = this.snackbar.open(errorMessage, 'Fermer', {duration: 3000});
-      snackbar.afterDismissed().subscribe(() => this.authStore.resetRegisterMessage());
+      snackbar.afterDismissed().subscribe(() => this.mechanicStore.resetRegisterMessage());
     } else if (successMessage) {
       const snackbar = this.snackbar.open(successMessage, 'Fermer', {duration: 3000});
-      snackbar.afterDismissed().subscribe(() => this.authStore.resetRegisterMessage());
+      snackbar.afterDismissed().subscribe(() => this.mechanicStore.resetRegisterMessage());
     }
   }
 

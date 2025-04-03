@@ -4,6 +4,7 @@ import {withDevtools} from '@angular-architects/ngrx-toolkit';
 import {inject} from '@angular/core';
 import {GarageMechanicsService} from '../services/garage-mechanics/garage-mechanics.service';
 import {MechanicResponse} from '../models/mechanics/mechanic-response';
+import {GarageAuthService} from '../services/garage-auth/garage-auth.service';
 
 type MechanicStoreState = {
   mechanics: Mechanics[];
@@ -11,7 +12,9 @@ type MechanicStoreState = {
   totalPage: number;
   page: number;
   isLoading: boolean;
-  error: string;
+  error: string | null;
+  registerSuccess: string | null;
+  registerError: string | null;
 }
 
 const intialState: MechanicStoreState = {
@@ -20,13 +23,15 @@ const intialState: MechanicStoreState = {
   totalPage: 0,
   page: 1,
   isLoading: false,
-  error: ''
+  error: '',
+  registerSuccess: null,
+  registerError: null,
 }
 
 export const MechanicStore = signalStore(
   {providedIn: 'root'},
   withState(intialState),
-  withMethods((store, mecanicsService = inject(GarageMechanicsService)) => ({
+  withMethods((store, mecanicsService = inject(GarageMechanicsService), authService = inject(GarageAuthService)) => ({
     getAllMechanics() {
       patchState(store, {isLoading: true});
 
@@ -43,6 +48,26 @@ export const MechanicStore = signalStore(
       });
 
       patchState(store, {isLoading: false});
+    },
+
+    register(formData: FormData) {
+        patchState(store, {isLoading: true, error: null});
+
+        authService.register(formData).subscribe({
+          next: () => {
+            patchState(store, {
+              isLoading: false,
+              registerSuccess: 'L\'employé a été ajouté avec succès',
+            });
+          },
+
+          error: () => {
+            patchState(store, {
+              isLoading: false,
+              registerError: "Une erreur s'est produite lors de l'ajout de l'employé",
+            });
+          }
+        });
     },
 
     nextPage() {
@@ -108,7 +133,19 @@ export const MechanicStore = signalStore(
 
         patchState(store, {isLoading: false});
       }
-    }
+    },
+
+    resetRegisterError() {
+      patchState(store, {registerError: null});
+    },
+
+    resetRegisterSuccess() {
+      patchState(store, {registerSuccess: null});
+    },
+
+    resetRegisterMessage() {
+      patchState(store, {registerError: null, registerSuccess: null});
+    },
   })),
   withDevtools('mechanicStore')
 );
