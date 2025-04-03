@@ -64,9 +64,9 @@ export class SuiviStoreService {
       if(state == 'set'){
         this.suivi.update(suivi => ({
           ...suivi,
-          set: suivi.pending.filter((_, i) => index !== i)
+          set: suivi.set.filter((_, i) => index !== i)
         }));
-      } 
+      }
 
       if(state == 'pending'){
         this.suivi.update(suivi => ({
@@ -78,12 +78,12 @@ export class SuiviStoreService {
       if(state == 'confirmed'){
         this.suivi.update(suivi => ({
           ...suivi,
-          confirmed: suivi.pending.filter((_, i) => index !== i)
+          confirmed: suivi.confirmed.filter((_, i) => index !== i)
         }));
       }
     });
   }
-  
+
   getSuivi(): Signal<Suivi> {
     return this.suivi;
   }

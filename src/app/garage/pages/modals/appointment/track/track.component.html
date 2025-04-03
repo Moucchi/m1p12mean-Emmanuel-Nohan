@@ -1,0 +1,72 @@
+@if (! store.loading()) {
+  <div class="rounded-lg p-4">
+    <div class="block lg:hidden">
+      <select #typeSelect class="w-full p-2 border rounded-lg" (change)="selectedCardType = typeSelect.value">
+        <option value="pending">Demande de créneau</option>
+        <option value="approved">Créneau approuvé</option>
+        <option value="in_progress">En cours</option>
+      </select>
+    </div>
+
+    <div class="hidden lg:grid lg:grid-cols-3 gap-2">
+      <manager-appointment-card
+        [appointments]="pendingAppointments"
+        title="Demande de créneau"
+        color="#9CA3AF"
+        emptyMessage="Aucune demande de créneau en attente"
+        type="pending">
+      </manager-appointment-card>
+
+      <manager-appointment-card
+        [appointments]="confirmedAppointments"
+        title="En attente"
+        color="#FFA500FF"
+        emptyMessage="Aucun créneau approuvé pour le moment"
+        type="approved">
+      </manager-appointment-card>
+
+      <manager-appointment-card
+        [appointments]="inProgressAppointments"
+        title="En cours"
+        color="#2563EB"
+        emptyMessage="Aucun vehicule en cours de traitement"
+        type="in_progress">
+      </manager-appointment-card>
+    </div>
+
+    <div class="block lg:hidden">
+      @if (selectedCardType === 'pending' || !selectedCardType) {
+        <manager-appointment-card
+          [appointments]="pendingAppointments"
+          title="Demande de créneau"
+          color="#9CA3AF"
+          emptyMessage="Aucune demande de créneau en attente"
+          type="pending">
+        </manager-appointment-card>
+      }
+
+      @if (selectedCardType === 'approved') {
+        <manager-appointment-card
+          [appointments]="confirmedAppointments"
+          title="Créneau approuvé"
+          color="#16A34A"
+          emptyMessage="Aucun créneau approuvé actuellement"
+          type="approved">
+        </manager-appointment-card>
+      }
+
+      @if (selectedCardType === 'in_progress') {
+        <manager-appointment-card
+          [appointments]="inProgressAppointments"
+          title="En cours"
+          color="#2563EB"
+          emptyMessage="Aucun rendez-vous en cours"
+          type="in_progress">
+        </manager-appointment-card>
+      }
+    </div>
+  </div>
+
+} @else {
+  <mean-spinner></mean-spinner>
+}

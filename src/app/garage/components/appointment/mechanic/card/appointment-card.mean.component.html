@@ -1,0 +1,74 @@
+<div class="grid gap-y-2">
+  <div class="flex p-2 items-center gap-x-3 bg-gray-100 rounded-lg">
+    <div class="rounded-full w-3 h-3" [style.background-color]="color()"></div>
+    <h2 class="text-lg font-semibold">{{ title() }}</h2>
+  </div>
+
+  @if (appointments().length > 0) {
+    <div class="grid gap-y-2 overflow-y-auto scroll-smooth custom-scrollbar max-h-[calc(100vh-200px)]">
+      @for (appointment of appointments(); track appointment._id) {
+
+        <div class="grid gap-y-2 border rounded-lg">
+          <div class="flex items-center justify-between px-4 py-2">
+            <img [ngSrc]="appointment.brandLogo" alt="vehicle_logo" width="82" height="82">
+            <div>
+              <p class="text-end font-semibold">{{ appointment.brandName }}</p>
+              <p class="text-end font-semibold text-red-600 hover:cursor-pointer" title="Antécedent du vehicule" (click)="showCarHistoryDialog(appointment.clientVehicle)">Antecedents</p>
+              @if (type() === 'pending') {
+                <p class="text-end text-sm font-medium">{{ appointment.orderCreatedAt | luxonDate }}</p>
+              }
+
+              @if (type() !== 'pending') {
+                <p class="text-end text-sm font-medium">Debut : {{ appointment.startedDate.toString() | date: 'dd-MM-YYYY à HH:mm':'UTC+0' }}</p>
+                <p class="text-end text-sm font-medium">Fin prévue : {{ appointment.endingDate.toString() | date: 'dd-MM-YYYY à HH:mm':'UTC+0' }}</p>
+              }
+            </div>
+          </div>
+
+          <div class="px-6 py-2 text-gray-800">
+            <p class="font-semibold">Services : </p>
+            <ul>
+              @for (item of appointment.items; track item._id){
+                <li> {{ item.name }} </li>
+              }
+            </ul>
+          </div>
+
+          <div class="px-6 py-2 text-gray-800">
+            <p class="font-semibold">Description : </p>
+            <p>{{ appointment.vehicleDescription || 'Pas de description' }}</p>
+          </div>
+
+          <div class="p-3 grid gap-2 items-center justify-end">
+            @if (type() === 'pending') {
+              <button
+                class="px-3 py-1 border border-black rounded-lg font-semibold flex items-center gap-1 hover:bg-red-600 hover:border-red-600 hover:text-white "
+                (click)="onFixDate.emit(appointment._id)">
+                Fixer une periode
+              </button>
+            } @else if (type() === 'approved') {
+              @if( ! dashboardStore.inProgress() ){
+                <button
+                  class="px-3 py-1 border border-black rounded-lg font-semibold flex items-center gap-1 hover:bg-red-600 hover:border-red-600 hover:text-white "
+                  (click)="onBegin.emit(appointment._id)">
+                  Commencer
+                </button>
+              }
+            } @else if (type() === 'in_progress') {
+              <button
+                class="px-3 py-1 border border-black rounded-lg font-semibold flex items-center gap-1 hover:bg-red-600 hover:border-red-600 hover:text-white "
+                (click)="onCompleted.emit(appointment._id)">
+                Terminer
+              </button>
+            }
+
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="p-5 text-center text-gray-500 italic flex items-center justify-center h-full border rounded-lg">
+      {{ emptyMessage() }}
+    </div>
+  }
+</div>

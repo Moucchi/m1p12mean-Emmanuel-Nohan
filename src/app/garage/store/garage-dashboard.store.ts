@@ -3,12 +3,12 @@ import {ServiceRatingInterface} from '../models/dashboard/service-rating-interfa
 import {MonthlyAttendanceInterface} from '../models/dashboard/monthly-attendance-interface';
 import {GarageDashboardService} from '../services/garage-dashboard/garage-dashboard.service';
 import {inject} from '@angular/core';
-import {GarageDashboardInterface} from '../models/dashboard/garage-dashboard-interface';
 import {DateTime} from 'luxon';
 import {MechanicAppointments} from '../models/dashboard/mechanic-appointment-interface';
 import {GarageAuthStore} from './garage-auth.store';
 import {Router} from '@angular/router';
 import {SettingAppointmentForm} from '../models/dashboard/setting-appointment-form';
+import {HttpErrorResponse} from '@angular/common/http';
 
 const defaultErrorMessage = "Une erreur est survenue, veuillez réessayer plus tard ";
 
@@ -155,65 +155,63 @@ export const GarageDashboardStore = signalStore(
     },
 
     getAttendancePerMonth(year: number = DateTime.now().year) {
+
+
       patchState(store, {isAttendancePerMonthLoading: true});
 
-      try {
-        dashboardService.getAttendancePerMonth(year)?.subscribe((response: MonthlyAttendanceInterface[]) => {
-          patchState(store, {attendancePerMonth: response});
-        });
-        patchState(store, {isAttendancePerMonthLoading: false});
-
-      } catch (e) {
-        patchState(store, {
-          isAttendancePerMonthLoading: false,
-          error: defaultErrorMessage
-        });
-      }
-
+      dashboardService.getAttendancePerMonth(year).subscribe({
+        next: (response: MonthlyAttendanceInterface[]) => {
+          patchState(store, {attendancePerMonth: response, isAttendancePerMonthLoading: false});
+        },
+        error: (e) => {
+          const error = e as HttpErrorResponse;
+          patchState(store, {isAttendancePerMonthLoading: false, appointmentMessage: error.error.error});
+        }
+      });
     },
 
     getDashboardData() {
       patchState(store, {isLoading: true});
 
-      try {
-        dashboardService.getDashboardData()?.subscribe((response: GarageDashboardInterface) => {
+      dashboardService.getDashboardData().subscribe({
+        next: (response) => {
           patchState(store, {
             averageRate: response.avgRate,
             upComingAppointment: response.upcomingAppointment,
             totalClients: response.totalClients,
             actualMonthRevenue: response.totalRevenueCurrentMonth,
             topServices: response.topServices,
-            attendancePerMonth: response.attendancePerMonth
+            attendancePerMonth: response.attendancePerMonth,
+            isLoading: false
           });
-        });
+        },
 
-        patchState(store, {isLoading: false});
-      } catch (e) {
-        patchState(store, {isLoading: false, error: defaultErrorMessage});
-      }
+        error: (e) => {
+          const error = e as HttpErrorResponse;
+          patchState(store, {isLoading: false, appointmentMessage: error.error.error});
+        }
+      });
     },
 
     getMechanicsAppointments() {
       patchState(store, {isLoading: true});
 
       if (authStore.isMechanic()) {
-
-        try {
-          dashboardService.getMechanicsAppointments()?.subscribe((response: MechanicAppointments) => {
+        dashboardService.getMechanicsAppointments().subscribe({
+          next: (response: MechanicAppointments) => {
             patchState(store, {mechanicsAppointments: response});
 
             if (response.in_progress && response.in_progress.length > 0) {
-              patchState(store, {inProgress: true});
+              patchState(store, {inProgress: true, isLoading: false});
             } else {
-              patchState(store, {inProgress: false});
+              patchState(store, {inProgress: false, isLoading: false});
             }
-
-          });
-          patchState(store, {isLoading: false});
-
-        } catch (e) {
-          patchState(store, {isLoading: false, error: defaultErrorMessage});
-        }
+          },
+          error: (e) => {
+            const error = e as HttpErrorResponse;
+            patchState(store, {isLoading: false, appointmentMessage: error.error.error});
+          }
+        });
 
       } else {
         router.navigateByUrl('/403').then(() => {
@@ -226,18 +224,18 @@ export const GarageDashboardStore = signalStore(
       patchState(store, {isLoading: true});
 
       if (authStore.isMechanic()) {
-        try {
-          dashboardService.setAppointmentDate(id, form).subscribe(() => {
-            this.getMechanicsAppointments();
-            patchState(store, {appointmentMessage: "Créneau envoyé avec succès"});
+        dashboardService.setAppointmentDate(id, form).subscribe(
+          {
+            next: () => {
+              this.getMechanicsAppointments();
+              patchState(store, {appointmentMessage: "Créneau envoyé avec succès", isLoading: false});
+            },
+            error: (e) => {
+              const error = e as HttpErrorResponse;
+              console.log(`error : \n ${JSON.stringify(error)}`);
+              patchState(store, {isLoading: false, appointmentMessage: error.error.error});
+            }
           });
-        } catch (e) {
-          if (e instanceof Error) {
-            patchState(store, {appointmentMessage: e.message});
-            return;
-          }
-          patchState(store, {isLoading: false, appointmentMessage: defaultErrorMessage});
-        }
       } else {
         router.navigateByUrl('/403').then(() => {
           patchState(store, {isLoading: false});
@@ -249,18 +247,19 @@ export const GarageDashboardStore = signalStore(
       patchState(store, {isLoading: true});
 
       if (authStore.isMechanic()) {
-        try {
-          dashboardService.markAppointmentAsInProgress(id).subscribe(() => {
-            this.getMechanicsAppointments();
-            patchState(store, {appointmentMessage: "Réparation commencée"});
-          });
-        } catch (e) {
-          if (e instanceof Error) {
-            patchState(store, {appointmentMessage: e.message});
-            return;
+        dashboardService.markAppointmentAsInProgress(id).subscribe(
+          {
+            next: () => {
+              this.getMechanicsAppointments();
+              patchState(store, {appointmentMessage: "Réparation commencée", isLoading: false});
+            },
+            error: (e) => {
+              const error = e as HttpErrorResponse;
+
+              patchState(store, {isLoading: false, appointmentMessage: error.error.error});
+            }
           }
-          patchState(store, {isLoading: false, appointmentMessage: defaultErrorMessage});
-        }
+        );
       } else {
         router.navigateByUrl('/403').then(() => {
           patchState(store, {isLoading: false});
@@ -276,13 +275,11 @@ export const GarageDashboardStore = signalStore(
         dashboardService.markAppointmentAsCompleted(id, form).subscribe({
           next: () => {
             this.getMechanicsAppointments();
-            patchState(store, {appointmentMessage: "Réparation terminée", isLoading: false} );
+            patchState(store, {appointmentMessage: "Réparation terminée", isLoading: false});
           },
           error: (e) => {
-            patchState(store, {appointmentMessage: e.message});
-            patchState(store, {isLoading: false, appointmentMessage: defaultErrorMessage});
-
-            console.error(e);
+            const error = e as HttpErrorResponse;
+            patchState(store, {isLoading: false, appointmentMessage: error.error.error});
           }
         });
 
@@ -297,5 +294,6 @@ export const GarageDashboardStore = signalStore(
       patchState(store, {appointmentMessage: ""});
     }
 
-  })),
+  }))
+
 );

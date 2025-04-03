@@ -1,60 +1,148 @@
 <div class="calendar-container">
 
-  <div class="calendar-headline grid grid-cols-12 mb-4">
-    <div class="calendar-headline-previous-month col-start-1 col-end-4 text-start grid grid-cols-12 items-center"
-         (click)="calendarService.previousMonth(firstDayOfActiveMonth)">
-      <mat-icon class="w-fit col-start-1">arrow_back</mat-icon>
-      <span class="col-start-2">{{ firstDayOfActiveMonth().minus({month: 1}).monthLong }}</span>
-    </div>
-    <div class="calendar-headline-actual-month col-start-4 col-end-9 text-center">
-      <div class="calendar-headline-control calendar-headline-control-today w-fit justify-self-center"
-      >
-        {{ firstDayOfActiveMonth().monthLong }}
-        {{ firstDayOfActiveMonth().year }}
+  <!-- Navigation -->
+  <div class="calendar-headline">
+    <div class="calendar-headline-actions">
+      <div class="calendar-headline-previous-month">
+        <mat-icon (click)="calendarService.previousMonth(firstDayOfActiveMonth)">arrow_back_ios</mat-icon>
+        <span class="hidden sm:inline ml-1" (click)="calendarService.previousMonth(firstDayOfActiveMonth)">{{ firstDayOfActiveMonth().minus({month: 1}).monthLong }}</span>
       </div>
-      @if (today().month !== firstDayOfActiveMonth().month) {
-        <div class="calendar-headline-control calendar-headline-control-today w-fit justify-self-center"
-             (click)="calendarService.goToPresent(firstDayOfActiveMonth)">
-          aller au mois actuel
-        </div>
+
+      @if (
+        today().month !== firstDayOfActiveMonth().month || today().year !== firstDayOfActiveMonth().year
+      ) {
+        @if (
+          today().toMillis() < firstDayOfActiveMonth().toMillis()
+        ) {
+          <div class="calendar-headline-control calendar-headline-control-today ml-2"
+               (click)="calendarService.goToPresent(firstDayOfActiveMonth)">
+            Aujourd'hui
+          </div>
+        }
+      }
+    </div>
+
+    <div class="calendar-headline-center">
+      <div class="calendar-headline-month-year">
+        {{ firstDayOfActiveMonth().monthLong }} {{ firstDayOfActiveMonth().year }}
+      </div>
+    </div>
+
+    <div class="calendar-headline-actions">
+      @if (
+        today().month !== firstDayOfActiveMonth().month || today().year !== firstDayOfActiveMonth().year
+      ) {
+        @if (
+          today().toMillis() > firstDayOfActiveMonth().toMillis()
+        ) {
+          <div class="calendar-headline-control calendar-headline-control-today mr-2"
+               (click)="calendarService.goToPresent(firstDayOfActiveMonth)">
+            Aujourd'hui
+          </div>
+        }
       }
 
-    </div>
-    <div class="calendar-headline-next-month col-start-9 col-end-13 text-end grid grid-cols-12 items-center"
-         (click)="calendarService.nextMonth(firstDayOfActiveMonth)">
-      <span class="col-start-12 text-center">{{ firstDayOfActiveMonth().plus({month: 1}).monthLong }}</span>
-      <mat-icon class="col-start-13">arrow_forward</mat-icon>
+      <div class="calendar-headline-next-month" (click)="calendarService.nextMonth(firstDayOfActiveMonth)">
+        <span class="hidden sm:inline mr-1">{{ firstDayOfActiveMonth().plus({month: 1}).monthLong }}</span>
+        <mat-icon>arrow_forward_ios</mat-icon>
+      </div>
     </div>
   </div>
 
-  <div class="calendar h-fit">
-    <div class="calendar-weeks-grid grid grid-cols-7 h-fit ">
+  <div class="calendar">
+    <!-- Jours de la semaine -->
+    <div class="calendar-weeks-grid grid grid-cols-7">
       @for (weekDay of weekDays; track $index) {
-        <div class="calendar-weeks-grid-cell h-fit border border-gray-500 p-2">{{ weekDay }}</div>
+        <div class="calendar-weeks-grid-cell">{{ weekDay }}</div>
       }
     </div>
-    <div class="calendar-grid grid grid-cols-7 ">
+
+    <!-- Jours du mois -->
+    <div class="calendar-grid grid grid-cols-7">
       @for (dayOfMonth of daysOfMonth(); track $index) {
         <div
           [ngClass]="{
-          'today': calendarService.isToday(dayOfMonth),
-          'day':true
-          }" (click)="calendarService.setActiveDay(dayOfMonth,activeDay)"
+                'today': calendarService.isToday(dayOfMonth),
+                'active-day': activeDay() && dayOfMonth.toISODate() === activeDay()?.toISODate(),
+                'day': true,
+                'has-appointments': hasAppointments(dayOfMonth),
+                'other-month': dayOfMonth.month !== firstDayOfActiveMonth().month
+              }"
+          (click)="calendarService.setActiveDay(dayOfMonth,activeDay)"
         >
-          {{ dayOfMonth.day }}
+          <span>{{ dayOfMonth.day }}</span>
+
+          @if (hasAppointments(dayOfMonth)) {
+            <div class="appointment-badge">
+              {{ countAppointments(dayOfMonth) }}
+            </div>
+          }
         </div>
       }
     </div>
   </div>
 
+  <!-- Liste des rendez-vous -->
   <div class="event-container">
     @if (activeDay(); as dateTime) {
-      <div>
-        {{ dateTime.toLocaleString(DATE_MED) }}
+      <div class="event-date-header">
+        <h3>{{ dateTime.toLocaleString(DATE_MED) }}</h3>
       </div>
-    } @else {
-      {{ today().toLocaleString(DATE_MED) }}
+
+      @if (activeDayAppointments().length > 0) {
+        <div class="grid gap-4">
+          @for (appointment of activeDayAppointments(); track appointment._id) {
+            <div class="event-card">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center">
+                  <div class="w-3 h-3 rounded-full mr-2" [ngClass]="getAppointmentStatusColor(appointment.state)"></div>
+                  <span class="font-medium">
+                        {{ appointment.startedDate ? DateTime.fromISO(appointment.startedDate.toString()).setZone('UTC+0').toFormat('HH:mm') : '--:--' }}
+                    -
+                    {{ appointment.endingDate ? DateTime.fromISO(appointment.endingDate.toString()).setZone('UTC+0').toFormat('dd/MM/yyyy HH:mm') : 'dd/MM/yyyy --:--' }}
+                      </span>
+                </div>
+                <span class="status-badge" [ngClass]="getAppointmentStatusColor(appointment.state)">
+                      {{
+                    appointment.state === 'in_progress' ? 'En cours' :
+                      appointment.state === 'confirmed' ? 'En attente de créneau' :
+                        appointment.state === 'set' ? 'Planifié' : 'Créneau confirmé'
+                  }}
+                    </span>
+              </div>
+
+              <div class="flex items-center mb-2">
+                <img [ngSrc]="appointment.brandLogo" alt="vehicle_logo" width="40" height="40" class="mr-3">
+                <div>
+                  <p class="font-semibold">{{ appointment.brandName }}</p>
+                  <p class="text-sm text-gray-600">{{ appointment.vehicleType }}</p>
+                </div>
+              </div>
+
+              <div class="mt-2">
+                <p class="font-medium">Services :</p>
+                <ul class="list-disc pl-5 mt-1">
+                  @for (item of appointment.items; track item._id) {
+                    <li class="text-sm text-gray-700">{{ item.name }}</li>
+                  }
+                </ul>
+              </div>
+
+              @if (appointment.vehicleDescription) {
+                <div class="mt-2 text-sm text-gray-700">
+                  <p class="font-medium">Description :</p>
+                  <p>{{ appointment.vehicleDescription }}</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="no-events">
+          <mat-icon>event_busy</mat-icon>
+          <p>Rien de prévu pour cette date</p>
+        </div>
+      }
     }
   </div>
-
 </div>

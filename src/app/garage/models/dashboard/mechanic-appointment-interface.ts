@@ -19,7 +19,8 @@ export interface MechanicAppointmentInterface {
   brandName: string,
   brandLogo: string,
   vehicleType: string,
-  items : appointmentItem[]
+  items : appointmentItem[],
+  clientVehicle: string
 }
 
 export interface MechanicAppointments {

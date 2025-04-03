@@ -1,0 +1,55 @@
+.report-content {
+  color: #333;
+}
+
+.report-content h1,
+.report-content h2,
+.report-content h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.report-content p {
+  margin-bottom: 0.75rem;
+}
+
+.report-content ul,
+.report-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.report-content li {
+  margin-bottom: 0.25rem;
+}
+
+.report-content table {
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.report-content table td,
+.report-content table th {
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem;
+}
+
+.report-content blockquote {
+  border-left: 4px solid #e2e8f0;
+  padding-left: 1rem;
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+::ng-deep .report-dialog-container .mat-mdc-dialog-surface {
+  border-radius: 8px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

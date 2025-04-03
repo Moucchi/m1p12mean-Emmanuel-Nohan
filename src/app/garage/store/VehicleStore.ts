@@ -11,14 +11,14 @@ type VehicleState = {
   vehicles: TypeVoiture[],
   isLoading: boolean,
   error: null | string,
-  snackMessage : null | string
+  snackMessage: null | string
 }
 
 const initialState: VehicleState = {
   vehicles: [],
   isLoading: false,
   error: null,
-  snackMessage : null
+  snackMessage: null
 }
 
 export const vehicleStore = signalStore(
@@ -53,17 +53,41 @@ export const vehicleStore = signalStore(
       )
         .subscribe({
           next: () => {
-            patchState( store , { snackMessage : "Type ajouté avec success" } )
+            patchState(store, {snackMessage: "Type ajouté avec success"})
             this.getAllTypes();
           },
           error: () => {
-            patchState(store, {isLoading: false, snackMessage : "Une erreur s'est produite lors de la création du type" });
+            patchState(store, {
+              isLoading: false,
+              snackMessage: "Une erreur s'est produite lors de la création du type"
+            });
           }
         });
     },
 
     resetSnackMessage() {
       patchState(store, {snackMessage: null});
+    },
+
+    deleteType(id: string) {
+      patchState(store, {isLoading: true});
+      http.delete(`${environment.apiUrl}/api/vehicles/types/${id}`).pipe(
+        catchError((error: Error) => {
+          throw error;
+        })
+      )
+        .subscribe({
+          next: () => {
+            patchState(store, {snackMessage: "Type supprimé avec success"})
+            this.getAllTypes();
+          },
+          error: () => {
+            patchState(store, {
+              isLoading: false,
+              snackMessage: "Une erreur s'est produite lors de la suppression du type"
+            });
+          }
+        });
     }
 
   })),

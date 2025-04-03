@@ -1,8 +1,11 @@
 import {DatePipe, NgOptimizedImage} from '@angular/common';
-import { Component, inject, input } from '@angular/core';
-import { Appointment } from '../../../shared/models/appointment.interface';
-import { SuiviStoreService } from '../../services/suivi-store.service';
+import {Component, inject, input} from '@angular/core';
+import {Appointment} from '../../../shared/models/appointment.interface';
+import {SuiviStoreService} from '../../services/suivi-store.service';
 import {VehicleStoreService} from '../../services/vehicle-store.service';
+import {
+  ConfirmationDialogService
+} from '../../../garage/services/garage-confirmation-dialog/confirmation-dialog.service';
 
 
 @Component({
@@ -12,6 +15,7 @@ import {VehicleStoreService} from '../../services/vehicle-store.service';
   styleUrl: './suivi-card.component.css'
 })
 export class SuiviCardComponent {
+  private readonly confirmationDialog = inject(ConfirmationDialogService);
   private suiviStore = inject(SuiviStoreService);
   private vehicleStore = inject(VehicleStoreService)
   title = input();
@@ -20,8 +24,13 @@ export class SuiviCardComponent {
   isProcessing = this.suiviStore.getProcessing();
 
   cancel(id: string, index: number) {
-    this.suiviStore.cancelAppointment(id, index, this.state());
-    this.vehicleStore.fetchVehicles();
+    this.confirmationDialog.confirm({
+      message: 'Êtes-vous sûr de vouloir annuler ce rendez-vous ?',
+      onConfirm: () => {
+        this.suiviStore.cancelAppointment(id, index, this.state());
+        this.vehicleStore.fetchVehicles();
+      }
+    });
   }
 
   confirm(id: string, index: number) {

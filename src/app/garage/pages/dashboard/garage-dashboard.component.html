@@ -1,0 +1,168 @@
+@if (dashboardStore.isLoading()) {
+  <mean-spinner></mean-spinner>
+} @else {
+  <div class="grid gap-2">
+
+    @if (authStore.isManager()) {
+      <div class="border border-gray-200 rounded-lg shadow-sm p-5 h-fit bg-white">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          <div class="lg:col-span-1">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Informations générales</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3">
+              @for (info of generalInfo; track $index) {
+                <div
+                  class="bg-gray-50 rounded-lg p-4 shadow-sm border border-gray-100 transition-colors">
+                  <p class="text-sm text-gray-600 font-medium mb-1">{{ info.title }}</p>
+                  <p class="text-2xl font-bold text-gray-900">
+                    @if (info?.currency) {
+                      {{ info.value() | vola }}
+                    } @else {
+                      {{ info.value() }}
+                    }
+                  </p>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="lg:col-span-2 shadow-sm flex flex-col">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Top services</h2>
+            <div class="flex-grow flex justify-center items-center rounded-lg border border-gray-100 bg-gray-50 p-5"
+                 style="min-height: 200px;">
+              @if (isServicesChartBlank()) {
+                <div class="text-gray-500 text-center">Rien à afficher pour le moment...</div>
+              } @else {
+                <canvas baseChart
+                        class="w-full h-2"
+                        [type]="'pie'"
+                        [data]="pieChartData"
+                        [options]="pieChartOptions"
+                        [legend]="pieChartLegend">
+                </canvas>
+              }
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="border border-gray-200 rounded-lg shadow-sm p-5 mt-6 bg-white">
+
+        <div class="grid gap-y-6">
+          @if (dashboardStore.isAttendancePerMonthLoading()) {
+            <mean-spinner></mean-spinner>
+          } @else {
+
+            <div>
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">Prestations effectuées</h2>
+
+                <form [formGroup]="searchForm" class="flex gap-2 items-center w-full sm:w-auto">
+                  <input formControlName="year" placeholder="Année..." class="border p-2 rounded-lg w-20">
+                  <button [disabled]="searchForm.invalid" (click)="getAttendanceByYear()" class="p-2 border bg-black font-semibold text-white disabled:bg-white hover:bg-red-600 hover:border-red-600 disabled:border-gray-200 rounded-md flex items-center justify-center h-[38px] disabled:text-gray-300">
+                    <mat-icon>search</mat-icon>
+                  </button>
+                </form>
+
+              </div>
+
+              <div>
+                @if (isAttendanceChartBlank()) {
+                  <div class="flex justify-center items-center h-full text-gray-500">Rien à afficher pour le
+                    moment...
+                  </div>
+                } @else {
+                  <canvas baseChart
+                          [type]="'line'"
+                          [data]="lineChartData"
+                          [options]="lineChartOptions"
+                          [legend]="lineChartLegend"
+                          class="w-full h-full bg-gray-50 rounded-lg border border-gray-100 p-2 shadow-sm">
+                  </canvas>
+                }
+              </div>
+            </div>
+
+          }
+        </div>
+      </div>
+    }
+
+    @if (authStore.isMechanic()) {
+      <div class="rounded-lg col-span-12">
+        <div class="block lg:hidden">
+          <select #typeSelect class="w-full p-2 border rounded-lg" (change)="selectedCardType = typeSelect.value">
+            <option value="pending">Demande de créneau</option>
+            <option value="approved">Créneau approuvé</option>
+            <option value="in_progress">En cours</option>
+          </select>
+        </div>
+
+        <div class="hidden lg:grid lg:grid-cols-3 gap-2">
+          <appointment-mean-card
+            [appointments]="pendingAppointments"
+            title="Demande de créneau"
+            color="#9CA3AF"
+            emptyMessage="Aucune demande de créneau en attente"
+            (onFixDate)="setAppointmentDate($event)"
+            type="pending">
+          </appointment-mean-card>
+
+          <appointment-mean-card
+            [appointments]="confirmedAppointments"
+            title="En attente"
+            color="#FFA500FF"
+            emptyMessage="Aucun créneau approuvé pour le moment"
+            (onBegin)="markAsInProgress($event)"
+            type="approved">
+          </appointment-mean-card>
+
+          <appointment-mean-card
+            [appointments]="inProgressAppointments"
+            title="En cours"
+            color="#2563EB"
+            emptyMessage="Aucun vehicule en cours de traitement"
+            (onCompleted)="markAsCompleted($event)"
+            type="in_progress">
+          </appointment-mean-card>
+        </div>
+
+        <div class="block lg:hidden">
+          @if (selectedCardType === 'pending' || !selectedCardType) {
+            <appointment-mean-card
+              [appointments]="pendingAppointments"
+              title="Demande de créneau"
+              color="#9CA3AF"
+              emptyMessage="Aucune demande de créneau en attente"
+              (onFixDate)="setAppointmentDate($event)"
+              type="pending">
+            </appointment-mean-card>
+          }
+
+          @if (selectedCardType === 'approved') {
+            <appointment-mean-card
+              [appointments]="confirmedAppointments"
+              title="Créneau approuvé"
+              color="#16A34A"
+              emptyMessage="Aucun créneau approuvé actuellement"
+              (onBegin)="markAsInProgress($event)"
+              type="approved">
+            </appointment-mean-card>
+          }
+
+          @if (selectedCardType === 'in_progress') {
+            <appointment-mean-card
+              [appointments]="inProgressAppointments"
+              title="En cours"
+              color="#2563EB"
+              emptyMessage="Aucun rendez-vous en cours"
+              (onCompleted)="markAsCompleted($event)"
+              type="in_progress">
+            </appointment-mean-card>
+          }
+        </div>
+      </div>
+    }
+  </div>
+}

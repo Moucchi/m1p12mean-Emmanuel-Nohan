@@ -19,4 +19,12 @@ export class CompletedAppointmentService {
     );
   }
 
+  getPage(page: number) {
+    return this.http.get<CompletedAppointmentResponse>(`${this.backendUrl}/api/appointments/completed?page=${page}`).pipe(
+      catchError((error: Error) => {
+        throw error;
+      })
+    );
+  }
+
 }

@@ -2,10 +2,207 @@
 @tailwind components;
 @tailwind utilities;
 
-.today{
-  @apply border border-gray-500 p-2 bg-emerald-300
+/* Style général du calendrier */
+.calendar-container {
+  @apply rounded-lg shadow-md bg-white p-4 md:p-6;
+  max-width: 100%;
 }
 
-.day{
-  @apply border border-gray-500 p-2
+/* Structure de l'en-tête améliorée */
+.calendar-headline {
+  @apply mb-6 py-3 flex items-center justify-between bg-gray-50 rounded-lg px-4;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.calendar-headline-previous-month {
+  @apply flex items-center cursor-pointer transition-all duration-200 text-gray-600 hover:text-blue-600 p-2;
+}
+
+.calendar-headline-center {
+  @apply flex items-center justify-center;
+}
+
+.calendar-headline-actions {
+  @apply flex items-center gap-3;
+}
+
+.calendar-headline-next-month {
+  @apply flex items-center cursor-pointer transition-all duration-200 text-gray-600 hover:text-blue-600 p-2;
+}
+
+.calendar-headline-control-today {
+  @apply text-sm bg-blue-50 hover:bg-blue-100 text-blue-600 font-medium py-1 px-3 rounded-md cursor-pointer transition-all duration-200;
+}
+
+/* Améliorations du calendrier */
+.calendar {
+  @apply border border-gray-200 rounded-lg overflow-hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+/* Grille des jours de la semaine */
+.calendar-weeks-grid {
+  @apply mb-0;
+}
+
+.calendar-weeks-grid-cell {
+  @apply text-center py-3 font-semibold bg-gray-50 text-gray-600 border-b border-gray-200;
+}
+
+/* Jours du mois */
+.calendar-grid {
+  min-height: 450px;
+  @apply bg-white;
+}
+
+.day {
+  @apply border border-gray-200 p-2 transition-all duration-200;
+  position: relative;
+  min-height: 80px;
+}
+
+.day:hover {
+  @apply bg-blue-50;
+  transform: translateY(-1px);
+}
+
+/* Jour actuel */
+.today {
+  @apply bg-green-50 border-l-4 border-l-green-500;
+}
+
+.today:hover {
+  @apply bg-green-100;
+}
+
+/* Jour actif (sélectionné) */
+.active-day {
+  @apply border-2 border-blue-500 bg-blue-50;
+  font-weight: 600;
+}
+
+.active-day:hover {
+  @apply bg-blue-100;
+}
+
+/* Jours avec rendez-vous */
+.has-appointments {
+  @apply font-medium;
+}
+
+/* Jours des mois adjacents */
+.other-month {
+  @apply text-gray-400 bg-gray-50;
+}
+
+/* Badge des rendez-vous */
+.day .appointment-badge {
+  @apply absolute bottom-1 right-1 flex items-center justify-center rounded-full text-white w-7 h-7 text-xs font-bold bg-red-600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: fadeInPulse 0.5s ease-out;
+}
+
+@keyframes fadeInPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Container des événements */
+.event-container {
+  @apply mt-8 pt-6 border-t-2 border-gray-200;
+}
+
+.event-date-header {
+  @apply mb-4 pb-2 border-b border-gray-100;
+}
+
+.event-container h3 {
+  @apply text-xl font-bold text-gray-800 flex items-center;
+}
+
+
+
+/* Style des événements */
+.event-card {
+  @apply border rounded-lg p-4 bg-white shadow-sm transition-all duration-200;
+  animation: slideIn 0.3s ease-out;
+}
+
+.event-card:hover {
+  @apply shadow-md;
+  transform: translateY(-2px);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Amélioration des badges de statut */
+.status-badge {
+  @apply capitalize px-3 py-1 rounded-full text-xs text-white font-semibold shadow-sm;
+}
+
+/* Dates empty state */
+.no-events {
+  @apply border-2 border-dashed rounded-lg p-6 bg-gray-50 text-center text-gray-500 flex flex-col items-center justify-center;
+  min-height: 120px;
+}
+
+.no-events mat-icon {
+  @apply text-gray-400 mb-2 text-3xl;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .calendar-headline-month-year {
+    @apply text-lg;
+  }
+
+  .calendar-grid {
+    min-height: 350px;
+  }
+
+  .day {
+    min-height: 60px;
+    @apply p-1;
+  }
+
+  .day .appointment-badge {
+    @apply w-6 h-6;
+  }
+
+  .calendar-headline-control-today {
+    @apply text-xs py-0.5 px-2;
+  }
+}
+
+/* Styles pour les écrans très petits */
+@media (max-width: 480px) {
+  .calendar-grid {
+    min-height: 300px;
+  }
+
+  .day {
+    min-height: 50px;
+  }
+
+  .calendar-weeks-grid-cell {
+    @apply py-2 text-xs;
+  }
 }

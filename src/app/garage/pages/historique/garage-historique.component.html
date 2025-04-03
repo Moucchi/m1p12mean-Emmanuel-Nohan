@@ -1,0 +1,139 @@
+@if (store.loading()) {
+  <mean-spinner></mean-spinner>
+} @else {
+
+  @if (canShowHistoryTable()) {
+    <div class="grid grid-cols-12 gap-4 items-center">
+      <div class="col-span-2">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <mat-icon class="text-gray-500">search</mat-icon>
+          </div>
+          <input
+            type="text"
+            class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white"
+            placeholder="Date de début..."
+            (input)="searchPrestation($event)">
+        </div>
+      </div>
+      <div class="col-span-2">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <mat-icon class="text-gray-500">search</mat-icon>
+          </div>
+          <input
+            type="text"
+            class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white"
+            placeholder="Date de fin..."
+            (input)="searchPrestation($event)">
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <table class="w-full border-collapse border border-gray-200 bg-white text-left text-sm text-gray-500 mt-3">
+        <thead class="bg-gray-50">
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Période</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Mecanicien</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Vehicule</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Note</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Revenue</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+        </thead>
+
+        <tbody class="divide-y divide-gray-100 border-t border-gray-200">
+          @for (appointment of appointments; track appointment._id) {
+            <tr>
+              <td class="px-6 py-4 font-medium text-gray-900">
+                <div> Debut : {{ appointment.startedAt | date: 'dd/MM/YYYY à HH:mm':'UTC+0' }}</div>
+                <div> Fin : {{ appointment.endingAt | date: 'dd/MM/YYYY à HH:mm':'UTC+0' }}</div>
+              </td>
+              <td class="px-6 py-4">{{ appointment.mechanic.firstName }} {{ appointment.mechanic.lastName }}</td>
+              <td class="px-6 py-4">
+                <div>{{ appointment.brandName }} - {{ appointment.registrationNumber }}</div>
+              </td>
+              <td class="px-6 py-4">{{ appointment.rate || 0 }}/5</td>
+              <td class="px-6 py-4 text-right">{{ getTotal(appointment.items) | vola }}</td>
+
+              <td class="px-6 py-4">
+                <a class="cursor-pointer border border-gray-400 font-semibold hover:bg-red-600 hover:border-red-600 hover:text-white p-2 rounded-lg place-self-center self-center" (click)="showReport(appointment._id)">Details</a>
+                <a class="cursor-pointer border border-gray-400 font-semibold hover:bg-red-600 hover:border-red-600 hover:text-white p-2 rounded-lg place-self-center self-center ml-1" (click)="getinvoice(appointment._id)">Facture</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 pt-3 sm:px-6 mt-2">
+        @if (canShowPagination()) {
+          <div class="flex flex-1 justify-between sm:hidden">
+            <button
+              [disabled]="currentPage <= 1"
+              [class.opacity-50]="currentPage <= 1"
+              (click)="previousPage()"
+              class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+              Précédent
+            </button>
+            <button
+              [disabled]="currentPage >= totalPages"
+              [class.opacity-50]="currentPage >= totalPages"
+              class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+              Suivant
+            </button>
+          </div>
+        }
+
+        <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm text-gray-700">
+              Affichage de <span class="font-medium">{{ (currentPage - 1) * 5 + 1 }}</span> à <span
+              class="font-medium">{{ Math.min(currentPage * 5, totalItems) }}</span> sur <span
+              class="font-medium">{{ totalItems }}</span> résultats
+            </p>
+          </div>
+
+          @if (canShowPagination()) {
+            <div>
+              <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                <button
+                  (click)="previousPage()"
+                  [disabled]="currentPage <= 1"
+                  class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                  [class.opacity-50]="currentPage <= 1">
+                  <span class="sr-only">Précédent</span>
+                  &laquo;
+                </button>
+
+                @for (page of pagesArray; track page) {
+                  <button
+                    (click)="goToPage(page)"
+                    class="relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-red-600 focus:z-20 focus:outline-offset-0"
+                    [ngClass]="{ 'bg-black text-white' : page === currentPage }">
+                    {{ page }}
+                  </button>
+                }
+
+                <button
+                  (click)="nextPage()"
+                  [disabled]="currentPage >= totalPages"
+                  class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                  [class.opacity-50]="currentPage >= totalPages">
+                  <span class="sr-only">Suivant</span>
+                  &raquo;
+                </button>
+              </nav>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+  } @else {
+    <div
+      class="flex flex-col items-center justify-center bg-gray-50 rounded-lg shadow-sm border border-gray-200 my-4 h-full">
+      <mat-icon class="text-gray-400 mb-4" style="font-size: 48px; height: 48px; width: 48px;">visibility_off</mat-icon>
+      <p class="text-gray-600 text-xl font-semibold">Aucune prestation à afficher</p>
+    </div>
+  }
+}
+

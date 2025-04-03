@@ -1,0 +1,66 @@
+<h2 class="mb-4" mat-dialog-title>Période de réparation</h2>
+<mat-dialog-content>
+  <form [formGroup]="appointmentForm" class="grid gap-3 pt-5">
+    <h2>Début</h2>
+    <div class="grid grid-cols-2 gap-2">
+      <mat-form-field appearance="outline">
+        <mat-label>Date de début</mat-label>
+        <input matInput type="date" formControlName="startingDate">
+
+        @if (appointmentForm.get('startingDate')?.hasError('required')) {
+          <mat-error>La date de debut est requise</mat-error>
+        }
+        @if (appointmentForm.get('startingDate')?.hasError('invalidDate')) {
+          <mat-error>Format de date invalide</mat-error>
+        }
+        @if (appointmentForm.get('startingDate')?.hasError('pastDate')) {
+          <mat-error>La date ne doit pas etre anterieur à aujourd'hui</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Heure de début</mat-label>
+        <input matInput [matTimepicker]="startingTime" formControlName="startingTime">
+        <mat-timepicker #startingTime></mat-timepicker>
+        <mat-timepicker-toggle [for]="startingTime" matSuffix></mat-timepicker-toggle>
+        @if (appointmentForm.get('startingTime')?.hasError('required')) {
+          <mat-error>L'heure de debut est requise</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <h2>Fin</h2>
+    <div class="grid grid-cols-2 gap-2">
+      <mat-form-field appearance="outline">
+        <mat-label>Date de fin</mat-label>
+        <input matInput type="date" formControlName="endingDate">
+
+        @if (appointmentForm.get('endingDate')?.hasError('required')) {
+          <mat-error>La date de fin est requise</mat-error>
+        }
+        @if (appointmentForm.get('endingDate')?.hasError('invalidDate')) {
+          <mat-error>Format de date invalide</mat-error>
+        }
+        @if (appointmentForm.get('endingDate')?.hasError('pastDate')) {
+          <mat-error>La date ne doit pas etre anterieur à aujourd'hui</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Heure de fin</mat-label>
+        <input matInput [matTimepicker]="endingTime" formControlName="endingTime">
+        <mat-timepicker #endingTime></mat-timepicker>
+        <mat-timepicker-toggle [for]="endingTime" matSuffix></mat-timepicker-toggle>
+        @if (appointmentForm.get('endingTime')?.hasError('required')) {
+          <mat-error>L'heure de fin est requise</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true">Annuler</button>
+  <button mat-button [disabled]="appointmentForm.invalid" (click)="setAppointment()">Fixer
+  </button>
+</mat-dialog-actions>

@@ -4,7 +4,7 @@
         <mat-card-content>
             <div class="overflow-x-auto py-2">
                 <div class="mb-3">
-                  <form class="max-w-sm" #searchForm="ngForm">   
+                  <form class="max-w-sm" #searchForm="ngForm">
                     <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -23,7 +23,7 @@
                     </div>
                   </form>
                 </div>
-              
+
                 <table class="w-full text-sm text-left rtl:text-right mb-3">
                     <thead class="text-md bg-gray-100 p-2">
                         <tr>
@@ -48,7 +48,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for(history of data(); track $index){
+                        @for(history of data(); track history._id){
+                          
                             <tr class="bg-white border-t border-gray-200">
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     <p>Début : <span>{{ history.startedAt | date:'dd-MM-YYYY, HH:mm':'UTC' }}</span></p>
@@ -81,7 +82,7 @@
                                     } @else {
                                       <div class="flex">
                                         @for (item of [].constructor(5); track $index) {
-                                          <svg (click)="confirmDialog(history._id, $index + 1)" (mouseover)="setCurrentRate($index + 1)" (mouseleave)="setCurrentRate(0)" xmlns="http://www.w3.org/2000/svg" [attr.fill]="$index + 1 <= currentRate() ? '#fcc700' : 'none'" stroke="currentColor" class="w-6 h-6 text-gray-300 cursor-pointer" viewBox="0 0 24 24">
+                                          <svg (click)="confirmDialog(history._id, $index + 1)" (mouseover)="setCurrentRate($index + 1, history._id)" (mouseleave)="setCurrentRate(0, history._id)" xmlns="http://www.w3.org/2000/svg" [attr.fill]="$index + 1 <= history.hoverRate ? '#fcc700' : 'none'" stroke="currentColor" class="w-6 h-6 text-gray-300 cursor-pointer" viewBox="0 0 24 24">
                                             <path d="M12 2l2.9 6.1L22 9.3l-5 5 .9 7.1L12 17l-5.9 4.4.9-7.1-5-5 7.1-1.2L12 2z"/>
                                           </svg>
                                         }
@@ -110,7 +111,7 @@
                       @for (item of [].constructor(totalPage()); track $index) {
                         <button [disabled]="$index + 1 == page()" (click)="fetchData($index + 1)" class="relative z-10 inline-flex items-center bg-blue-600 px-4 py-2 text-sm font-semibold text-white focus:z-20">{{ $index + 1 }}</button>
                       }
-                      
+
 
                       <button [disabled]="page() == totalPage()" (click)="fetchData(page() + 1)" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                         <span class="sr-only">Suivant</span>
@@ -122,6 +123,6 @@
                   </div>
             </div>
         </mat-card-content>
-       
+
     </mat-card>
 </div>

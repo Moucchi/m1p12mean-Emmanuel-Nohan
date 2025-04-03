@@ -70,13 +70,13 @@ export const GarageAuthStore = signalStore(
         logout() {
           authService.logout();
 
+          route.navigate(['/garage/login']);
+
           patchState((store), {
             isLogged: false,
             token: '',
             user: null
           });
-
-          route.navigate(['/garage/login']);
         },
         setToken(token: string) {
           try {

@@ -40,13 +40,12 @@ export const MechanicStore = signalStore(
             mechanics: response.data,
             total: response.total,
             totalPage: response.totalPage,
-            page: response.page
+            page: response.page,
+            isLoading: false
           });
         },
-        error: (error: Error) => patchState(store, {error: error.message}),
+        error: (error: Error) => patchState(store, {error: error.message , isLoading: false}),
       });
-
-      patchState(store, {isLoading: false});
     },
 
     register(formData: FormData) {
@@ -83,10 +82,8 @@ export const MechanicStore = signalStore(
               isLoading: false
             });
           },
-          error: (error: Error) => patchState(store, {error: error.message})
+          error: (error: Error) => patchState(store, {error: error.message, isLoading: false})
         });
-
-        patchState(store, {isLoading: false});
       }
     },
 
@@ -105,10 +102,8 @@ export const MechanicStore = signalStore(
               isLoading: false
             });
           },
-          error: (error: Error) => patchState(store, {error: error.message})
+          error: (error: Error) => patchState(store, {error: error.message, isLoading: false})
         });
-
-        patchState(store, {isLoading: false});
       }
     },
 
@@ -127,10 +122,8 @@ export const MechanicStore = signalStore(
               isLoading: false
             });
           },
-          error: (error: Error) => patchState(store, {error: error.message})
+          error: (error: Error) => patchState(store, {error: error.message, isLoading: false})
         });
-
-        patchState(store, {isLoading: false});
       }
     },
 

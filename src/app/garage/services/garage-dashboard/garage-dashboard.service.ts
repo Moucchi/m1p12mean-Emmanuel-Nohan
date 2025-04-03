@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {catchError, map} from 'rxjs';
 import {GarageDashboardInterface} from '../../models/dashboard/garage-dashboard-interface';
 import {ServiceRatingInterface} from '../../models/dashboard/service-rating-interface';
-import {MonthlyAttendanceInterface} from '../../models/dashboard/monthly-attendance-interface';
+import {MonthlyAttendanceInterfaceResponse} from '../../models/dashboard/monthly-attendance-interface';
 import {GarageAuthStore} from '../../store/garage-auth.store';
 import {MechanicsAppointmentsResponseInterface} from '../../models/dashboard/mechanics-appointments-response-interface';
 import {SettingAppointmentForm} from '../../models/dashboard/setting-appointment-form';
@@ -77,80 +77,120 @@ export class GarageDashboardService {
   }
 
   getAttendancePerMonth(year: number) {
-    if (this.authStore.isManager()) {
-      return this.http.get<MonthlyAttendanceInterface[]>(`${this.backendUrl}/api/dashboard/attendances/${year}`).pipe(
-        catchError((error: Error) => {
-          throw error;
-        })
-      );
-    }
-
-    return null;
+    return this.http.get<MonthlyAttendanceInterfaceResponse>(`${this.backendUrl}/api/dashboard/attendances/${year}`).pipe(
+      map( (response : any) => {
+        return response.data;
+      } ),
+      catchError((error: Error) => {
+        throw error;
+      })
+    );
   }
 
   getDashboardData() {
-    if (this.authStore.isManager()) {
-      return this.http.get<GarageDashboardInterface>(`${this.backendUrl}/api/dashboard`).pipe(
-        catchError((error: Error) => {
-          throw error;
-        })
-      );
-    }
-
-    return null;
+    return this.http.get<GarageDashboardInterface>(`${this.backendUrl}/api/dashboard`).pipe(
+      catchError((error: Error) => {
+        throw error;
+      })
+    );
   }
 
   getMechanicsAppointments() {
-    if (this.authStore.isMechanic()) {
-      return this.http.get<MechanicsAppointmentsResponseInterface>(`${this.backendUrl}/api/employees/${this.authStore.getId()}/appointments`).pipe(
-        map((response) => {
-          const data = response.data;
+    return this.http.get<MechanicsAppointmentsResponseInterface>(`${this.backendUrl}/api/employees/${this.authStore.getId()}/appointments`).pipe(
+      map((response) => {
+        const data = response.data;
 
-          if (data.pending?.length) {
-            data.pending.sort((a, b) => {
-              const aDate = DateTime.fromISO(a.orderCreatedAt.toString());
-              const bDate = DateTime.fromISO(b.orderCreatedAt.toString());
+        if (data.pending?.length) {
+          data.pending.sort((a, b) => {
+            const aDate = DateTime.fromISO(a.orderCreatedAt.toString());
+            const bDate = DateTime.fromISO(b.orderCreatedAt.toString());
 
-              return aDate.toMillis() - bDate.toMillis();
-            });
-          }
+            return aDate.toMillis() - bDate.toMillis();
+          });
+        }
 
-          if (data.set?.length) {
-            data.set.sort((a, b) => {
-              const aDate = DateTime.fromISO(a.startedDate.toString());
-              const bDate = DateTime.fromISO(b.startedDate.toString());
+        if (data.set?.length) {
+          data.set.sort((a, b) => {
+            const aDate = DateTime.fromISO(a.startedDate.toString());
+            const bDate = DateTime.fromISO(b.startedDate.toString());
 
-              return aDate.toMillis() - bDate.toMillis();
-            });
-          }
+            return aDate.toMillis() - bDate.toMillis();
+          });
+        }
 
-          if (data.confirmed?.length) {
-            data.confirmed.sort((a, b) => {
-              const aDate = DateTime.fromISO(a.startedDate.toString());
-              const bDate = DateTime.fromISO(b.startedDate.toString());
+        if (data.confirmed?.length) {
+          data.confirmed.sort((a, b) => {
+            const aDate = DateTime.fromISO(a.startedDate.toString());
+            const bDate = DateTime.fromISO(b.startedDate.toString());
 
-              return aDate.toMillis() - bDate.toMillis();
-            });
-          }
+            return aDate.toMillis() - bDate.toMillis();
+          });
+        }
 
-          if (data.in_progress?.length) {
-            data.in_progress.sort((a, b) => {
-              const aDate = DateTime.fromISO(a.startedDate.toString());
-              const bDate = DateTime.fromISO(b.startedDate.toString());
+        if (data.in_progress?.length) {
+          data.in_progress.sort((a, b) => {
+            const aDate = DateTime.fromISO(a.startedDate.toString());
+            const bDate = DateTime.fromISO(b.startedDate.toString());
 
-              return aDate.toMillis() - bDate.toMillis();
-            });
-          }
+            return aDate.toMillis() - bDate.toMillis();
+          });
+        }
 
-          return data;
-        }),
-        catchError((error: Error) => {
-          throw error;
-        })
-      );
-    }
+        return data;
+      }),
+      catchError((error: Error) => {
+        throw error;
+      })
+    );
+  }
 
-    return null;
+  trackMechanicsAppointment(id : string) {
+    return this.http.get<MechanicsAppointmentsResponseInterface>(`${this.backendUrl}/api/employees/${id}/appointments`).pipe(
+      map((response) => {
+        const data = response.data;
+
+        if (data.pending?.length) {
+          data.pending.sort((a, b) => {
+            const aDate = DateTime.fromISO(a.orderCreatedAt.toString());
+            const bDate = DateTime.fromISO(b.orderCreatedAt.toString());
+
+            return aDate.toMillis() - bDate.toMillis();
+          });
+        }
+
+        if (data.set?.length) {
+          data.set.sort((a, b) => {
+            const aDate = DateTime.fromISO(a.startedDate.toString());
+            const bDate = DateTime.fromISO(b.startedDate.toString());
+
+            return aDate.toMillis() - bDate.toMillis();
+          });
+        }
+
+        if (data.confirmed?.length) {
+          data.confirmed.sort((a, b) => {
+            const aDate = DateTime.fromISO(a.startedDate.toString());
+            const bDate = DateTime.fromISO(b.startedDate.toString());
+
+            return aDate.toMillis() - bDate.toMillis();
+          });
+        }
+
+        if (data.in_progress?.length) {
+          data.in_progress.sort((a, b) => {
+            const aDate = DateTime.fromISO(a.startedDate.toString());
+            const bDate = DateTime.fromISO(b.startedDate.toString());
+
+            return aDate.toMillis() - bDate.toMillis();
+          });
+        }
+
+        return data;
+      }),
+      catchError((error: Error) => {
+        throw error;
+      })
+    );
   }
 
   setAppointmentDate(id: string, form : SettingAppointmentForm) {

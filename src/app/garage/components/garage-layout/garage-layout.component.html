@@ -1,34 +1,64 @@
-@if ( layoutStore.isLoading() ){
-  chargement ...
+@if (layoutStore.isLoading()) {
+  <div class="flex items-center justify-center h-screen">
+    <span class="text-lg">Chargement...</span>
+  </div>
 } @else {
-  <div class="grid grid-cols-12 h-screen overflow-hidden font-sans isolate ">
-    <!-- Decorative column (unchanged) -->
+  <div class="grid grid-cols-12 h-screen overflow-hidden font-sans isolate">
     <div
-      class="col-start-1 row-span-full max-sm:hidden text-gray-950/5 border-x border-x-current bg-[size:10px_10px] bg-fixed bg-[image:repeating-linear-gradient(315deg,currentColor_0,currentColor_1px,_transparent_0,_transparent_50%)]"></div>
+      class="col-start-1 row-span-full max-sm:hidden text-gray-950/5 border-x border-x-current bg-[size:10px_10px] bg-fixed bg-[image:repeating-linear-gradient(315deg,currentColor_0,currentColor_1px,_transparent_0,_transparent_50%)]">
+    </div>
 
-    <!-- Side bar -->
-    <garage-sidebar class="col-start-2 col-span-2 bg-white shadow-md grid grid-rows-12 h-screen" />
+    <garage-sidebar
+      class="fixed sm:relative inset-y-0 left-0 bg-white shadow-md grid grid-rows-12 h-screen max-h-screen z-20 transition-transform duration-300 w-64 sm:w-auto sm:col-start-2 sm:col-span-3 md:col-span-2"
+      [class.translate-x-0]="isSidebarOpen()"
+      [class.-translate-x-full]="!isSidebarOpen()" />
 
-    <!-- Content -->
-    <div class="col-start-4 col-span col-end-12 grid grid-rows-12 h-screen">
+    @if (isSidebarOpen()) {
+      <div
+        class="fixed inset-0 bg-gray-900 bg-opacity-50 z-10 sm:hidden"
+        (click)="toggleSidebar()">
+      </div>
+    }
 
-      <!--  HEADER  -->
-      <header class="row-start-1 row-end-3 w-full px-4 sm:px-8 md:px-12 lg:px-20 border-b border-b-gray-200 flex flex-col justify-center">
-        <garage-breadcrumb class="h-fit"></garage-breadcrumb>
-        <h1 class="text-xl sm:text-2xl md:text-4xl lg:text-6xl tracking-tight text-pretty">{{ layoutStore.text() }}</h1>
+    <div
+      class="col-span-12 sm:col-start-5 sm:col-span-8 md:col-start-4 md:col-span-9 lg:col-span-8 grid grid-rows-12 h-screen overflow-hidden">
+
+      <header
+        class="row-start-1 row-end-3 w-full px-3 sm:px-4 md:px-8 lg:px-16 border-b border-b-gray-200 flex flex-col justify-center">
+        <div class="flex items-center justify-between">
+          <!-- Bouton pour afficher la barre latérale sur mobile -->
+          <button
+            class="sm:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
+            (click)="toggleSidebar()"
+            aria-label="Menu">
+            <mat-icon>menu</mat-icon>
+          </button>
+
+          <div>
+            <garage-breadcrumb class="h-fit"></garage-breadcrumb>
+            <h1
+              class="text-right text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl tracking-tight text-pretty overflow-hidden text-ellipsis">
+              {{ layoutStore.text() }}
+            </h1>
+          </div>
+        </div>
+
+
       </header>
 
-      <!--  MAIN CONTENT  -->
-      <section class="row-start-3 row-end-12  w-full px-20 overflow-y-auto scroll-smooth max-h-full py-10 custom-scrollbar">
+      <!-- MAIN CONTENT (responsive avec padding progressif) -->
+      <section
+        class="row-start-3 row-end-12 w-full px-3 sm:px-4 md:px-8 lg:px-16 overflow-y-auto scroll-smooth max-h-full py-4 sm:py-6 md:py-8 custom-scrollbar">
         <router-outlet></router-outlet>
       </section>
 
-      <!--  FOOTER  -->
-      <garage-footer class="row-start-12 w-full px-20 border-t border-t-gray-200 grid grid-cols-12 items-center"/>
+      <!-- FOOTER (responsive) -->
+      <garage-footer
+        class="row-start-12 w-full px-3 sm:px-4 md:px-8 lg:px-16 border-t border-t-gray-200 grid grid-cols-12 items-center"/>
     </div>
 
     <div
-      class="col-start-12 row-span-full max-sm:hidden text-gray-950/5 border-x border-x-current bg-[size:10px_10px] bg-fixed bg-[image:repeating-linear-gradient(315deg,currentColor_0,currentColor_1px,_transparent_0,_transparent_50%)]"></div>
-
+      class="col-span-0 lg:col-start-12 lg:col-span-1 row-span-full max-lg:hidden text-gray-950/5 border-x border-x-current bg-[size:10px_10px] bg-fixed bg-[image:repeating-linear-gradient(315deg,currentColor_0,currentColor_1px,_transparent_0,_transparent_50%)]">
+    </div>
   </div>
 }

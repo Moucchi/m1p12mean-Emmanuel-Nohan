@@ -1,20 +1,20 @@
 export interface GarageServiceInterface {
-  "_id": string,
-  "name": string,
-  "basePrice": number,
-  "description": string,
-  "__v": number
+  _id: string,
+  name: string,
+  basePrice: number,
+  description: string,
+  __v: number
 }
 
 export interface GarageServiceResponseInterface {
-  "total": number,
-  "page": number,
-  "totalPages": number,
-  "data": GarageServiceInterface[]
+  total: number,
+  page: number,
+  totalPages: number,
+  data: GarageServiceInterface[]
 }
 
 export interface GarageAddServiceResponse {
-  "data": GarageServiceInterface,
-  "message": string
+  data: GarageServiceInterface,
+  message: string
 }
 

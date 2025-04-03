@@ -1,45 +1,48 @@
 <div class="container">
-    <div class="logo">
-        <img src="/img/Logo.svg" alt="logo">
-    </div>
-    <div class="first-section p-20 flex flex-col justify-center">
-        <div class="md:w-1/2 w-full flex flex-col gap-8">
-            <p class="text-white text-5xl font-medium">Professional Car Repair and Maintenance</p>
-            <p class="hidden md:block text-white text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, nam illum atque maiores quas rerum perferendis, totam voluptates dicta nostrum, autem deserunt? Vero, ipsam alias numquam minus saepe aspernatur modi?</p>
-            <div class="flex gap-1">
-                <a routerLink="/client/inscription" type="button" class="text-center flex items-center focus:outline-none cursor-pointer text-white bg-red-800 hover:bg-red-800 font-medium rounded-md text-md px-5 py-2.5 me-2 mb-2 ">S'inscrire</a>
-                <a routerLink="/client/login" type="button" class="text-center flex items-center focus:outline-none cursor-pointer text-white bg-red-800 hover:bg-red-800 font-medium rounded-md text-md px-5 py-2.5 me-2 mb-2 ">Se connecter</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="second-section flex flex-col justify-center items-center gap-20">
-        <div class="flex flex-col gap-2">
-            <p class="text-gray-500 font-medium text-xl text-center">OUR SERVICES</p>
-            <p class="text-gray-800 font-medium text-5xl text-center">Great Car Service</p>
-        </div>
-
-      <div class="flex flex-wrap gap-10 justify-center">
-        <div class="service-card">
-            <mat-icon class="mb-5">drive_eta</mat-icon>
-            <p class="mb-3 text-2xl font-medium text-gray-800">Tire and wheel</p>
-            <p class="text-gray-500 text-center">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium, et soluta quae asperiores vel tenetur amet illum dolor minima iste. Dolor optio iure aliquam.</p>
-        </div>
-
-        <div class="service-card">
-            <mat-icon class="mb-5">power</mat-icon>
-            <p class="mb-3 text-2xl font-medium text-gray-800">Electrical system</p>
-            <p class="text-gray-500 text-center">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium, et soluta quae asperiores vel tenetur amet illum dolor minima iste. Dolor optio iure aliquam.</p>
-        </div>
-        
-        <div class="service-card">
-            <mat-icon class="mb-5">build</mat-icon>
-            <p class="mb-3 text-2xl font-medium text-gray-800">System service</p>
-            <p class="text-gray-500 text-center">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium, et soluta quae asperiores vel tenetur amet illum dolor minima iste. Dolor optio iure aliquam.</p>
-        </div>
+  <div class="logo">
+    <img alt="logo" [ngSrc]="logo" width="150" height="54"/>
+  </div>
+  <div class="first-section p-20 flex flex-col justify-center">
+    <div class="md:w-1/2 w-full flex flex-col gap-8">
+      <p class="text-white text-5xl font-medium">Service de réparation et d'entretien automobile professionnel</p>
+      <p class="hidden md:block text-white text-xl">Confiez votre véhicule à nos experts qualifiés et bénéficiez d'un service de qualité pour tous types de réparations et d'entretiens. Notre équipe expérimentée utilise des équipements de pointe pour garantir la performance et la sécurité de votre voiture.</p>
+      <div class="flex gap-1">
+        <a routerLink="/client/inscription" type="button"
+           class="text-center flex items-center focus:outline-none cursor-pointer text-white bg-red-800 hover:bg-red-800 font-medium rounded-md text-md px-5 py-2.5 me-2 mb-2 ">S'inscrire</a>
+        <a routerLink="/client/login" type="button"
+           class="text-center flex items-center focus:outline-none cursor-pointer text-white bg-red-800 hover:bg-red-800 font-medium rounded-md text-md px-5 py-2.5 me-2 mb-2 ">Se
+          connecter</a>
       </div>
     </div>
+  </div>
 
-    <!-- Footer -->
-    <app-footer></app-footer>
+  <div class="second-section flex flex-col justify-center items-center gap-20">
+    <div class="flex flex-col gap-2">
+      <p class="text-gray-500 font-medium text-xl text-center">NOS ENGAGEMENTS</p>
+      <p class="text-gray-800 font-medium text-5xl text-center">Un service rapide, efficace et fiable</p>
+    </div>
+
+    <div class="flex flex-wrap gap-10 justify-center">
+      <div class="service-card">
+        <mat-icon class="mb-5">schedule</mat-icon>
+        <p class="mb-3 text-2xl font-medium text-gray-800">Gestion optimale du temps</p>
+        <p class="text-gray-500 text-center">Nous respectons scrupuleusement les délais annoncés. Notre planning optimisé vous permet de récupérer votre véhicule dans les temps promis, sans attente supplémentaire ni mauvaise surprise.</p>
+      </div>
+
+      <div class="service-card">
+        <mat-icon class="mb-5">trending_up</mat-icon>
+        <p class="mb-3 text-2xl font-medium text-gray-800">Efficacité prouvée</p>
+        <p class="text-gray-500 text-center">Notre processus d'intervention est conçu pour maximiser l'efficacité. Nos techniciens expérimentés diagnostiquent et résolvent rapidement les problèmes grâce à des méthodes éprouvées et des outils modernes.</p>
+      </div>
+
+      <div class="service-card">
+        <mat-icon class="mb-5">star_rate</mat-icon>
+        <p class="mb-3 text-2xl font-medium text-gray-800">Qualité sans compromis</p>
+        <p class="text-gray-500 text-center">La rapidité ne signifie jamais une baisse de qualité. Chaque intervention est minutieusement réalisée selon des standards stricts et fait l'objet d'un contrôle rigoureux avant la remise des clés.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
 </div>

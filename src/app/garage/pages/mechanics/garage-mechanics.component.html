@@ -1,0 +1,142 @@
+@if (mechanicStore.isLoading()) {
+  <mean-spinner></mean-spinner>
+} @else {
+  <div class="grid grid-cols-12 gap-4 items-center">
+    <div class="col-span-12 sm:col-span-8 md:col-span-6">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <mat-icon class="text-gray-500">search</mat-icon>
+        </div>
+        <input
+          type="text"
+          class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white"
+          placeholder="Rechercher un mécanicien..."
+          (input)="searchMechanics($event)">
+      </div>
+    </div>
+
+    <div class="col-span-12 sm:col-span-4 md:col-start-13 mt-3 sm:mt-0">
+      <div
+        class="cursor-pointer border p-2 rounded-lg flex items-center justify-center sm:justify-between text-center font-semibold bg-black text-white hover:bg-red-600 transition-colors duration-200"
+        (click)="showAddMechanicModal()">
+        <mat-icon>add</mat-icon>
+        <span class="px-1">Ajouter</span>
+      </div>
+    </div>
+  </div>
+
+  @if (canShowMechanicsTable()) {
+    <div class="overflow-x-auto mt-4 rounded-lg border border-gray-200">
+      <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
+        <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-4 sm:px-6 py-3 font-medium text-gray-900">Nom</th>
+          <th scope="col" class="px-4 sm:px-6 py-3 font-medium text-gray-900 hidden sm:table-cell">Email</th>
+          <th scope="col" class="px-4 sm:px-6 py-3 font-medium text-gray-900">Photo</th>
+          <th scope="col" class="px-4 sm:px-6 py-3 font-medium text-gray-900 hidden md:table-cell">Prestations</th>
+          <th scope="col" class="px-4 sm:px-6 py-3 font-medium text-gray-900">Actions</th>
+        </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-100 border-t border-gray-200">
+          @for (mechanic of mechanics; track mechanic._id) {
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 sm:px-6 py-3 font-medium text-gray-900">
+                <div>{{ mechanic.firstName }} {{ mechanic.lastName }}</div>
+                <div class="text-gray-500 text-xs sm:hidden">{{ mechanic.email }}</div>
+              </td>
+              <td class="px-4 sm:px-6 py-3 hidden sm:table-cell">{{ mechanic.email }}</td>
+              <td class="px-4 sm:px-6 py-3">
+                <img class="rounded-lg h-10 w-10 sm:h-12 sm:w-12" [ngSrc]="mechanic.profilePicture" height="48"
+                     width="48" alt="photo de profil">
+              </td>
+              <td class="px-4 sm:px-6 py-3 hidden md:table-cell">{{ mechanic.completedAppointment }}</td>
+              <td class="px-4 sm:px-6 py-3">
+                <button
+                  class="border p-1.5 sm:p-2 rounded-lg text-black border-black text-sm font-semibold hover:text-white hover:bg-red-600 hover:border-red-600 transition-colors duration-200"
+                  (click)="track(mechanic._id)"
+                >
+                  Voir
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div
+        class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+        <div class="flex flex-col sm:flex-1 text-center sm:text-left mb-3 sm:mb-0">
+          <p class="text-sm text-gray-700">
+            Affichage de <span class="font-medium">{{ (currentPage - 1) * 5 + 1 }}</span> à <span
+            class="font-medium">{{ Math.min(currentPage * 5, totalItems) }}</span> sur <span
+            class="font-medium">{{ totalItems }}</span> résultats
+          </p>
+        </div>
+
+        @if (canShowPagination()) {
+          <div class="flex justify-center">
+            <!-- Pagination mobile -->
+            <div class="flex sm:hidden space-x-2">
+              <button
+                (click)="previousPage()"
+                [disabled]="currentPage <= 1"
+                [class.opacity-50]="currentPage <= 1"
+                class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Préc.
+              </button>
+              <span class="py-2 px-3 text-sm">{{ currentPage }} / {{ totalPages }}</span>
+              <button
+                (click)="nextPage()"
+                [disabled]="currentPage >= totalPages"
+                [class.opacity-50]="currentPage >= totalPages"
+                class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Suiv.
+              </button>
+            </div>
+
+            <!-- Pagination desktop -->
+            <div class="hidden sm:block">
+              <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                <button
+                  (click)="previousPage()"
+                  [disabled]="currentPage <= 1"
+                  class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                  [class.opacity-50]="currentPage <= 1">
+                  <span class="sr-only">Précédent</span>
+                  &laquo;
+                </button>
+
+                @for (page of pagesArray; track page) {
+                  <button
+                    (click)="goToPage(page)"
+                    class="relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-red-600 focus:z-20 focus:outline-offset-0 transition-colors duration-200"
+                    [ngClass]="{ 'bg-black text-white' : page === currentPage }">
+                    {{ page }}
+                  </button>
+                }
+
+                <button
+                  (click)="nextPage()"
+                  [disabled]="currentPage >= totalPages"
+                  class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                  [class.opacity-50]="currentPage >= totalPages">
+                  <span class="sr-only">Suivant</span>
+                  &raquo;
+                </button>
+              </nav>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <div
+      class="flex flex-col items-center justify-center bg-gray-50 rounded-lg shadow-sm border border-gray-200 my-4 py-10">
+      <mat-icon class="text-gray-400 mb-4" style="font-size: 48px; height: 48px; width: 48px;">person_off</mat-icon>
+      <p class="text-gray-600 text-xl font-semibold text-center">Pas de mécaniciens disponibles</p>
+      <p class="text-gray-500 mt-2 text-center px-4">Ajoutez un mécanicien en cliquant sur le bouton "Ajouter"</p>
+    </div>
+  }
+}

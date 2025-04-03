@@ -6,7 +6,7 @@ import { Appointment } from '../../../shared/models/appointment.interface';
 import { environment } from '../../../environments/environment';
 import { UserInterface } from '../../../shared/models/User.interface';
 import { jwtDecode } from 'jwt-decode';
-import { DatePipe } from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {
   MatDialog,
 } from '@angular/material/dialog';
@@ -24,21 +24,24 @@ import { SpinnerComponent } from '../../components/spinner/spinner.component';
 export class HistoriqueComponent implements OnInit {
   private http = inject(HttpClient);
   private dialog = inject(MatDialog);
-  
+
   search = { value: ''};
   data = signal<Appointment[]>([]);
   page = signal<number>(1);
   total = signal<number>(1);
   totalPage = signal<number>(1);
-  currentRate = signal(0);
   isSearching = signal(false);
 
   ngOnInit(): void {
       this.fetchData(1);
   }
 
-  setCurrentRate(i: number){
-    this.currentRate.set(i);
+  setCurrentRate(i: number, id: string){
+    this.data.update((h) =>
+      h.map((histo) =>
+        histo._id === id ? { ...histo, hoverRate: i } : histo
+      )
+    );
   }
 
   historyInfoDialog(index: number) {
@@ -57,7 +60,7 @@ export class HistoriqueComponent implements OnInit {
           rate: i
         }).subscribe(() => {
           this.data.update(histories =>
-            histories.map(history => 
+            histories.map(history =>
               history._id === id ? { ...history, rate: i } : history
             )
           );
@@ -72,8 +75,8 @@ export class HistoriqueComponent implements OnInit {
     }).subscribe(pdf => {
       window.open(URL.createObjectURL(pdf));
     });
-  } 
-  
+  }
+
   fetchData(p_page: number) {
     const token = localStorage.getItem('JWT_TOKEN');
     let user: UserInterface;
@@ -81,10 +84,10 @@ export class HistoriqueComponent implements OnInit {
       user = {
         ...jwtDecode(token)
       };
-    
+
       this.http.get(`${environment.apiUrl}/api/clients/${user.id}/appointments/completed`, {
         params: {
-          page: p_page        
+          page: p_page
         }
       }).subscribe((response: any) => {
         this.data.set(response.data);
@@ -103,7 +106,7 @@ export class HistoriqueComponent implements OnInit {
       user = {
         ...jwtDecode(token)
       };
-    
+
       this.http.get(`${environment.apiUrl}/api/clients/${user.id}/appointments/completed`, {
         params: {
           page: 1,

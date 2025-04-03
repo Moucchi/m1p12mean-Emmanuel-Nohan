@@ -49,5 +49,3 @@ export class CalendarService {
   }
 
 }
-
-export const DATE_MED = DateTime.DATE_MED;

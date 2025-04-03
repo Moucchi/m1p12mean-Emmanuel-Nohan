@@ -1,0 +1,167 @@
+<div class="p-6 max-h-[80vh] overflow-y-auto custom-scrollbar">
+  <!-- En-tête avec informations principales -->
+  <div class="flex justify-between items-center border-b pb-4 mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Rapport de prestation</h2>
+    <div class="flex items-center">
+      <span class="text-lg font-medium mr-2">Note:</span>
+      <div class="flex space-x-1 text-yellow-400">
+        @for (star of [].constructor(data.rate || 0); track $index) {
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+            <path d="M12 2l2.9 6.1L22 9.3l-5 5 .9 7.1L12 17l-5.9 4.4.9-7.1-5-5 7.1-1.2L12 2z"/>
+          </svg>
+        }
+        @for (star of [].constructor(5 - (data.rate || 0)); track $index) {
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-6 h-6 text-gray-300" viewBox="0 0 24 24">
+            <path d="M12 2l2.9 6.1L22 9.3l-5 5 .9 7.1L12 17l-5.9 4.4.9-7.1-5-5 7.1-1.2L12 2z"/>
+          </svg>
+        }
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Informations générales -->
+  <div class="grid grid-cols-2 gap-6 mb-6">
+    <!-- Informations période -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="text-lg font-semibold text-gray-700 mb-3">Période</h3>
+      <div class="space-y-2">
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <p><span class="font-medium">Début:</span> {{ data.startedAt | date: 'dd/MM/YYYY à HH:mm':'UTC+0' }}</p>
+        </div>
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p><span class="font-medium">Fin:</span> {{ data.endingAt | date: 'dd/MM/YYYY à HH:mm':'UTC+0' }}</p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Informations véhicule -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="text-lg font-semibold text-gray-700 mb-3">Véhicule</h3>
+      <div class="space-y-2">
+        <div class="flex items-center">
+          @if (data.brandLogo) {
+            <img [ngSrc]="data.brandLogo" alt="vehicle_logo" width="82" height="82">
+          }
+        </div>
+        <div class="flex items-center">
+          <p><span class="font-medium">Marque:</span> {{ data.brandName }}</p>
+        </div>
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+          </svg>
+          <p><span class="font-medium">Type:</span> {{ data.vehicleType }}</p>
+        </div>
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+          </svg>
+          <p><span class="font-medium">Immatriculation:</span> {{ data.registrationNumber }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Informations personnes -->
+  <div class="grid grid-cols-2 gap-6 mb-6">
+    <!-- Client -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="text-lg font-semibold text-gray-700 mb-3">Client</h3>
+      <div class="space-y-2">
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          <p><span class="font-medium">Nom:</span> {{ data.client.firstName }} {{ data.client.lastName }}</p>
+        </div>
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <p><span class="font-medium">Email:</span> {{ data.client.email }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mécanicien -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="text-lg font-semibold text-gray-700 mb-3">Mécanicien</h3>
+      <div class="space-y-2">
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          <p><span class="font-medium">Nom:</span> {{ data.mechanic.firstName }} {{ data.mechanic.lastName }}</p>
+        </div>
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <p><span class="font-medium">Email:</span> {{ data.mechanic.email }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-6">
+    <h3 class="text-lg font-semibold text-gray-700 mb-3">Rapport</h3>
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <div [innerHtml]="data.report" class="report-content"></div>
+
+      @if (data.reportImages && data.reportImages.length > 0) {
+        <div class="mt-4">
+          <h4 class="font-medium mb-2">Images</h4>
+          <div class="grid grid-cols-3 gap-2">
+            @for (image of data.reportImages; track $index) {
+              <div class="relative aspect-square overflow-hidden rounded border border-gray-300">
+                <img [ngSrc]="getImageUrl(image)" fill alt="Image du rapport" class="w-full h-full object-cover">
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div>
+    <h3 class="text-lg font-semibold text-gray-700 mb-3">Prestations et pièces</h3>
+    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+      <table class="min-w-full divide-y divide-gray-300">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Désignation</th>
+            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Prix unitaire</th>
+            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Quantité</th>
+            <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">Total</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+          @for (item of data.items; track item._id) {
+            <tr>
+              <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ item.name }}</td>
+              <td class="px-3 py-4 text-center text-sm text-gray-500">{{ item.price | currency:'MGA ':'symbol':'1.0-0'}}</td>
+              <td class="px-3 py-4 text-center text-sm text-gray-500">{{ item.qty }}</td>
+              <td class="px-3 py-4 text-right text-sm font-medium text-gray-900">{{ item.price * item.qty | currency:'MGA ':'symbol':'1.0-0'}}</td>
+            </tr>
+          }
+          <tr class="bg-gray-50">
+            <td colspan="3" class="py-4 pl-4 pr-3 text-right text-sm font-medium text-gray-900">Total</td>
+            <td class="px-3 py-4 text-right text-sm font-bold text-gray-900">
+              {{ calculateTotal(data.items) | currency:'MGA ':'symbol':'1.0-0'}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

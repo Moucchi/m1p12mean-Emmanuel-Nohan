@@ -1,12 +1,11 @@
-import {Component, inject, OnInit, signal, OnDestroy} from '@angular/core';
+import {Component, HostListener, inject, OnInit, signal} from '@angular/core';
 import {GarageFooterComponent} from '../garage-footer/garage-footer.component';
 import {RouterOutlet} from '@angular/router';
 import {GarageSidebarComponent} from '../garage-sidebar/garage-sidebar.component';
 import {GarageBreadcrumbComponent} from "../garage-breadcrumb/garage-breadcrumb.component";
 import {LayoutStore} from '../../store/garage-layout.store';
-import {BreakpointObserver} from '@angular/cdk/layout';
-import {Subscription} from 'rxjs';
 import {environment} from '../../../environments/environment.prod';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-garage-layout',
@@ -15,35 +14,35 @@ import {environment} from '../../../environments/environment.prod';
     RouterOutlet,
     GarageSidebarComponent,
     GarageBreadcrumbComponent,
+    MatIconModule
   ],
   templateUrl: './garage-layout.component.html',
   styleUrl: './garage-layout.component.css'
 })
-export class GarageLayoutComponent implements OnInit, OnDestroy {
+export class GarageLayoutComponent implements OnInit {
   readonly layoutStore = inject(LayoutStore);
-  private breakpointObserver = inject(BreakpointObserver);
-  isLargeScreen = signal(false);
-  showSidebar = signal(false);
   logo = environment.logo;
 
-  private breakpointSubscription: Subscription | null = null;
+  // Signal pour contrôler la visibilité de la sidebar
+  isSidebarOpen = signal<boolean>(false);
 
-  ngOnInit(): void {
-    this.breakpointSubscription = this.breakpointObserver
-      .observe(['(min-width: 1440px)'])
-      .subscribe(result => {
-        this.isLargeScreen.set(result.matches);
-        this.showSidebar.set(result.matches);
-      });
+  ngOnInit() {
+    // Initialiser l'état de la sidebar en fonction de la largeur d'écran actuelle
+    this.isSidebarOpen.set(window.innerWidth >= 640);
   }
 
-  ngOnDestroy(): void {
-    if (this.breakpointSubscription) {
-      this.breakpointSubscription.unsubscribe();
+  // Écouter les changements de taille d'écran
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    if (window.innerWidth >= 640) {
+      this.isSidebarOpen.set(true);
+    } else {
+      this.isSidebarOpen.set(false);
     }
   }
 
-  toggleSidebar(): void {
-    this.showSidebar.update(value => !value);
+  // Méthode pour basculer la visibilité de la sidebar
+  toggleSidebar() {
+    this.isSidebarOpen.update(value => !value);
   }
 }

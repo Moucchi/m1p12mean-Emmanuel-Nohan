@@ -11,8 +11,6 @@ export class LuxonDatePipe implements PipeTransform {
       return '';
     }
 
-    console.log(`Resualt mongo : ${value.toString()}`);
-
     let temp = DateTime.fromISO(value.toString() , {zone: 'Africa/Nairobi'} );
 
     if( temp.isValid ){

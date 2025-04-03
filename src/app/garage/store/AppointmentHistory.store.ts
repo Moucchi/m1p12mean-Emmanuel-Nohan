@@ -2,6 +2,7 @@ import {CompletedAppointment, CompletedAppointmentResponse} from '../models/appo
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {inject} from '@angular/core';
 import {CompletedAppointmentService} from '../services/garage-admin-appointment/completed-appointment.service';
+import {withDevtools} from '@angular-architects/ngrx-toolkit';
 
 type AppointmentHistoryState = {
   appointments: CompletedAppointment[] | null,
@@ -9,7 +10,8 @@ type AppointmentHistoryState = {
   totalPages: number,
   page: number,
   loading: boolean,
-  message: string
+  message: string,
+  error: string | null
 }
 
 const initialState: AppointmentHistoryState = {
@@ -18,7 +20,8 @@ const initialState: AppointmentHistoryState = {
   totalPages: 0,
   page: 1,
   loading: false,
-  message: ''
+  message: '',
+  error: null
 }
 
 export const CompletedAppointmentStore = signalStore(
@@ -45,7 +48,71 @@ export const CompletedAppointmentStore = signalStore(
           });
         }
       });
-    }
+    },
 
-  })),
+    nextPage() {
+      if (store.page() + 1 <= store.totalPages()) {
+        patchState(store, {loading: true});
+
+        service.getPage(store.page() + 1)?.subscribe({
+          next: (response: CompletedAppointmentResponse) => {
+            patchState(store, {
+              appointments: response.data,
+              total: response.total,
+              totalPages: response.totalPages,
+              page: response.page,
+              loading: false
+            });
+          },
+          error: (error: Error) => patchState(store, {error: error.message})
+        });
+
+        patchState(store, {loading: false});
+      }
+    },
+
+    previousPage() {
+      if (store.page() - 1 >= 1) {
+        patchState(store, {loading: true});
+
+        service.getPage(store.page() - 1)?.subscribe({
+          next: (response: CompletedAppointmentResponse) => {
+
+            patchState(store, {
+              appointments: response.data,
+              total: response.total,
+              totalPages: response.totalPages,
+              page: response.page,
+              loading: false
+            });
+          },
+          error: (error: Error) => patchState(store, {error: error.message})
+        });
+
+        patchState(store, {loading: false});
+      }
+    },
+
+    goToPage(page: number) {
+      if( page <= store.totalPages() && page >= 1) {
+        patchState(store, {loading: true});
+
+        service.getPage(page)?.subscribe({
+          next: (response: CompletedAppointmentResponse) => {
+
+            patchState(store, {
+              appointments: response.data,
+              total: response.total,
+              totalPages: response.totalPages,
+              page: response.page,
+              loading: false
+            });
+          },
+          error: (error: Error) => patchState(store, {error: error.message})
+        });
+
+        patchState(store, {loading: false});
+      }
+    },
+  }))
 );

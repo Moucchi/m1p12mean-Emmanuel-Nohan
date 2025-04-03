@@ -16,5 +16,6 @@ export interface Appointment {
     reportImages: string[],
     rate: number,
     orderCreatedAt : Date,
-    registrationNumber: string
+    registrationNumber: string,
+    hoverRate: number
 }

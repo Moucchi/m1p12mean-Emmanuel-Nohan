@@ -46,17 +46,17 @@ export const GarageServiceStore = signalStore(
             services: data,
             total: total,
             page: page,
-            totalPages: totalPages
+            totalPages: totalPages,
+            isLoading:false
           });
         },
         error: () => {
           patchState(store, {
-            error: defaultErrorMessage
+            error: defaultErrorMessage,
+            isLoading: false
           });
         }
       });
-
-      patchState(store, {isLoading: false});
     },
 
     goToPage(page: number) {
@@ -70,17 +70,17 @@ export const GarageServiceStore = signalStore(
             services: data,
             total: total,
             page: page,
-            totalPages: totalPages
+            totalPages: totalPages,
+            isLoading: false
           });
         },
         error: () => {
           patchState(store, {
-            error: defaultErrorMessage
+            error: defaultErrorMessage,
+            isLoading: false
           });
         }
       });
-
-      patchState(store, {isLoading: false});
     },
 
     getById(id: string) {
@@ -96,19 +96,18 @@ export const GarageServiceStore = signalStore(
             this.getAllServices();
             patchState(store, {
               success: "Service mis à jour avec succès",
-              error: null
+              error: null,
+              isLoading: false
             });
           },
           error: () => {
             patchState(store, {
-              error: defaultErrorMessage
+              error: defaultErrorMessage,
+              isLoading: false
             });
           }
         }
       );
-
-      patchState( store , {isLoading: false});
-
     },
 
     deleteService(id : string){
@@ -120,18 +119,18 @@ export const GarageServiceStore = signalStore(
             this.getAllServices();
             patchState(store, {
               success: "Service supprimé avec succès",
-              error: null
+              error: null,
+              isLoading: false
             });
           },
           error: () => {
             patchState(store, {
-              error: defaultErrorMessage
+              error: defaultErrorMessage,
+              isLoading: false
             });
           }
         }
       );
-
-      patchState(store, {isLoading: false});
     },
 
     createService(value: GarageServiceFormInterface) {
@@ -142,17 +141,17 @@ export const GarageServiceStore = signalStore(
           this.getAllServices();
           patchState(store, {
             success: response.message,
-            error: null
+            error: null,
+            isLoading: false
           });
         },
         error: () => {
           patchState(store, {
-            error: defaultErrorMessage
+            error: defaultErrorMessage,
+            isLoading: false
           });
         }
       });
-
-      patchState(store, {isLoading: false});
     },
 
     nextPage() {

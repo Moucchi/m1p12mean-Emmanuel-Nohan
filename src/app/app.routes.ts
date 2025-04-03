@@ -7,7 +7,7 @@ export const routes: Routes = [
   {
     path: "garage/mechanic",
     pathMatch: "full",
-    loadComponent: () => import("./garage/pages/garage-mechanic-login/garage-mechanic-login.component").then((c) => c.GarageMechanicLoginComponent),
+    loadComponent: () => import("./garage/pages/mechanic-login/garage-mechanic-login.component").then((c) => c.GarageMechanicLoginComponent),
     title: "Connexion en tant que mécanicien",
   },
   {
@@ -17,7 +17,7 @@ export const routes: Routes = [
       const garageAuthStore = inject(GarageAuthStore);
 
       if (!token) {
-        return 'client/home';
+        return 'client';
       }
 
       try {
@@ -28,7 +28,7 @@ export const routes: Routes = [
         return 'garage';
 
       } catch (e) {
-        return 'client/home';
+        return 'client';
       }
 
     },

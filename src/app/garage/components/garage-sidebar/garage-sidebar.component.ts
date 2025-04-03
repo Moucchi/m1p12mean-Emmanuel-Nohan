@@ -52,7 +52,8 @@ export class GarageSidebarComponent {
       },
       title: "Evenements",
       icon: "event",
-      role: ['manager', 'mechanics']
+      role: ['mechanics']
+
     },
     {
       path: "/garage/services",

@@ -7,12 +7,15 @@ import {TypeVoiture} from '../../../shared/models/type.interface';
 import {MatDialog} from '@angular/material/dialog';
 import {AddTypeComponent} from '../../../shared/pages/add-type/add-type.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ConfirmationDialogService} from '../../services/garage-confirmation-dialog/confirmation-dialog.service';
+import {PercentPipe} from '@angular/common';
 
 @Component({
   selector: 'mean-vehicule-type',
   imports: [
     SpinnerComponent,
-    MatIcon
+    MatIcon,
+    PercentPipe
   ],
   templateUrl: './vehicule-type.component.html',
   styleUrl: './vehicule-type.component.css'
@@ -22,6 +25,7 @@ export class VehiculeTypeComponent implements OnInit{
   protected readonly typeStore = inject(vehicleStore);
   private addDialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly confirmationDialog = inject(ConfirmationDialogService);
 
   types: TypeVoiture[] = [];
 
@@ -67,6 +71,15 @@ export class VehiculeTypeComponent implements OnInit{
         }
       });
     }
+  }
+
+  deleteType(id: string) {
+    this.confirmationDialog.confirm({
+      message: 'Êtes-vous sûr de vouloir supprimer ce type de voiture ?',
+      onConfirm: () => {
+        this.typeStore.deleteType(id);
+      }
+    });
   }
 
 }
