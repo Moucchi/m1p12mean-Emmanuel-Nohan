@@ -3,7 +3,6 @@ import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {withDevtools} from '@angular-architects/ngrx-toolkit';
 import {inject} from '@angular/core';
 import {CompletedAppointmentService} from '../services/garage-admin-appointment/completed-appointment.service';
-import {Router} from '@angular/router';
 
 type AppointmentHistoryState = {
   appointments: CompletedAppointment[] | null,

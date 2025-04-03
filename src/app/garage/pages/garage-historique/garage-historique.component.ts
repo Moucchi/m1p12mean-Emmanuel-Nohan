@@ -23,7 +23,6 @@ import {VolaPipe} from '../../../shared/pipe/vola.pipe';
 })
 export class GarageHistoriqueComponent implements OnInit{
   protected readonly store = inject(CompletedAppointmentStore);
-  private dialog = inject(MatDialog);
   private readonly layoutStore = inject(LayoutStore);
   appointments: CompletedAppointment[] = [];
 

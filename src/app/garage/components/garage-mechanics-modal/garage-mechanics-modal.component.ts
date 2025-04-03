@@ -5,7 +5,6 @@ import {MatInputModule} from '@angular/material/input';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {FormFieldValidatorsService} from '../../../shared/services/form/form-field-validators.service';
-import {GarageAuthStore} from "../../store/garage-auth.store";
 import {MechanicStore} from '../../store/garage-mecanics.store';
 
 @Component({
