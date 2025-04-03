@@ -4,11 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import {NgOptimizedImage} from "@angular/common";
+import {environment} from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  imports: [FooterComponent, FormsModule, RouterLink, SpinnerComponent],
+    imports: [FooterComponent, FormsModule, RouterLink, SpinnerComponent, NgOptimizedImage],
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit{
@@ -34,4 +36,5 @@ export class LoginComponent implements OnInit{
       },
     });
   }
+  logo = environment.logo;
 }

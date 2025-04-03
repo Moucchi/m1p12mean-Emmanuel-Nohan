@@ -4,11 +4,12 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import {environment} from '../../../environments/environment';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-inscription',
-  imports: [SpinnerComponent, FooterComponent, RouterLink, FormsModule, ReactiveFormsModule],
+  imports: [SpinnerComponent, FooterComponent, RouterLink, FormsModule, ReactiveFormsModule, NgOptimizedImage],
   templateUrl: './inscription.component.html',
   styleUrl: './inscription.component.css'
 })
@@ -16,6 +17,8 @@ export class InscriptionComponent {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
   private router = inject(Router);
+
+  logo = environment.logo;
 
   errorMessage = signal('');
   submit = signal(false);
@@ -44,4 +47,6 @@ export class InscriptionComponent {
     }
 
   }
+
+
 }
