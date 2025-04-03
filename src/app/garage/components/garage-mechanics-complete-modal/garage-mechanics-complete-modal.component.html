@@ -31,11 +31,6 @@
           }
         </div>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Rapport</mat-label>
-          <input matInput formControlName="report">
-        </mat-form-field>
-
         <ng-container formArrayName="items">
           @for (item of itemsArray.controls; track item.value.id) {
             <div [formGroupName]="$index" class="flex gap-x-3 items-center">
@@ -63,14 +58,11 @@
           }
         </ng-container>
 
-        <button type="submit" class="border p-2 rounded-lg">Okay</button>
+        <button type="submit" class="border p-2 rounded-lg  bg-black font-semibold text-white">Okay</button>
       </form>
-
-      <pre>{{ form.value | json }}</pre>
 
       <quill-editor [(ngModel)]="content">
       </quill-editor>
-      <div class="preview" [innerHTML]="content"></div>
     </div>
   </div>
 </div>

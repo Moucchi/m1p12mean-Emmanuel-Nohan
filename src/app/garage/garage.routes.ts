@@ -46,6 +46,13 @@ export const garageRoutes: Route[] = [
         title: "Historique des prestations",
         data: {breadcrumb: 'Historique des prestations', id: "main/4"},
         canActivate: [garageManagerGuard]
+      },
+      {
+        path: "types",
+        loadComponent: () => import('./pages/vehicule-type/vehicule-type.component').then(m => m.VehiculeTypeComponent),
+        title: "Type de vehicule",
+        data: {breadcrumb: 'Type de vehicule', id: "main/5"},
+        canActivate: [garageManagerGuard]
       }
     ]
   }

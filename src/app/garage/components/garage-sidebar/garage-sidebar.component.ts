@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {NgOptimizedImage} from "@angular/common";
 import {RouterLink, RouterLinkActive} from "@angular/router";
@@ -83,6 +83,16 @@ export class GarageSidebarComponent {
       title: "Historique des prestations",
       icon: "history",
       role: ['manager']
-    }
+    },
+    {
+      path: "/garage/types",
+      activeStyle: "active-link",
+      activeOptions: {
+        exact: true
+      },
+      title: "Type de vehicule",
+      icon: "directions_car",
+      role: ['manager']
+    },
   ]
 }

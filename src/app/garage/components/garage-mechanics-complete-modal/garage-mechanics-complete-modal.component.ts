@@ -1,39 +1,41 @@
 import {Component, inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {DialogData} from '../../../shared/models/dialog-data';
 import {
-  FormBuilder,
-  FormArray,
-  ReactiveFormsModule,
-  Validators,
   AbstractControl,
-  ValidationErrors, FormsModule
+  FormArray,
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators
 } from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {CommonModule} from '@angular/common';
-import {FormFieldValidatorsService} from '../../services/form/form-field-validators.service';
+import {GarageDashboardStore} from '../../store/garage-dashboard.store';
+import {MatInput, MatLabel} from '@angular/material/input';
 import {QuillEditorComponent} from 'ngx-quill';
+import {MatFormField} from '@angular/material/form-field';
+
 
 @Component({
-  selector: 'app-dynamic-form',
-  templateUrl: './dynamic-form.component.html',
-  standalone: true,
+  selector: 'mean-garage-mechanics-complete-modal',
   imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    ReactiveFormsModule,
+    FormsModule,
+    MatFormField,
+    MatInput,
+    MatLabel,
     QuillEditorComponent,
-    FormsModule
+    ReactiveFormsModule
   ],
-  styleUrl: './dynamic-form.component.css'
+  templateUrl: './garage-mechanics-complete-modal.component.html',
+  styleUrl: './garage-mechanics-complete-modal.component.css'
 })
-export class DynamicFormComponent {
-  private readonly formBuilder = inject(FormBuilder);
-  private readonly formValidator = inject(FormFieldValidatorsService);
+export class GarageMechanicsCompleteModalComponent {
+  private readonly dialogRef = inject(MatDialogRef<GarageMechanicsCompleteModalComponent>);
+  private readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private readonly dashboardStore = inject(GarageDashboardStore);
 
-  form = this.formBuilder.group({
+  form = this.formBuilder.nonNullable.group({
     files: [[] as File[], [Validators.required, this.validateMultipleFiles.bind(this)]],
     report: ['', Validators.required],
     items: this.formBuilder.array([])
@@ -75,11 +77,12 @@ export class DynamicFormComponent {
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
-      this.form.get('files')?.setValue(Array.from(input.files));
-      this.form.get('files')?.updateValueAndValidity();
 
-      console.log("Type de input.files:", Object.prototype.toString.call(input.files));
-      console.log("Contenu de input.files:", input.files);
+      this.form.patchValue({
+        files: Array.from(input.files)
+      });
+
+      console.log(`Files: ${JSON.stringify(this.form.get('files')?.value ?? 'OFR')}`);
     }
   }
 
@@ -102,7 +105,24 @@ export class DynamicFormComponent {
 
   onSubmit(): void {
 
-    console.log(`Form : ${this.form.getRawValue()}`);
-  }
+    this.form.patchValue({
+      report: this.content
+    });
 
+    const formValues = this.form.getRawValue();
+
+    const formValue = new FormData();
+
+    formValues.files!.forEach((file: File) => {
+      formValue.append('files', file);
+    });
+
+    formValue.append('report', formValues.report);
+
+    formValue.append('items', JSON.stringify(formValues.items));
+
+    this.dashboardStore.markAppointmentAsCompleted(this.data.id, formValue);
+
+    this.dialogRef.close();
+  }
 }

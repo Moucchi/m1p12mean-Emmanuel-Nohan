@@ -269,7 +269,30 @@ export const GarageDashboardStore = signalStore(
       }
     },
 
-    markAppointmentAsDone(id: string) {
+    markAppointmentAsCompleted(id: string, form: FormData) {
+
+      patchState(store, {isLoading: true});
+
+      if (authStore.isMechanic()) {
+        dashboardService.markAppointmentAsCompleted(id, form).subscribe({
+          next: () => {
+            this.getMechanicsAppointments();
+            patchState(store, {appointmentMessage: "Réparation terminée", isLoading: false} );
+          },
+          error: (e) => {
+            patchState(store, {appointmentMessage: e.message});
+            patchState(store, {isLoading: false, appointmentMessage: defaultErrorMessage});
+
+            console.error(e);
+          }
+        });
+
+      } else {
+        router.navigateByUrl('/403').then(() => {
+          patchState(store, {isLoading: false});
+        });
+      }
+
     },
 
     resetAppointmentMessage() {

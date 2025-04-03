@@ -1,0 +1,46 @@
+@if (typeStore.isLoading()) {
+  <mean-spinner></mean-spinner>
+} @else {
+  <div class="grid grid-cols-12">
+    <div class="col-start-13">
+      <div
+        class="cursor-pointer border p-2 rounded-lg flex items-center justify-between text-center font-semibold bg-black text-white hover:bg-red-600"
+        (click)="showAddTypeDialog()"
+      >
+
+        <mat-icon>add</mat-icon>
+        <span class="px-1">Ajouter</span>
+      </div>
+    </div>
+  </div>
+  @if (canShowTypeTable()) {
+    <div>
+      <table class="w-full border-collapse border border-gray-200 bg-white text-left text-sm text-gray-500 mt-3">
+        <thead class="bg-gray-50">
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Nom</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Pourcentage</th>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+        </thead>
+
+        <tbody class="divide-y divide-gray-100 border-t border-gray-200">
+          @for (type of types; track type._id) {
+            <tr>
+              <td class="px-6 py-4 font-medium text-gray-900">{{ type.type }}</td>
+              <td class="px-6 py-4">{{ type.priceMultiplierPercent }}</td>
+              <td class="px-6 py-4">SOLONA</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+    </div>
+  } @else {
+    <div
+      class="flex flex-col items-center justify-center bg-gray-50 rounded-lg shadow-sm border border-gray-200 my-4 h-full">
+      <mat-icon class="text-gray-400 mb-4" style="font-size: 48px; height: 48px; width: 48px;">car_crash</mat-icon>
+      <p class="text-gray-600 text-xl font-semibold">Pas de type de vehicule disponibles</p>
+      <p class="text-gray-500 mt-2">Ajoutez un type en cliquant sur le bouton "Ajouter"</p>
+    </div>
+  }
+}
+

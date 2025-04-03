@@ -1,0 +1,32 @@
+<h2 class="mb-4" mat-dialog-title>Ajout de type de vehicule</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="grid gap-3 pt-5">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="type">
+
+      @if (form.get('type')?.hasError("required")) {
+        <mat-error>Le nom est requis</mat-error>
+      }
+
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Pourcentage</mat-label>
+      <input matInput formControlName="priceMultiplierPercent">
+      @if (form.get('priceMultiplierPercent')?.hasError("required")) {
+        <mat-error>Le pourcentage est requis</mat-error>
+      }
+      @if (form.get('priceMultiplierPercent')?.hasError("min")) {
+        <mat-error>Le pourcentage doit être supérieur à 0</mat-error>
+      }
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true">Annuler</button>
+  <button mat-button [disabled]="form.invalid" (click)="submit()">Ajouter
+  </button>
+</mat-dialog-actions>

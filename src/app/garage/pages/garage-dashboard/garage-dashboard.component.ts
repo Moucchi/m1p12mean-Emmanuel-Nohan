@@ -16,6 +16,9 @@ import {MechanicAppointmentInterface} from '../../models/dashboard/mechanic-appo
 import {
   AppointmentCardComponent
 } from '../../components/garage-mechanics-dashboard-dialog/appointment-card/appointment-card.component';
+import {
+  GarageMechanicsCompleteModalComponent
+} from '../../components/garage-mechanics-complete-modal/garage-mechanics-complete-modal.component';
 
 type GeneralInfo = {
   title: string,
@@ -39,6 +42,7 @@ export class GarageDashboardComponent implements OnInit {
   readonly authStore = inject(GarageAuthStore);
   readonly setAppointmentDialog = inject(MatDialog);
   readonly appointmentSnackbar = inject(MatSnackBar);
+  readonly completeAppointmentDialog = inject(MatDialog);
 
   lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: [],
@@ -216,6 +220,8 @@ export class GarageDashboardComponent implements OnInit {
   }
 
   markAsCompleted(id: string) {
-    console.log(`vita ny ${id}`);
-  }
+    this.setAppointmentDialog.open(GarageMechanicsCompleteModalComponent, {
+      data: {id: id},
+      width: "500px"
+    });  }
 }

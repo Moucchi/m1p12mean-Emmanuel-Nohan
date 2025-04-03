@@ -168,4 +168,12 @@ export class GarageDashboardService {
       })
     )
   }
+
+  markAppointmentAsCompleted(id: string, form : FormData) {
+    return this.http.put(`${this.backendUrl}/api/appointments/${id}/completed`, form).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    )
+  }
 }

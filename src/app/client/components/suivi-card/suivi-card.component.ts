@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import {DatePipe, NgOptimizedImage} from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { Appointment } from '../../../shared/models/appointment.interface';
 import { SuiviStoreService } from '../../services/suivi-store.service';
@@ -7,7 +7,7 @@ import {VehicleStoreService} from '../../services/vehicle-store.service';
 
 @Component({
   selector: 'app-suivi-card',
-  imports: [DatePipe],
+  imports: [DatePipe, NgOptimizedImage],
   templateUrl: './suivi-card.component.html',
   styleUrl: './suivi-card.component.css'
 })
