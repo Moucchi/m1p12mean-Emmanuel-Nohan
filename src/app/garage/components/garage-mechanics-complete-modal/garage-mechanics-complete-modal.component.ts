@@ -1,5 +1,11 @@
-import {Component, inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Component, computed, inject, signal} from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogActions, MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle
+} from '@angular/material/dialog';
 import {DialogData} from '../../../shared/models/dialog-data';
 import {
   AbstractControl,
@@ -14,6 +20,8 @@ import {GarageDashboardStore} from '../../store/garage-dashboard.store';
 import {MatInput, MatLabel} from '@angular/material/input';
 import {QuillEditorComponent} from 'ngx-quill';
 import {MatFormField} from '@angular/material/form-field';
+import {MatIcon} from '@angular/material/icon';
+import {JsonPipe} from '@angular/common';
 
 
 @Component({
@@ -24,7 +32,13 @@ import {MatFormField} from '@angular/material/form-field';
     MatInput,
     MatLabel,
     QuillEditorComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatIcon,
+    JsonPipe
   ],
   templateUrl: './garage-mechanics-complete-modal.component.html',
   styleUrl: './garage-mechanics-complete-modal.component.css'
@@ -34,6 +48,12 @@ export class GarageMechanicsCompleteModalComponent {
   private readonly data = inject<DialogData>(MAT_DIALOG_DATA);
   private formBuilder = inject(FormBuilder);
   private readonly dashboardStore = inject(GarageDashboardStore);
+
+  itemsArrayLenght = signal<number>(0);
+
+  isItemsAdded = computed(()=>{
+    return this.itemsArrayLenght() > 0 ;
+  });
 
   form = this.formBuilder.nonNullable.group({
     files: [[] as File[], [Validators.required, this.validateMultipleFiles.bind(this)]],
@@ -49,6 +69,7 @@ export class GarageMechanicsCompleteModalComponent {
 
   removeItem(index: number): void {
     this.itemsArray.removeAt(index);
+    this.itemsArrayLenght.set(this.itemsArray.length);
   }
 
   validateMultipleFiles(control: AbstractControl): ValidationErrors | null {
@@ -101,6 +122,7 @@ export class GarageMechanicsCompleteModalComponent {
 
   addInputExtra(): void {
     this.itemsArray.push(this.generateItem());
+    this.itemsArrayLenght.set(this.itemsArray.length);
   }
 
   onSubmit(): void {
@@ -125,4 +147,6 @@ export class GarageMechanicsCompleteModalComponent {
 
     this.dialogRef.close();
   }
+
+  protected readonly JSON = JSON;
 }

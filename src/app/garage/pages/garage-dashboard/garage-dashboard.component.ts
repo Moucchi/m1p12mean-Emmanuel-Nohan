@@ -220,7 +220,10 @@ export class GarageDashboardComponent implements OnInit {
 
   markAsCompleted(id: string) {
     this.setAppointmentDialog.open(GarageMechanicsCompleteModalComponent, {
-      data: {id: id},
-      width: "500px"
-    });  }
+        data: {id: id},
+        minWidth: "200px",
+        maxWidth: "1200px",
+      }
+    )
+  }
 }
