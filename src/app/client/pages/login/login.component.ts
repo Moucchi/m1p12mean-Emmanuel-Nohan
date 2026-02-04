@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit{
   private authService = inject(AuthService);
   private router = inject(Router);
   isLogin = signal<boolean>(false);
-  user = { email: 'emmanuel.rdh.1979@gmail.com', password: 'test1234' };
+  user = { email: '', password: '' };
   errorMessage = signal<string>('');
 
   ngOnInit(): void {
